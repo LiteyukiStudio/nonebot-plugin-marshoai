@@ -14,7 +14,7 @@ from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage, TextContentItem, ImageContentItem, ImageUrl
 from azure.core.credentials import AzureKeyCredential
 from .__init__ import __plugin_meta__
-import imghdr
+from PIL import Image
 from .config import config
 changemdl = on_command("changemodel",permission=SUPERUSER)
 resetmem = on_command("reset",permission=SUPERUSER)
@@ -102,7 +102,7 @@ async def neko(
                         await download_file(str(imgurl))
                         picmsg = ImageContentItem(image_url=ImageUrl.load(
                                 image_file="./azureaipic.png",
-                                image_format=imghdr.what("azureaipic.png")
+                                image_format=Image.open("azureaipic.png").format
                                 )
                             )
                         usermsg.append(picmsg)
@@ -114,12 +114,13 @@ async def neko(
                         messages=context+[UserMessage(content=usermsg)],
                         model=model_name   
                   )
-             #await UniMessage(str(response)).send()
+            #await UniMessage(str(response)).send()
             choice = response.choices[0]
             if choice["finish_reason"] == "stop":
                 context.append(UserMessage(content=usermsg))
                 context.append(choice.message)
                 context_count += 1
+            #await UniMessage(str(choice)).send()
             await UniMessage(str(choice.message.content)).send(reply_to=True)
             #requests_limit = response.headers.get('x-ratelimit-limit-requests')
              #request_id = response.headers.get('x-request-id')
