@@ -18,8 +18,8 @@ usage = """命令格式：
 海外展览"""
 __author__ = "Asankilp"
 __plugin_meta__ = PluginMetadata(
-    name="漫展/展览查询",
-    description="从哔哩哔哩会员购获取简易展览数据",
+    name="Marsho AI插件",
+    description="接入Azure服务的AI聊天插件",
     usage=usage,
     type="application",
     homepage="https://github.com/LiteyukiStudio/nonebot-plugin-acgnshow",

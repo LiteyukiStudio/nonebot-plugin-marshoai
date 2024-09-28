@@ -13,6 +13,7 @@ import traceback
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage, TextContentItem, ImageContentItem, ImageUrl
 from azure.core.credentials import AzureKeyCredential
+from azure.core.exceptions import HttpResponseError
 from .__init__ import __plugin_meta__
 from PIL import Image
 from .config import config
@@ -20,6 +21,7 @@ from .models import MarshoContext
 changemdl = on_command("changemodel",permission=SUPERUSER)
 resetmem = on_command("reset",permission=SUPERUSER)
 setprompt_cmd = on_command("prompt",permission=SUPERUSER)
+praises_cmd = on_command("praises",permission=SUPERUSER)
 nekocmd = on_alconna(
         Alconna(
             "marsho",
@@ -31,6 +33,9 @@ model_name = "gpt-4o-mini"
 context = MarshoContext()
 context_limit = 15
 context_count = 0
+@praises_cmd.handle()
+async def getpraises():
+    await UniMessage(build_praises()).send()
 
 @setprompt_cmd.handle() #用不了了
 async def setprompt(arg: Message = CommandArg()):
@@ -126,7 +131,8 @@ async def neko(
              #remaining_tokens = response.headers.get('x-ratelimit-remaining-tokens')
              #await UniMessage(f"""  剩余token：{remaining_tokens}"""
                #      ).send()
-        except Exception as e:
+        except HttpResponseError as e:
             await UniMessage(str(e)).send()
+           # await UniMessage(str(e.reason)).send()
             traceback.print_exc()
             return
