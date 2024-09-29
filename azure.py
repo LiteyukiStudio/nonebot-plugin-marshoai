@@ -11,7 +11,7 @@ from arclet.alconna import Alconna, Args, AllParam, Arparma
 from .util import *
 import traceback
 from azure.ai.inference.aio import ChatCompletionsClient
-from azure.ai.inference.models import SystemMessage, UserMessage, TextContentItem, ImageContentItem, ImageUrl
+from azure.ai.inference.models import SystemMessage, UserMessage, AssistantMessage, TextContentItem, ImageContentItem, ImageUrl, CompletionsFinishReason
 from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import HttpResponseError
 from .__init__ import __plugin_meta__
@@ -22,6 +22,8 @@ changemdl = on_command("changemodel",permission=SUPERUSER)
 resetmem = on_command("reset",permission=SUPERUSER)
 setprompt_cmd = on_command("prompt",permission=SUPERUSER)
 praises_cmd = on_command("praises",permission=SUPERUSER)
+add_usermsg_cmd = on_command("usermsg",permission=SUPERUSER)
+add_assistantmsg_cmd = on_command("assistantmsg",permission=SUPERUSER)
 nekocmd = on_alconna(
         Alconna(
             "marsho",
@@ -33,6 +35,18 @@ model_name = "gpt-4o-mini"
 context = MarshoContext()
 context_limit = 15
 context_count = 0
+@add_usermsg_cmd.handle()
+async def add_usermsg(arg: Message = CommandArg()):
+    if msg := arg.extract_plain_text():
+        context.append(UserMessage(content=msg))
+        await UniMessage("已添加用户消息").send()
+
+@add_assistantmsg_cmd.handle()
+async def add_assistantmsg(arg: Message = CommandArg()):
+    if msg := arg.extract_plain_text():
+        context.append(AssistantMessage(content=msg))
+        await UniMessage("已添加助手消息").send()
+
 @praises_cmd.handle()
 async def getpraises():
     await UniMessage(build_praises()).send()
@@ -119,10 +133,12 @@ async def neko(
                   )
             #await UniMessage(str(response)).send()
             choice = response.choices[0]
-            if choice["finish_reason"] == "stop":
+            if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
                 context.append(UserMessage(content=usermsg))
                 context.append(choice.message)
                 context_count += 1
+            elif choice["finish_reason"] == CompletionsFinishReason.CONTENT_FILTERED:
+                await UniMessage("*已被内容过滤器过滤。*").send()
             #await UniMessage(str(choice)).send()
             await UniMessage(str(choice.message.content)).send(reply_to=True)
             #requests_limit = response.headers.get('x-ratelimit-limit-requests')
@@ -131,7 +147,7 @@ async def neko(
              #remaining_tokens = response.headers.get('x-ratelimit-remaining-tokens')
              #await UniMessage(f"""  剩余token：{remaining_tokens}"""
                #      ).send()
-        except HttpResponseError as e:
+        except Exception as e:
             await UniMessage(str(e)).send()
            # await UniMessage(str(e.reason)).send()
             traceback.print_exc()
