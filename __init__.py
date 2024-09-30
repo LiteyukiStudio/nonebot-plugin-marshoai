@@ -4,18 +4,18 @@ require("nonebot_plugin_alconna")
 from .azure import *
 from nonebot import get_driver
 #from .config import ConfigModel
-usage = """命令格式：
-展览 <地区> [页码]
-或
-<地区>展览 [页码]
-其中地区为省级行政区或地级行政区（不包含后缀）
-（如北京，福建，平顶山，绍兴，香港...，或海外/全国）
-
-示例：
-展览 福建 2
-福建展览 2
-全国展览
-海外展览"""
+usage = """MarshoAI Alpha? by Asankilp
+用法：
+  marsho <聊天内容>
+与 Marsho 进行对话。当模型为gpt时，可以带上图片进行对话。
+  changemodel
+切换 AI 模型。仅超级用户可用。
+  reset
+重置上下文。仅超级用户可用。
+注意事项：
+当 Marsho 回复消息为None或以content_filter开头的错误信息时，表示该消息被内容过滤器过滤，请调整你的聊天内容确保其合规。
+当回复以RateLimitReached开头的错误信息时，该 AI 模型的次数配额已用尽，请联系Bot管理员。
+※本AI的回答"按原样"提供，不提供担保，不代表开发者任何立场。AI也会犯错，请仔细甄别回答的准确性。"""
 __author__ = "Asankilp"
 __plugin_meta__ = PluginMetadata(
     name="Marsho AI插件",
