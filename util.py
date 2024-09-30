@@ -64,3 +64,16 @@ def get_prompt():
     marsho_prompt = config.marshoai_prompt
     spell = SystemMessage(content=marsho_prompt+prompts)
     return spell
+
+def suggest_solution(errinfo: str):
+    suggestion = ""
+    if "content_filter" in errinfo:
+        suggestion = "消息已被内容过滤器过滤。请调整聊天内容后重试。"
+    elif "RateLimitReached" in errinfo:
+        suggestion = "模型达到调用速率限制。请稍等一段时间或联系Bot管理员。"
+    elif "tokens_limit_reached" in errinfo:
+        suggestion = "请求token达到上限。请重置上下文。"
+    if suggestion != "":
+        return "\n"+suggestion
+    else:
+        return suggestion

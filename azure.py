@@ -33,7 +33,7 @@ nekocmd = on_alconna(
     )
 model_name = config.marshoai_default_model
 context = MarshoContext()
-context_limit = 15
+context_limit = 50
 
 
 
@@ -140,7 +140,7 @@ async def neko(
              #await UniMessage(f"""  剩余token：{remaining_tokens}"""
                #      ).send()
         except Exception as e:
-            await UniMessage(str(e)).send()
+            await UniMessage(str(e)+suggest_solution(str(e))).send()
            # await UniMessage(str(e.reason)).send()
             traceback.print_exc()
             return
