@@ -22,10 +22,10 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 ## 📖 介绍
 
-通过调用由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API 来实现聊天的插件。
-插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！
-*谁不喜欢回复消息快又可爱的猫娘呢？*
-**※对 Azure AI Studio等的支持待定。**
+通过调用由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API 来实现聊天的插件。  
+插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
+*谁不喜欢回复消息快又可爱的猫娘呢？*  
+**※对 Azure AI Studio等的支持待定。对 OneBot 以外的适配器支持未经过完全验证。**
 
 ## 🐱 设定
 #### 基本信息
@@ -94,8 +94,8 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 发送`marsho`指令可以获取使用说明
 
 ## 👍 夸赞名单
-夸赞名单存储于 Bot 工作目录的`praises.json`下，当配置项为`true`时发起一次聊天后自动生成，包含人物名字与人物优点两个基本数据。
-存储于其中的人物会被 Marsho “认识”和“喜欢”。
+夸赞名单存储于 Bot 工作目录的`praises.json`下，当配置项为`true`时发起一次聊天后自动生成，包含人物名字与人物优点两个基本数据。  
+存储于其中的人物会被 Marsho “认识”和“喜欢”。  
 其结构类似于：
 ```json
 {
@@ -120,7 +120,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 |      配置项       | 必填 | 默认值 |                             说明                             |
 | :---------------: | :--: | :----: | :----------------------------------------------------------: |
 | MARSHOAI_TOKEN |  是  |   无    | 调用 API 必需的 token |
-| MARSHOAI_DEFAULT_MODEL | 否 | `gpt-4o` | Marsho 默认调用的模型 |
+| MARSHOAI_DEFAULT_MODEL | 否 | `gpt-4o-mini` | Marsho 默认调用的模型 |
 | MARSHOAI_PROMPT | 否 | 猫娘 Marsho 人设提示词 | Marsho 的基本系统提示词 |
 | MARSHOAI_ADDITIONAL_PROMPT | 否 | 无 | Marsho 的扩展系统提示词 |
 | MARSHOAI_ENABLE_PRAISES | 否 | `true` | 是否启用夸赞名单功能 |

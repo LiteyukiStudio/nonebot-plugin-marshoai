@@ -2,7 +2,6 @@ from nonebot import on_command
 from nonebot.adapters import Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
-#from .acgnapis import *
 from nonebot_plugin_alconna import on_alconna, MsgTarget
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from arclet.alconna import Alconna, Args, AllParam
