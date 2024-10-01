@@ -1,4 +1,3 @@
-from pathlib import Path
 from pydantic import BaseModel
 from nonebot import get_plugin_config
 

@@ -1,35 +1,40 @@
 from .util import *
+
 class MarshoContext:
     """
     Marsho 的上下文类
     """
     def __init__(self):
-        self.contents = []
-        self.count = 0
+        self.contents = {
+            "private": {},
+            "non-private": {}
+        }
 
-    def append(self, content):
+    def _get_target_dict(self, is_private):
+        return self.contents["private"] if is_private else self.contents["non-private"]
+
+    def append(self, content, target_id, is_private):
         """
         往上下文中添加消息
-        Args:
-            content: 消息
         """
-        self.contents.append(content)
+        target_dict = self._get_target_dict(is_private)
+        if target_id not in target_dict:
+            target_dict[target_id] = []
+        target_dict[target_id].append(content)
 
-    def reset(self):
+    def reset(self, target_id, is_private):
         """
         重置上下文
         """
-        self.contents.clear()
+        target_dict = self._get_target_dict(is_private)
+        target_dict[target_id].clear()
 
-    def addcount(self, num = 1):
-        self.count += num
-
-    def resetcount(self):
-        self.count = 0
-
-    def build(self):
+    def build(self, target_id, is_private):
         """
         构建返回的上下文，其中包括系统消息
         """
         spell = get_prompt()
-        return [spell] + self.contents
+        target_dict = self._get_target_dict(is_private)
+        if target_id not in target_dict:
+            target_dict[target_id] = []
+        return [spell] + target_dict[target_id]

@@ -1,10 +1,8 @@
 import base64
 import mimetypes
-import random
 import os
 import json
 import httpx
-from pathlib import Path
 from datetime import datetime
 from zhDateTime import DateTime
 from azure.ai.inference.models import SystemMessage
@@ -34,7 +32,7 @@ def get_praises():
     if not os.path.exists("praises.json"):
         init_data = {
             "like": [
-                    {"name":"Asankilp","advantages":"赋予了Marsho猫娘人格，使用vim为Marsho写了许多代码，使Marsho更加可爱"}
+                    {"name":"Asankilp","advantages":"赋予了Marsho猫娘人格，使用vim与vscode为Marsho写了许多代码，使Marsho更加可爱"}
                 ]
             }
         with open(filename,"w",encoding="utf-8") as f:

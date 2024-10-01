@@ -1,10 +1,9 @@
-from nonebot.typing import T_State
 from nonebot import on_command
 from nonebot.adapters import Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 #from .acgnapis import *
-from nonebot_plugin_alconna import on_alconna
+from nonebot_plugin_alconna import on_alconna, MsgTarget
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from arclet.alconna import Alconna, Args, AllParam
 from .util import *
@@ -16,8 +15,8 @@ from .__init__ import __plugin_meta__
 from .config import config
 from .models import MarshoContext
 changemodel_cmd = on_command("changemodel",permission=SUPERUSER)
-resetmem_cmd = on_command("reset",permission=SUPERUSER)
-setprompt_cmd = on_command("prompt",permission=SUPERUSER)
+resetmem_cmd = on_command("reset")
+#setprompt_cmd = on_command("prompt",permission=SUPERUSER)
 praises_cmd = on_command("praises",permission=SUPERUSER)
 add_usermsg_cmd = on_command("usermsg",permission=SUPERUSER)
 add_assistantmsg_cmd = on_command("assistantmsg",permission=SUPERUSER)
@@ -30,20 +29,17 @@ marsho_cmd = on_alconna(
     )
 model_name = config.marshoai_default_model
 context = MarshoContext()
-context_limit = 50
-
-
 
 @add_usermsg_cmd.handle()
-async def add_usermsg(arg: Message = CommandArg()):
+async def add_usermsg(target: MsgTarget, arg: Message = CommandArg()):
     if msg := arg.extract_plain_text():
-        context.append(UserMessage(content=msg))
+        context.append(UserMessage(content=msg), target.id, target.private)
         await UniMessage("已添加用户消息").send()
 
 @add_assistantmsg_cmd.handle()
-async def add_assistantmsg(arg: Message = CommandArg()):
+async def add_assistantmsg(target: MsgTarget, arg: Message = CommandArg()):
     if msg := arg.extract_plain_text():
-        context.append(AssistantMessage(content=msg))
+        context.append(AssistantMessage(content=msg), target.id, target.private)
         await UniMessage("已添加助手消息").send()
 
 @praises_cmd.handle()
@@ -51,8 +47,8 @@ async def praises():
     await UniMessage(build_praises()).send()
 
 @contexts_cmd.handle()
-async def contexts():
-    await UniMessage(str(context.build()[1:])).send()
+async def contexts(target: MsgTarget):
+    await UniMessage(str(context.build(target.id, target.private)[1:])).send()
 
 # @setprompt_cmd.handle() #用不了了
 # async def setprompt(arg: Message = CommandArg()):
@@ -67,9 +63,8 @@ async def contexts():
 
 
 @resetmem_cmd.handle()
-async def resetmem_cmd():
-    context.reset()
-    context.resetcount()
+async def resetmem(target: MsgTarget):
+    context.reset(target.id, target.private)
     await resetmem_cmd.finish("上下文已重置")
     
 @changemodel_cmd.handle()
@@ -80,6 +75,7 @@ async def changemodel(arg : Message = CommandArg()):
         await changemodel_cmd.finish("已切换")
 @marsho_cmd.handle()
 async def marsho(
+        target: MsgTarget,
         message: UniMsg,
         text = None
     ):
@@ -94,14 +90,11 @@ async def marsho(
             await UniMessage(
                 __plugin_meta__.usage+"\n当前使用的模型："+model_name).send()
             return
-        if context.count >= context_limit:
-            await UniMessage("上下文数量达到阈值。已自动重置上下文。").send()
-            context.reset()
-            context.resetcount()
        # await UniMessage(str(text)).send()
         try:
             is_support_image_model = model_name.lower() in config.marshoai_support_image_models
             usermsg = [] if is_support_image_model else ""
+            marsho_string_removed = False
             for i in message:
                 if i.type == "image":
                     if is_support_image_model:
@@ -113,20 +106,25 @@ async def marsho(
                     else:
                         await UniMessage("*此模型不支持图片处理。").send()
                 elif i.type == "text":
+                    if not marsho_string_removed:
+                        # 去掉最前面的"marsho "字符串
+                        clean_text = i.data["text"].lstrip("marsho ")
+                        marsho_string_removed = True  # 标记文本已处理
+                    else:
+                        clean_text = i.data["text"]
                     if is_support_image_model:
-                        usermsg.append(TextContentItem(text=i.data["text"]))
+                        usermsg.append(TextContentItem(text=clean_text))
                     else:
                         usermsg += str(i.data["text"])
             response = await client.complete(
-                        messages=context.build()+[UserMessage(content=usermsg)],
+                        messages=context.build(target.id, target.private)+[UserMessage(content=usermsg)],
                         model=model_name   
                   )
             #await UniMessage(str(response)).send()
             choice = response.choices[0]
             if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
-                context.append(UserMessage(content=usermsg))
-                context.append(choice.message)
-                context.addcount()
+                context.append(UserMessage(content=usermsg), target.id, target.private)
+                context.append(choice.message, target.id, target.private)
             elif choice["finish_reason"] == CompletionsFinishReason.CONTENT_FILTERED:
                 await UniMessage("*已被内容过滤器过滤。*").send()
             #await UniMessage(str(choice)).send()
