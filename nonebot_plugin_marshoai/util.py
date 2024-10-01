@@ -51,12 +51,12 @@ def build_praises():
 def get_prompt():
     prompts = ""
     prompts += config.marshoai_additional_prompt
-    current_time = datetime.now().strftime('%Y.%m.%d %H:%M:%S')
-    current_lunar_date = DateTime.now().to_lunar().date_hanzify()[5:]#库更新之前使用切片
     if config.marshoai_enable_praises:
         praises_prompt = build_praises()
         prompts += praises_prompt
     if config.marshoai_enable_time_prompt:
+        current_time = datetime.now().strftime('%Y.%m.%d %H:%M:%S')
+        current_lunar_date = DateTime.now().to_lunar().date_hanzify()[5:] #库更新之前使用切片
         time_prompt = f"现在的时间是{current_time}，农历{current_lunar_date}。"
         prompts += time_prompt
     marsho_prompt = config.marshoai_prompt
@@ -71,6 +71,8 @@ def suggest_solution(errinfo: str):
         suggestion = "模型达到调用速率限制。请稍等一段时间或联系Bot管理员。"
     elif "tokens_limit_reached" in errinfo:
         suggestion = "请求token达到上限。请重置上下文。"
+    elif "unauthorized" in errinfo:
+        suggestion = "Azure凭据无效。请联系Bot管理员。"
     if suggestion != "":
         return "\n"+suggestion
     else:

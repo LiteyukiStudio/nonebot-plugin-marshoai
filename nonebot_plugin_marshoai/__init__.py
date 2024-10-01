@@ -5,8 +5,8 @@ from nonebot import get_driver
 usage = """MarshoAI Alpha by Asankilp
 用法：
   marsho <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
-  reset : 重置当前会话的上下文。
-超级用户命令:
+  reset : 重置当前会话的上下文。 ※需要加上命令前缀使用(默认为'/')。
+超级用户命令(均需要加上命令前缀使用):
   changemodel <模型名> : 切换全局 AI 模型。
   contexts : 返回当前会话的上下文列表。 ※当上下文包含图片时，不要使用此命令。
   praises : 返回夸赞名单的提示词。
