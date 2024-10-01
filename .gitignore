@@ -163,3 +163,4 @@ cython_debug/
 #.idea/
 bot.py
 pdm.lock
+praises.json
