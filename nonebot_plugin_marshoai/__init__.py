@@ -2,6 +2,7 @@ from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
 require("nonebot_plugin_alconna")
 from .azure import *
 from nonebot import get_driver
+from .config import ConfigModel
 usage = """MarshoAI Alpha by Asankilp
 用法：
   marsho <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
@@ -22,6 +23,7 @@ __plugin_meta__ = PluginMetadata(
     description="接入Azure服务的AI聊天插件",
     usage=usage,
     type="application",
+    config=ConfigModel,
     homepage="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai",
     supported_adapters=inherit_supported_adapters("nonebot_plugin_alconna"),
     extra={"License":"MIT","Author":"Asankilp"}

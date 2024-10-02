@@ -114,7 +114,7 @@ async def marsho(
                     if is_support_image_model:
                         usermsg.append(TextContentItem(text=clean_text))
                     else:
-                        usermsg += str(i.data["text"])
+                        usermsg += str(clean_text)
             response = await client.complete(
                         messages=context.build(target.id, target.private)+[UserMessage(content=usermsg)],
                         model=model_name   
