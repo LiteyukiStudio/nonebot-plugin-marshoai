@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/blob/resources/marsho.svg" width="180" height="180" alt="NoneBotPluginLogo"></a>
+  <a href="https://v2.nonebot.dev/store"><img src="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/blob/main/resources/marsho.svg" width="180" height="180" alt="NoneBotPluginLogo"></a>
   <br>
 </div>
 
