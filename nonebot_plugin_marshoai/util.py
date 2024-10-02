@@ -71,6 +71,8 @@ def suggest_solution(errinfo: str):
         suggestion = "模型达到调用速率限制。请稍等一段时间或联系Bot管理员。"
     elif "tokens_limit_reached" in errinfo:
         suggestion = "请求token达到上限。请重置上下文。"
+    elif "content_length_limit" in errinfo:
+        suggestion = "请求体过大。请重置上下文。"
     elif "unauthorized" in errinfo:
         suggestion = "Azure凭据无效。请联系Bot管理员。"
     if suggestion != "":
