@@ -3,6 +3,7 @@ import mimetypes
 import os
 import json
 import httpx
+import nonebot_plugin_localstore as store
 from datetime import datetime
 from zhDateTime import DateTime
 from azure.ai.inference.models import SystemMessage
@@ -28,16 +29,16 @@ async def get_image_b64(url):
             return None
         
 def get_praises():
-    filename = "praises.json"
-    if not os.path.exists("praises.json"):
+    praises_file = store.get_plugin_data_file("praises.json") # 夸赞名单文件使用localstore存储
+    if not os.path.exists(praises_file):
         init_data = {
             "like": [
                     {"name":"Asankilp","advantages":"赋予了Marsho猫娘人格，使用vim与vscode为Marsho写了许多代码，使Marsho更加可爱"}
                 ]
             }
-        with open(filename,"w",encoding="utf-8") as f:
+        with open(praises_file,"w",encoding="utf-8") as f:
             json.dump(init_data,f,ensure_ascii=False,indent=4)
-    with open(filename,"r",encoding="utf-8") as f:
+    with open(praises_file,"r",encoding="utf-8") as f:
         data = json.load(f)
     return data
 
@@ -63,19 +64,17 @@ def get_prompt():
     spell = SystemMessage(content=marsho_prompt+prompts)
     return spell
 
-def suggest_solution(errinfo: str):
-    suggestion = ""
-    if "content_filter" in errinfo:
-        suggestion = "消息已被内容过滤器过滤。请调整聊天内容后重试。"
-    elif "RateLimitReached" in errinfo:
-        suggestion = "模型达到调用速率限制。请稍等一段时间或联系Bot管理员。"
-    elif "tokens_limit_reached" in errinfo:
-        suggestion = "请求token达到上限。请重置上下文。"
-    elif "content_length_limit" in errinfo:
-        suggestion = "请求体过大。请重置上下文。"
-    elif "unauthorized" in errinfo:
-        suggestion = "Azure凭据无效。请联系Bot管理员。"
-    if suggestion != "":
-        return "\n"+suggestion
-    else:
-        return suggestion
+def suggest_solution(errinfo: str) -> str:
+    suggestions = {
+        "content_filter": "消息已被内容过滤器过滤。请调整聊天内容后重试。",
+        "RateLimitReached": "模型达到调用速率限制。请稍等一段时间或联系Bot管理员。",
+        "tokens_limit_reached": "请求token达到上限。请重置上下文。",
+        "content_length_limit": "请求体过大。请重置上下文。",
+        "unauthorized": "Azure凭据无效。请联系Bot管理员。"
+    }
+
+    for key, suggestion in suggestions.items():
+        if key in errinfo:
+            return f"\n{suggestion}"
+    
+    return ""

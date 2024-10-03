@@ -1,8 +1,10 @@
 from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
 require("nonebot_plugin_alconna")
+require("nonebot_plugin_localstore")
 from .azure import *
-from nonebot import get_driver
-from .config import ConfigModel
+from nonebot import get_driver, logger
+from .config import ConfigModel, config
+import nonebot_plugin_localstore as store
 usage = """MarshoAI Alpha by Asankilp
 用法：
   marsho <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
@@ -33,5 +35,10 @@ driver = get_driver()
 
 @driver.on_startup
 async def _():
-    pass
+    logger.info("MarshoAI 已经加载~🐾")
+    logger.info(f"Marsho 的插件数据存储于 : {str(store.get_plugin_data_dir())} 哦~🐾")
+    if config.marshoai_token == "":
+        logger.warning("token 未配置。可能无法进行聊天。")
+    else:
+        logger.info("token 已配置~！🐾")
 
