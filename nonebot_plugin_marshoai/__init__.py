@@ -15,6 +15,8 @@ usage = """MarshoAI Alpha by Asankilp
   praises : 返回夸赞名单的提示词。
   usermsg <消息> : 往当前会话添加用户消息(UserMessage)。
   assistantmsg <消息> : 往当前会话添加助手消息(AssistantMessage)。
+  savecontext <文件名> : 保存当前会话的上下文至插件数据目录下的contexts/<文件名>.json里。
+  loadcontext <文件名> : 从插件数据目录下的contexts/<文件名>.json里读取上下文并覆盖到当前会话。
 注意事项：
   - 当 Marsho 回复消息为None或以content_filter开头的错误信息时，表示该消息被内容过滤器过滤，请调整你的聊天内容确保其合规。
   - 当回复以RateLimitReached开头的错误信息时，该 AI 模型的次数配额已用尽，请联系Bot管理员。

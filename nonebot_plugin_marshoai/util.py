@@ -6,6 +6,7 @@ import httpx
 import nonebot_plugin_localstore as store
 from datetime import datetime
 from zhDateTime import DateTime
+from pathlib import Path
 from azure.ai.inference.models import SystemMessage
 from .config import config
 async def get_image_b64(url):
@@ -49,6 +50,23 @@ def build_praises():
         result.append(f"名字：{item['name']}，优点：{item['advantages']}")
     return "\n".join(result)
 
+async def save_context_to_json(name: str, context: str):
+    context_dir = store.get_plugin_data_dir() / "contexts"
+    os.makedirs(context_dir, exist_ok=True)
+    file_path = os.path.join(context_dir, f"{name}.json")
+    with open(file_path, 'w', encoding='utf-8') as json_file:
+        json.dump(context, json_file, ensure_ascii=False, indent=4)
+
+async def load_context_from_json(name: str):
+    context_dir = store.get_plugin_data_dir() / "contexts"
+    os.makedirs(context_dir, exist_ok=True)
+    file_path = os.path.join(context_dir, f"{name}.json")
+    try:
+        with open(file_path, 'r', encoding='utf-8') as json_file:
+            return json.load(json_file)
+    except FileNotFoundError:
+        return []
+
 def get_prompt():
     prompts = ""
     prompts += config.marshoai_additional_prompt
@@ -61,7 +79,7 @@ def get_prompt():
         time_prompt = f"现在的时间是{current_time}，农历{current_lunar_date}。"
         prompts += time_prompt
     marsho_prompt = config.marshoai_prompt
-    spell = SystemMessage(content=marsho_prompt+prompts)
+    spell = SystemMessage(content=marsho_prompt+prompts).as_dict()
     return spell
 
 def suggest_solution(errinfo: str) -> str:
@@ -70,7 +88,8 @@ def suggest_solution(errinfo: str) -> str:
         "RateLimitReached": "模型达到调用速率限制。请稍等一段时间或联系Bot管理员。",
         "tokens_limit_reached": "请求token达到上限。请重置上下文。",
         "content_length_limit": "请求体过大。请重置上下文。",
-        "unauthorized": "Azure凭据无效。请联系Bot管理员。"
+        "unauthorized": "Azure凭据无效。请联系Bot管理员。",
+        "invalid type: parameter messages.content is of type array but should be of type string.": "请重置上下文。"
     }
 
     for key, suggestion in suggestions.items():
