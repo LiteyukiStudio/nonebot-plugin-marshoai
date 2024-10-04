@@ -126,4 +126,5 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 | MARSHOAI_ENABLE_TIME_PROMPT | 否 | `true` | 是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词 |
 | MARSHOAI_AZURE_ENDPOINT | 否 | `https://models.inference.ai.azure.com` | 调用 Azure OpenAI 服务的 API 终结点 |
 | MARSHOAI_TEMPERATURE | 否 | 无 | 进行推理时的温度参数 |
+| MARSHOAI_TOP_P | 否 | 无 | 进行推理时的核采样参数 |
 | MARSHOAI_MAX_TOKENS | 否 | 无 | 返回消息的最大 token 数 |

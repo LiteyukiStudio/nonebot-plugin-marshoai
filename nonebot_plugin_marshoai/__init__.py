@@ -5,7 +5,7 @@ from .azure import *
 from nonebot import get_driver, logger
 from .config import ConfigModel, config
 import nonebot_plugin_localstore as store
-usage = """MarshoAI Alpha by Asankilp
+usage = """MarshoAI Beta by Asankilp
 用法：
   marsho <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
   reset : 重置当前会话的上下文。 ※需要加上命令前缀使用(默认为'/')。

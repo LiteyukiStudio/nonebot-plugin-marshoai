@@ -13,4 +13,5 @@ class ConfigModel(BaseModel):
         marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
         marshoai_temperature: float = None
         marshoai_max_tokens: int = None
+        marshoai_top_p: float = None
 config: ConfigModel = get_plugin_config(ConfigModel)

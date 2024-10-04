@@ -123,7 +123,8 @@ async def marsho(
                         messages=context.build(target.id, target.private)+[UserMessage(content=usermsg)],
                         model=model_name,
                         temperature=config.marshoai_temperature,
-                        max_tokens=config.marshoai_max_tokens 
+                        max_tokens=config.marshoai_max_tokens,
+                        top_p=config.marshoai_top_p
                   )
             #await UniMessage(str(response)).send()
             choice = response.choices[0]
