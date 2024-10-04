@@ -14,7 +14,10 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#">
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Marsho logo</title>
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"
@@ -26,8 +29,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      inkscape:zoom="1.4142136"
-     inkscape:cx="224.15285"
-     inkscape:cy="75.306872"
+     inkscape:cx="224.15284"
+     inkscape:cy="75.30687"
      inkscape:window-width="2880"
      inkscape:window-height="1514"
      inkscape:window-x="-11"
@@ -209,6 +212,13 @@
          rdf:about="">
         <cc:license
            rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/" />
+        <dc:title>Marsho logo</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Asankilp</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>可爱猫娘Marsho的可爱logo~</dc:description>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">

@@ -118,10 +118,12 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 |      配置项       | 必填 | 默认值 |                             说明                             |
 | :---------------: | :--: | :----: | :----------------------------------------------------------: |
-| MARSHOAI_TOKEN |  是  |   无    | 调用 API 必需的 token |
+| MARSHOAI_TOKEN |  是  |   无    | 调用 API 必需的访问 token |
 | MARSHOAI_DEFAULT_MODEL | 否 | `gpt-4o-mini` | Marsho 默认调用的模型 |
 | MARSHOAI_PROMPT | 否 | 猫娘 Marsho 人设提示词 | Marsho 的基本系统提示词 |
 | MARSHOAI_ADDITIONAL_PROMPT | 否 | 无 | Marsho 的扩展系统提示词 |
 | MARSHOAI_ENABLE_PRAISES | 否 | `true` | 是否启用夸赞名单功能 |
 | MARSHOAI_ENABLE_TIME_PROMPT | 否 | `true` | 是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词 |
 | MARSHOAI_AZURE_ENDPOINT | 否 | `https://models.inference.ai.azure.com` | 调用 Azure OpenAI 服务的 API 终结点 |
+| MARSHOAI_TEMPERATURE | 否 | 无 | 进行推理时的温度参数 |
+| MARSHOAI_MAX_TOKENS | 否 | 无 | 返回消息的最大 token 数 |

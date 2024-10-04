@@ -11,4 +11,6 @@ class ConfigModel(BaseModel):
         marshoai_enable_praises: bool = True
         marshoai_enable_time_prompt: bool = True
         marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
+        marshoai_temperature: float = None
+        marshoai_max_tokens: int = None
 config: ConfigModel = get_plugin_config(ConfigModel)
