@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="16"
+   height="16"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="marsho-icon.svg"
+   inkscape:export-filename="marsho-icon.png"
+   inkscape:export-xdpi="768"
+   inkscape:export-ydpi="768"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Marsho Icon</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="64"
+     inkscape:cx="5"
+     inkscape:cy="6.3984375"
+     inkscape:window-width="2880"
+     inkscape:window-height="1514"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       id="grid3"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1" />
+  </defs>
+  <g
+     inkscape:label="图层 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:1;fill:#e9afaf;fill-opacity:1;stroke:#e9afaf;stroke-width:0.194529;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="M 8.9097979,1.5036223 9.4078576,2.2597024"
+       id="path21"
+       inkscape:label="ear-back-1" />
+    <path
+       style="fill:#e9afaf;fill-opacity:1;stroke:#e9afaf;stroke-width:0.239043;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="M 12.615364,3.0584913 12.116751,4.0530861"
+       id="path21-3"
+       inkscape:label="ear-back-2" />
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffaaaa;stroke-width:0.168088;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="M 8.4510403,2.9515471 8.9070836,1.4733668 9.8014378,3.345504"
+       id="path8"
+       inkscape:label="ear-1" />
+    <path
+       style="opacity:1;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.270991;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="M 9.0450718,1.9521621 8.7222085,1.9362835 8.8068951,2.0527259 8.5740106,2.1215339 8.7275027,2.1585837 8.552839,2.200926 9.1403436,2.1427041 Z"
+       id="path23"
+       inkscape:label="hair-1" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffaaaa;stroke-width:0.259438;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="M 11.0971,3.3951166 12.605263,3.0509715 11.431121,4.7615727"
+       id="path8-7"
+       inkscape:label="ear-front-2" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffaaaa;stroke-width:1.27268;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="M 7.2457821,8.5323174 2.6842893,14.338867"
+       id="path2"
+       inkscape:label="stick" />
+    <path
+       style="fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.270991;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="m 12.15754,3.4728492 -0.147681,-0.2875463 -0.0585,0.1315606 -0.176031,-0.1672813 0.04466,0.1514534 -0.124003,-0.1300929 0.344174,0.4796835 z"
+       id="path23-0"
+       inkscape:label="hair-2" />
+    <path
+       style="fill:#ffd5d5;fill-opacity:1;stroke:#ffd5d5;stroke-width:0.999774;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 7.099506,10.115494 6.9770044,8.7427564 C 6.8665615,8.8265179 6.7778633,8.9387034 6.7218385,9.06549 c -0.056025,0.1267867 -0.079255,0.2679011 -0.066829,0.4059563 0.012426,0.1380551 0.060482,0.2727533 0.1382462,0.3874978 0.077764,0.1147446 0.1850698,0.2092879 0.3086948,0.2719819 0.14693,0.07451 0.3165948,0.103415 0.4799082,0.08175 0.1633133,-0.02166 0.3195761,-0.0938 0.4419997,-0.204038 0.2679301,0.228548 0.6374896,0.333162 0.9854595,0.278962 0.224526,-0.03497 0.4387471,-0.133795 0.611084,-0.2819 C 9.7927385,9.8575977 9.9226522,9.6606738 9.9909916,9.4439604 10.495485,9.4250538 10.989041,9.1980659 11.331735,8.8273483 11.674429,8.4566308 11.862003,7.9467906 11.841279,7.4423688 11.816725,6.8447364 11.495284,6.2665439 11.000633,5.9302582 11.045271,5.5801946 10.999056,5.2189362 10.867731,4.8913834 10.710018,4.4980129 10.42905,4.1550955 10.074375,3.9231044 9.7197008,3.6911132 9.2929308,3.5711019 8.8693256,3.5842343 8.4457204,3.5973667 8.0272038,3.7435831 7.6875808,3.9970985 7.3479578,4.2506138 7.0887707,4.6102768 6.955727,5.0126612 6.6697073,4.7978514 6.2730892,4.7396557 5.9374163,4.8632446 5.6017434,4.9868334 5.3375562,5.2883261 5.25912,5.6373222 5.2046933,5.8794896 5.2374151,6.1402944 5.3499801,6.3615102 5.462545,6.582726 5.6541133,6.7627023 5.8819159,6.8612582 5.7653517,6.7605319 5.6157873,6.6986431 5.4621317,6.6875542 5.3084761,6.6764653 5.1515751,6.7162374 5.0217558,6.799183 4.8919366,6.8821286 4.7899136,7.007791 4.7354069,7.1518813 c -0.054507,0.1440904 -0.061197,0.3058154 -0.018779,0.4539155 0.033764,0.1178827 0.098178,0.2268445 0.1851841,0.3132524 0.087006,0.086408 0.1964089,0.1500698 0.3145215,0.1830203 0.1181127,0.032951 0.2446718,0.035116 0.3638427,0.00623 C 5.6993475,8.0794063 5.810865,8.0195251 5.9007763,7.9361448 5.5743484,8.1304281 5.3462717,8.481591 5.3015117,8.8588147 c -0.026365,0.222195 0.00865,0.4513593 0.1001611,0.6555438 0.091512,0.2041844 0.2392664,0.3828206 0.4226643,0.5110035 0.183398,0.128183 0.4019287,0.205556 0.6251256,0.221332 0.2231968,0.01578 0.4504383,-0.03009 0.6500433,-0.1312 z"
+       id="path3"
+       transform="matrix(1.2726782,0,0,1.2726782,-2.1074777,-1.8186024)"
+       inkscape:original-d="M 7.099506,10.115494 6.9770044,8.7427564 C 7.0221674,9.1943765 7.1406195,10.591485 7.1019503,10.130926 7.0632813,9.6703677 8.0238582,10.00864 8.0238582,10.00864 8.0303482,9.9997 9.3399689,10.37761 9.0093177,10.287602 8.6786665,10.197594 9.9909916,9.4439604 9.9909916,9.4439604 9.9844974,9.4528989 11.222352,8.1125455 11.841279,7.4423688 12.460206,6.7721921 11.000633,5.9302582 11.000633,5.9302582 10.987644,5.9481351 10.825595,4.5421123 10.867731,4.8913834 10.909867,5.2406545 6.955727,5.0126612 6.955727,5.0126612 6.9776538,5.0012785 4.6922343,5.8536662 5.25912,5.6373222 5.8260056,5.4209782 5.8819159,6.8612582 5.8819159,6.8612582 5.8656446,6.8084662 5.0675784,7.1209836 4.7166283,7.6057968 4.3656781,8.0906099 5.9007763,7.9361448 5.9007763,7.9361448 5.8657173,7.8913594 5.104341,9.1650299 5.3015117,8.8588147 5.4986825,8.5525995 6.4228363,8.7754835 7.099506,10.115494 Z"
+       inkscape:path-effect="#path-effect3"
+       inkscape:label="marshmallow" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.000713685;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="m 8.9383547,1.9454626 c -0.044717,-0.00242 -0.082073,-0.00516 -0.083009,-0.00609 -9.414e-4,-9.395e-4 0.013939,-0.052486 0.033064,-0.1145497 0.019126,-0.062063 0.03592,-0.1116889 0.037324,-0.1102785 0.00255,0.00259 0.1043385,0.2133521 0.1102148,0.2282673 0.00283,0.0072 0.00217,0.00798 -0.00655,0.00751 -0.00534,-2.769e-4 -0.046312,-0.00246 -0.091031,-0.00488 z"
+       id="path24"
+       inkscape:label="ear-blank-1" />
+    <path
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.000713685;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       d="m 12.115625,3.3873108 c -0.02248,-0.043623 -0.03845,-0.078616 -0.03647,-0.079883 0.0044,-0.00251 0.21823,-0.051774 0.223006,-0.051248 0.0018,1.859e-4 -0.02501,0.040913 -0.05933,0.090505 -0.03432,0.049592 -0.06687,0.097378 -0.07232,0.1061898 -0.0051,0.00882 -0.01104,0.015131 -0.01239,0.014042 -0.0015,-0.0011 -0.02047,-0.036913 -0.04249,-0.079608 z"
+       id="path25"
+       inkscape:label="ear-blank-2" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-nc-sa/4.0/" />
+        <dc:title>Marsho Icon</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Asankilp</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>Marsho 的可爱icon~</dc:description>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:prohibits
+           rdf:resource="http://creativecommons.org/ns#CommercialUse" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
