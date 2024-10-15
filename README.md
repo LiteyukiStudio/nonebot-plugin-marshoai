@@ -85,7 +85,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 </details>
 
 ## 🤖 获取 token
-- 如果你未获取GitHub Models的早期访问权限，请前往[GitHub Marketplace中的Models分页](https://github.com/marketplace/models)，点击`Get early access`按钮获取早期访问权限。
+- 如果你未获取GitHub Models的早期访问权限，请前往[GitHub Marketplace中的Models分页](https://github.com/marketplace/models)，点击`Get early access`按钮获取早期访问权限。**进入waitlist阶段后，需要等待数日直到通过申请。** ~~也可以试着白嫖其它人的token~~
 - [新建一个personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
 - 将新建的 token 复制，添加到`MARSHOAI_TOKEN`配置项中。
 ## 🎉 使用
