@@ -128,3 +128,8 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 | MARSHOAI_TEMPERATURE | 否 | 无 | 进行推理时的温度参数 |
 | MARSHOAI_TOP_P | 否 | 无 | 进行推理时的核采样参数 |
 | MARSHOAI_MAX_TOKENS | 否 | 无 | 返回消息的最大 token 数 |
+
+## 🕊️ TODO
+- [ ] 对聊天发起者的认知（认出是谁在问 Marsho）
+- [ ] 上下文通过数据库持久化存储
+- [ ] [Melobot](https://github.com/Meloland/melobot) 实现
