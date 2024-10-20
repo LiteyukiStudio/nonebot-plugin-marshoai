@@ -107,7 +107,8 @@ def suggest_solution(errinfo: str) -> str:
         "tokens_limit_reached": "请求token达到上限。请重置上下文。",
         "content_length_limit": "请求体过大。请重置上下文。",
         "unauthorized": "Azure凭据无效。请联系Bot管理员。",
-        "invalid type: parameter messages.content is of type array but should be of type string.": "聊天请求体包含此模型不支持的数据类型。请重置上下文。"
+        "invalid type: parameter messages.content is of type array but should be of type string.": "聊天请求体包含此模型不支持的数据类型。请重置上下文。",
+        "At most 1 image(s) may be provided in one request.": "此模型只能在上下文中包含1张图片。如果此前的聊天已经发送过图片，请重置上下文。"
     }
 
     for key, suggestion in suggestions.items():
