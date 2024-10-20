@@ -165,7 +165,8 @@ async def marsho(
                 context.append(UserMessage(content=usermsg).as_dict(), target.id, target.private)
                 context.append(choice.message.as_dict(), target.id, target.private)
             elif choice["finish_reason"] == CompletionsFinishReason.CONTENT_FILTERED:
-                await UniMessage("*已被内容过滤器过滤。*").send()
+                await UniMessage("*已被内容过滤器过滤。请调整聊天内容后重试。").send(reply_to=True)
+                return
             #await UniMessage(str(choice)).send()
             await UniMessage(str(choice.message.content)).send(reply_to=True)
             #requests_limit = response.headers.get('x-ratelimit-limit-requests')
