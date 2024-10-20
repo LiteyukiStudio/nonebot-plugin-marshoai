@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-marshoai"
-version = "0.2.2"
+version = "0.3"
 description = "Nonebot2插件，调用Azure OpenAI服务实现猫娘聊天"
 readme = "README.md"
 requires-python = "<4.0,>=3.9"

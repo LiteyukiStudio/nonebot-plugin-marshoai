@@ -1,5 +1,5 @@
 from nonebot import on_command
-from nonebot.adapters import Message
+from nonebot.adapters import Message, Event
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot_plugin_alconna import on_alconna, MsgTarget
@@ -13,6 +13,7 @@ from azure.core.credentials import AzureKeyCredential
 from .__init__ import __plugin_meta__
 from .config import config
 from .models import MarshoContext
+from .constants import *
 changemodel_cmd = on_command("changemodel",permission=SUPERUSER)
 resetmem_cmd = on_command("reset")
 #setprompt_cmd = on_command("prompt",permission=SUPERUSER)
@@ -26,6 +27,12 @@ marsho_cmd = on_alconna(
         Alconna(
             "marsho",
             Args["text?",AllParam],
+        )
+    )
+nickname_cmd = on_alconna(
+        Alconna(
+            "nickname",
+            Args["name?",str],
         )
     )
 model_name = config.marshoai_default_model
@@ -76,9 +83,26 @@ async def changemodel(arg : Message = CommandArg()):
         model_name = model
         await changemodel_cmd.finish("已切换")
 
+@nickname_cmd.handle()
+async def nickname(
+        event: Event,
+        name = None
+    ):
+        nicknames = await get_nicknames()
+        user_id = event.get_user_id()
+        if not name:
+            await nickname_cmd.finish("你的昵称为："+str(nicknames[user_id]))
+        if name == "reset":
+            await set_nickname(user_id, "")
+            await nickname_cmd.finish("已重置昵称")
+        else:
+            await set_nickname(user_id, name)
+            await nickname_cmd.finish("已设置昵称为："+name)
+
 @marsho_cmd.handle()
 async def marsho(
         target: MsgTarget,
+        event: Event,
         message: UniMsg,
         text = None
     ):
@@ -92,11 +116,20 @@ async def marsho(
         if not text:
             await UniMessage(
                 __plugin_meta__.usage+"\n当前使用的模型："+model_name).send()
+            await marsho_cmd.finish(INTRODUCTION)
             return
        # await UniMessage(str(text)).send()
         try:
-            is_support_image_model = model_name.lower() in config.marshoai_support_image_models
+            is_support_image_model = model_name.lower() in SUPPORT_IMAGE_MODELS
             usermsg = [] if is_support_image_model else ""
+            user_id = event.get_user_id()
+            nicknames = await get_nicknames()
+            nickname = nicknames.get(user_id, "")
+            if nickname != "":
+                nickname_prompt = f"\n*此消息的说话者:{nickname}*"
+            else:
+                nickname_prompt = ""
+                await UniMessage("*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。").send()
             marsho_string_removed = False
             for i in message:
                 if i.type == "image":
@@ -116,9 +149,9 @@ async def marsho(
                     else:
                         clean_text = i.data["text"]
                     if is_support_image_model:
-                        usermsg.append(TextContentItem(text=clean_text))
+                        usermsg.append(TextContentItem(text=clean_text+nickname_prompt))
                     else:
-                        usermsg += str(clean_text)
+                        usermsg += str(clean_text+nickname_prompt)
             response = await client.complete(
                         messages=context.build(target.id, target.private)+[UserMessage(content=usermsg)],
                         model=model_name,

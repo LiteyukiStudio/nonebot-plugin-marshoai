@@ -66,6 +66,24 @@ async def load_context_from_json(name: str):
             return json.load(json_file)
     except FileNotFoundError:
         return []
+async def set_nickname(user_id: str, name: str):
+    filename = store.get_plugin_data_file("nickname.json")
+    if not os.path.exists(filename):
+        data = {}
+    else:
+        with open(filename,'r') as f:
+            data = json.load(f)
+    data[user_id] = name
+    with open(filename, 'w') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+async def get_nicknames():
+    filename = store.get_plugin_data_file("nickname.json")
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
 
 def get_prompt():
     prompts = ""
@@ -89,7 +107,7 @@ def suggest_solution(errinfo: str) -> str:
         "tokens_limit_reached": "请求token达到上限。请重置上下文。",
         "content_length_limit": "请求体过大。请重置上下文。",
         "unauthorized": "Azure凭据无效。请联系Bot管理员。",
-        "invalid type: parameter messages.content is of type array but should be of type string.": "请重置上下文。"
+        "invalid type: parameter messages.content is of type array but should be of type string.": "聊天请求体包含此模型不支持的数据类型。请重置上下文。"
     }
 
     for key, suggestion in suggestions.items():
