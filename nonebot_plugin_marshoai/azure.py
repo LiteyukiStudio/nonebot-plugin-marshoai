@@ -7,6 +7,7 @@ from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from arclet.alconna import Alconna, Args, AllParam
 from .util import *
 import traceback
+import contextlib
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import UserMessage, AssistantMessage, TextContentItem, ImageContentItem, ImageUrl, CompletionsFinishReason
 from azure.core.credentials import AzureKeyCredential
@@ -37,7 +38,12 @@ nickname_cmd = on_alconna(
     )
 model_name = config.marshoai_default_model
 context = MarshoContext()
-
+token = config.marshoai_token
+endpoint = config.marshoai_azure_endpoint
+client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(token)
+        )
 @add_usermsg_cmd.handle()
 async def add_usermsg(target: MsgTarget, arg: Message = CommandArg()):
     if msg := arg.extract_plain_text():
@@ -106,13 +112,6 @@ async def marsho(
         message: UniMsg,
         text = None
     ):
-        token = config.marshoai_token
-        endpoint = config.marshoai_azure_endpoint
-        #msg = await UniMessage.generate(message=message)
-        client = ChatCompletionsClient(
-              endpoint=endpoint,
-              credential=AzureKeyCredential(token),
-            )
         if not text:
             await UniMessage(
                 __plugin_meta__.usage+"\n当前使用的模型："+model_name).send()
@@ -152,13 +151,10 @@ async def marsho(
                         usermsg.append(TextContentItem(text=clean_text+nickname_prompt))
                     else:
                         usermsg += str(clean_text+nickname_prompt)
-            response = await client.complete(
-                        messages=context.build(target.id, target.private)+[UserMessage(content=usermsg)],
-                        model=model_name,
-                        temperature=config.marshoai_temperature,
-                        max_tokens=config.marshoai_max_tokens,
-                        top_p=config.marshoai_top_p
-                  )
+            response = await make_chat(
+                    client=client,
+                    model_name=model_name,
+                    msg=context.build(target.id, target.private)+[UserMessage(content=usermsg)])
             #await UniMessage(str(response)).send()
             choice = response.choices[0]
             if choice["finish_reason"] == CompletionsFinishReason.STOPPED: # 当对话成功时，将dict的上下文添加到上下文类中
@@ -180,3 +176,30 @@ async def marsho(
            # await UniMessage(str(e.reason)).send()
             traceback.print_exc()
             return
+
+with contextlib.suppress(ImportError): #优化先不做（）
+    import nonebot.adapters.onebot.v11
+    from .azure_onebot import poke_notify
+    @poke_notify.handle()
+    async def poke(
+            event: Event,
+            target: MsgTarget
+        ):
+
+            user_id = event.get_user_id()
+            nicknames = await get_nicknames()
+            nickname = nicknames.get(user_id, "")
+            try:
+                if config.marshoai_poke_suffix != "":
+                    response = await make_chat(
+                            client=client,
+                            model_name=model_name,
+                            msg=[get_prompt(),UserMessage(content=f"*{nickname}{config.marshoai_poke_suffix}")]
+                        )
+                    choice = response.choices[0]
+                    if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
+                        await UniMessage(" "+str(choice.message.content)).send(at_sender=True)
+            except Exception as e:
+                await UniMessage(str(e)+suggest_solution(str(e))).send()
+                traceback.print_exc()
+                return
