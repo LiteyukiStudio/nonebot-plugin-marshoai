@@ -25,7 +25,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
 *谁不喜欢回复消息快又可爱的猫娘呢？*  
 **※对 Azure AI Studio等的支持待定。对 OneBot 以外的适配器支持未经过完全验证。**
-
+[Melobot 实现(施工中)](https://github.com/LiteyukiStudio/marshoai-melo)
 ## 🐱 设定
 #### 基本信息
 

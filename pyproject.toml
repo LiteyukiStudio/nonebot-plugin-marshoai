@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-marshoai"
-version = "0.3.2"
+dynamic = ["version"]
 description = "Nonebot2插件，调用Azure OpenAI服务实现猫娘聊天"
 readme = "README.md"
 requires-python = "<4.0,>=3.9"
@@ -22,15 +22,13 @@ Homepage = "https://github.com/LiteyukiStudio/nonebot-plugin-marshoai"
 
 [tool.nonebot]
 plugins = ["nonebot_plugin_marshoai"]
-adapters = [{name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11"}]
-
 
 [tool.pdm]
 distribution = true
 
 [tool.pdm.version]
 source = "file"
-path = "nonebot_plugin_marshoai/__init__.py"
+path = "nonebot_plugin_marshoai/constants.py"
 
 [tool.pdm.build]
 includes = []

@@ -1,4 +1,4 @@
-from nonebot import on_type, message
+from nonebot import on_type
 from nonebot.rule import to_me
 from nonebot.adapters.onebot.v11 import PokeNotifyEvent
 poke_notify = on_type(

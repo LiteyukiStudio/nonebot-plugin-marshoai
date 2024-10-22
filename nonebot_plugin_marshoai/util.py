@@ -6,9 +6,8 @@ import httpx
 import nonebot_plugin_localstore as store
 from datetime import datetime
 from zhDateTime import DateTime
-from pathlib import Path
 from azure.ai.inference.aio import ChatCompletionsClient
-from azure.ai.inference.models import SystemMessage, UserMessage
+from azure.ai.inference.models import SystemMessage
 from .config import config
 async def get_image_b64(url):
     headers = {
@@ -80,10 +79,10 @@ async def set_nickname(user_id: str, name: str):
     if not os.path.exists(filename):
         data = {}
     else:
-        with open(filename,'r') as f:
+        with open(filename,'r', encoding='utf-8') as f:
             data = json.load(f)
     data[user_id] = name
-    with open(filename, 'w') as f:
+    with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 async def get_nicknames():

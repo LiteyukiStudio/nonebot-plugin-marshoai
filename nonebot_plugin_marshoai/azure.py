@@ -163,17 +163,9 @@ async def marsho(
             elif choice["finish_reason"] == CompletionsFinishReason.CONTENT_FILTERED:
                 await UniMessage("*已被内容过滤器过滤。请调整聊天内容后重试。").send(reply_to=True)
                 return
-            #await UniMessage(str(choice)).send()
             await UniMessage(str(choice.message.content)).send(reply_to=True)
-            #requests_limit = response.headers.get('x-ratelimit-limit-requests')
-             #request_id = response.headers.get('x-request-id')
-             #remaining_requests = response.headers.get('x-ratelimit-remaining-requests')
-             #remaining_tokens = response.headers.get('x-ratelimit-remaining-tokens')
-             #await UniMessage(f"""  剩余token：{remaining_tokens}"""
-               #      ).send()
         except Exception as e:
             await UniMessage(str(e)+suggest_solution(str(e))).send()
-           # await UniMessage(str(e.reason)).send()
             traceback.print_exc()
             return
 
