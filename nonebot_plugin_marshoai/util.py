@@ -30,13 +30,13 @@ async def get_image_b64(url):
             return None
 
 async def make_chat(client: ChatCompletionsClient, msg, model_name: str):
-   return await client.complete(
-           messages=msg,
-           model=model_name,
-           temperature=config.marshoai_temperature,
-           max_tokens=config.marshoai_max_tokens,
-           top_p=config.marshoai_top_p
-                )
+    return await client.complete(
+        messages=msg,
+        model=model_name,
+        temperature=config.marshoai_temperature,
+        max_tokens=config.marshoai_max_tokens,
+        top_p=config.marshoai_top_p
+    )
 def get_praises():
     praises_file = store.get_plugin_data_file("praises.json") # 夸赞名单文件使用localstore存储
     if not os.path.exists(praises_file):

@@ -11,6 +11,7 @@ import contextlib
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import UserMessage, AssistantMessage, TextContentItem, ImageContentItem, ImageUrl, CompletionsFinishReason
 from azure.core.credentials import AzureKeyCredential
+from typing import Optional
 from .__init__ import __plugin_meta__
 from .config import config
 from .models import MarshoContext
@@ -109,15 +110,14 @@ async def nickname(
 async def marsho(
         target: MsgTarget,
         event: Event,
-        message: UniMsg,
-        text = None
+        text: Optional[UniMsg] = None
     ):
         if not text:
             await UniMessage(
                 __plugin_meta__.usage+"\n当前使用的模型："+model_name).send()
             await marsho_cmd.finish(INTRODUCTION)
             return
-       # await UniMessage(str(text)).send()
+
         try:
             is_support_image_model = model_name.lower() in SUPPORT_IMAGE_MODELS
             usermsg = [] if is_support_image_model else ""
@@ -129,8 +129,7 @@ async def marsho(
             else:
                 nickname_prompt = ""
                 await UniMessage("*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。").send()
-            marsho_string_removed = False
-            for i in message:
+            for i in text:
                 if i.type == "image":
                     if is_support_image_model:
                         imgurl = i.data["url"]
@@ -141,12 +140,7 @@ async def marsho(
                     else:
                         await UniMessage("*此模型不支持图片处理。").send()
                 elif i.type == "text":
-                    if not marsho_string_removed:
-                        # 去掉最前面的"marsho "字符串
-                        clean_text = i.data["text"].lstrip("marsho ")
-                        marsho_string_removed = True  # 标记文本已处理
-                    else:
-                        clean_text = i.data["text"]
+                    clean_text = i.data["text"]
                     if is_support_image_model:
                         usermsg.append(TextContentItem(text=clean_text+nickname_prompt))
                     else:

@@ -1,4 +1,4 @@
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 USAGE: str = f"""MarshoAI Beta v{__version__} by Asankilp
 用法：
   marsho <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
@@ -21,4 +21,6 @@ INTRODUCTION: str =  """你好喵~我是一只可爱的猫娘AI，名叫小棉~�
 https://github.com/LiteyukiStudio/nonebot-plugin-marshoai
 
 也可以关注一下还在成长中的 Melobot 酱喵~↓↓↓
-https://github.com/Meloland/melobot"""
+https://github.com/Meloland/melobot
+我与 Melobot 酱贴贴的代码在这里喵~↓↓↓
+https://github.com/LiteyukiStudio/marshoai-melo"""
