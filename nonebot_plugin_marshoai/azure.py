@@ -59,11 +59,11 @@ async def add_assistantmsg(target: MsgTarget, arg: Message = CommandArg()):
 
 @praises_cmd.handle()
 async def praises():
-    await UniMessage(build_praises()).send()
+    await praises_cmd.finish(build_praises())
 
 @contexts_cmd.handle()
 async def contexts(target: MsgTarget):
-    await UniMessage(str(context.build(target.id, target.private)[1:])).send()
+    await contexts_cmd.finish(str(context.build(target.id, target.private)[1:]))
 
 @save_context_cmd.handle()
 async def save_context(target: MsgTarget, arg: Message = CommandArg()):
