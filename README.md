@@ -25,7 +25,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
 *谁不喜欢回复消息快又可爱的猫娘呢？*  
 **※对 Azure AI Studio等的支持待定。对 OneBot 以外的适配器支持未经过完全验证。**
-[Melobot 实现(施工中)](https://github.com/LiteyukiStudio/marshoai-melo)
+[Melobot 实现](https://github.com/LiteyukiStudio/marshoai-melo)
 ## 🐱 设定
 #### 基本信息
 
@@ -133,7 +133,10 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 | MARSHOAI_TOP_P | 否 | 无 | 进行推理时的核采样参数 |
 | MARSHOAI_MAX_TOKENS | 否 | 无 | 返回消息的最大 token 数 |
 
+## ❤ 鸣谢&版权说明
+"Marsho" logo 由 [@Asankilp](https://github.com/Asankilp) 绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
+
 ## 🕊️ TODO
 - [x] 对聊天发起者的认知（认出是谁在问 Marsho）（初步实现）
 - [ ] 上下文通过数据库持久化存储
-- [ ] [Melobot](https://github.com/Meloland/melobot) 实现（施工中）
+- [x] [Melobot](https://github.com/Meloland/melobot) 实现
