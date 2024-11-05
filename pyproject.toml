@@ -22,9 +22,10 @@ Homepage = "https://github.com/LiteyukiStudio/nonebot-plugin-marshoai"
 
 [tool.nonebot]
 plugins = ["nonebot_plugin_marshoai"]
-# adapters = [
-#     { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" },
-# ] 测试用
+# 测试用
+adapters = [
+    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" },
+]
 
 [tool.pdm]
 distribution = true
