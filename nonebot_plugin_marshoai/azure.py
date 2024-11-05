@@ -46,7 +46,7 @@ nickname_cmd = on_alconna(
     Alconna(
         "nickname",
         Args["name?", str],
-    )
+        )
 )
 model_name = config.marshoai_default_model
 context = MarshoContext()
@@ -147,21 +147,30 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                     "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
                 ).send()
 
-        usermsg: list[ContentItem] = []
+        is_support_image_model = model_name.lower() in SUPPORT_IMAGE_MODELS
+        is_reasoning_model = model_name.lower() in REASONING_MODELS
+        usermsg = [] if is_support_image_model else ""
         for i in text:
             if i.type == "text":
-                usermsg += [TextContentItem(text=i.data["text"] + nickname_prompt)]
-            elif i.type == "image" and model_name.lower() in SUPPORT_IMAGE_MODELS:
-                usermsg.append(
-                    ImageContentItem(
-                        image_url=ImageUrl(url=str(await get_image_b64(i.data["url"])))
+                if is_support_image_model:
+                    usermsg += [TextContentItem(text=i.data["text"] + nickname_prompt)]
+                else:
+                    usermsg += str(i.data["text"] + nickname_prompt)
+            elif i.type == "image":
+                if is_support_image_model:
+                 usermsg.append(
+                        ImageContentItem(
+                            image_url=ImageUrl(url=str(await get_image_b64(i.data["url"])))
+                        )
                     )
-                )
-
+                elif config.marshoai_enable_support_image_tip:
+                    await UniMessage("*此模型不支持图片处理。").send()
+        context_msg = context.build(target.id, target.private)
+        if is_reasoning_model: context_msg = context_msg[1:] #o1等推理模型不支持系统提示词，故截断
         response = await make_chat(
             client=client,
             model_name=model_name,
-            msg=context.build(target.id, target.private)
+            msg=context_msg
             + [UserMessage(content=usermsg)],
         )
         # await UniMessage(str(response)).send()

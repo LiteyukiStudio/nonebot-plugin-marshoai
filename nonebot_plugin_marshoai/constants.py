@@ -1,5 +1,5 @@
-__version__ = "0.3.4.1"
-USAGE: str = f"""MarshoAI-NoneBot Beta v{__version__} by Asankilp
+
+USAGE: str = f"""MarshoAI-NoneBot Beta by Asankilp
 用法：
   marsho <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
   nickname [昵称] : 为自己设定昵称，设置昵称后，Marsho 会根据你的昵称进行回答。使用'nickname reset'命令可清除自己设定的昵称。

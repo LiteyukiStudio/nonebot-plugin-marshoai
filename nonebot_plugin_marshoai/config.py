@@ -16,6 +16,7 @@ class ConfigModel(BaseModel):
     marshoai_additional_prompt: str = ""
     marshoai_poke_suffix: str = "揉了揉你的猫耳"
     marshoai_enable_nickname_tip: bool = True
+    marshoai_enable_support_image_tip: bool = True
     marshoai_enable_praises: bool = True
     marshoai_enable_time_prompt: bool = True
     marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
