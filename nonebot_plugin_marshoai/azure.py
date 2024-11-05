@@ -190,7 +190,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
 
 
 with contextlib.suppress(ImportError):  # 优化先不做（）
-    import nonebot.adapters.onebot.v11
+    import nonebot.adapters.onebot.v11  # type: ignore
     from .azure_onebot import poke_notify
 
     @poke_notify.handle()
