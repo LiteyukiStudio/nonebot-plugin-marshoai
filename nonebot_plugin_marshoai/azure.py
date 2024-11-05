@@ -12,14 +12,16 @@ from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import (
     UserMessage,
     AssistantMessage,
+    ContentItem,
     TextContentItem,
     ImageContentItem,
     ImageUrl,
     CompletionsFinishReason,
 )
 from azure.core.credentials import AzureKeyCredential
-from typing import Optional
-from .__init__ import __plugin_meta__
+from typing import Any, Optional
+
+from .metadata import metadata
 from .config import config
 from .models import MarshoContext
 from .constants import *
@@ -126,15 +128,12 @@ async def nickname(event: Event, name=None):
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
     if not text:
-        await UniMessage(
-            __plugin_meta__.usage + "\n当前使用的模型：" + model_name
-        ).send()
+        await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
         await marsho_cmd.finish(INTRODUCTION)
         return
 
     try:
-        is_support_image_model = model_name.lower() in SUPPORT_IMAGE_MODELS
-        usermsg = [] if is_support_image_model else ""
+
         user_id = event.get_user_id()
         nicknames = await get_nicknames()
         nickname = nicknames.get(user_id, "")
@@ -146,22 +145,18 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 await UniMessage(
                     "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
                 ).send()
+
+        usermsg: list[ContentItem] = []
         for i in text:
-            if i.type == "image":
-                if is_support_image_model:
-                    imgurl = i.data["url"]
-                    picmsg = ImageContentItem(
-                        image_url=ImageUrl(url=str(await get_image_b64(imgurl)))
+            if i.type == "text":
+                usermsg += [TextContentItem(text=i.data["text"] + nickname_prompt)]
+            elif i.type == "image" and model_name.lower() in SUPPORT_IMAGE_MODELS:
+                usermsg.append(
+                    ImageContentItem(
+                        image_url=ImageUrl(url=str(await get_image_b64(i.data["url"])))
                     )
-                    usermsg.append(picmsg)
-                else:
-                    await UniMessage("*此模型不支持图片处理。").send()
-            elif i.type == "text":
-                clean_text = i.data["text"]
-                if is_support_image_model:
-                    usermsg.append(TextContentItem(text=clean_text + nickname_prompt))
-                else:
-                    usermsg += str(clean_text + nickname_prompt)
+                )
+
         response = await make_chat(
             client=client,
             model_name=model_name,
