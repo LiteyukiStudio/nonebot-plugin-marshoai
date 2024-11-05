@@ -32,6 +32,11 @@ path = "nonebot_plugin_marshoai/constants.py"
 
 [tool.pdm.build]
 includes = []
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "nb-cli>=1.4.2",
+]
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
