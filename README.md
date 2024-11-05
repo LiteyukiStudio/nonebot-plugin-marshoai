@@ -126,6 +126,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 | MARSHOAI_PROMPT | 否 | 猫娘 Marsho 人设提示词 | Marsho 的基本系统提示词 |
 | MARSHOAI_ADDITIONAL_PROMPT | 否 | 无 | Marsho 的扩展系统提示词 |
 | MARSHOAI_POKE_SUFFIX | 否 | `揉了揉你的猫耳` | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳`。 |
+| MARSHOAI_ENABLE_NICKNAME_TIP | 否 | `true` | 启用后用户未设置昵称时提示用户设置 |
 | MARSHOAI_ENABLE_PRAISES | 否 | `true` | 是否启用夸赞名单功能 |
 | MARSHOAI_ENABLE_TIME_PROMPT | 否 | `true` | 是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词 |
 | MARSHOAI_AZURE_ENDPOINT | 否 | `https://models.inference.ai.azure.com` | 调用 Azure OpenAI 服务的 API 终结点 |
