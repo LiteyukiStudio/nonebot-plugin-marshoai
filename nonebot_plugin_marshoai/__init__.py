@@ -1,23 +1,15 @@
 from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
+
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 from .azure import *
 from nonebot import get_driver, logger
-from .config import ConfigModel, config
-from .constants import USAGE
+from .config import config
+from .metadata import metadata
 import nonebot_plugin_localstore as store
 
 __author__ = "Asankilp"
-__plugin_meta__ = PluginMetadata(
-    name="Marsho AI插件",
-    description="接入Azure服务的AI聊天插件",
-    usage=USAGE,
-    type="application",
-    config=ConfigModel,
-    homepage="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai",
-    supported_adapters=inherit_supported_adapters("nonebot_plugin_alconna"),
-    extra={"License":"MIT","Author":"Asankilp"}
-)
+__plugin_meta__ = metadata
 driver = get_driver()
 
 
