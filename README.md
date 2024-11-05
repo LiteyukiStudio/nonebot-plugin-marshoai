@@ -90,7 +90,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 - 将新建的 token 复制，添加到`MARSHOAI_TOKEN`配置项中。
 ## 🎉 使用
 
-发送`marsho`指令可以获取使用说明
+发送`marsho`指令可以获取使用说明(若在配置中自定义了指令前缀请使用自定义的指令前缀)。
 
 #### 👉 戳一戳
 当 nonebot 连接到支持的 OneBot v11 实现端时，可以接收头像双击戳一戳消息并进行响应。详见`MARSHOAI_POKE_SUFFIX`配置项。
@@ -122,6 +122,8 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 |      配置项       | 必填 | 默认值 |                             说明                             |
 | :---------------: | :--: | :----: | :----------------------------------------------------------: |
 | MARSHOAI_TOKEN |  是  |   无    | 调用 API 必需的访问 token |
+| MARSHOAI_DEFAULT_NAME | 否 | `marsho` | 调用 marsho 默认的命令前缀 |
+| MARSHOAI_ALIASES | 否 | `set{"小绵"}` | 调用 marsho 的命令别名 |
 | MARSHOAI_DEFAULT_MODEL | 否 | `gpt-4o-mini` | Marsho 默认调用的模型 |
 | MARSHOAI_PROMPT | 否 | 猫娘 Marsho 人设提示词 | Marsho 的基本系统提示词 |
 | MARSHOAI_ADDITIONAL_PROMPT | 否 | 无 | Marsho 的扩展系统提示词 |

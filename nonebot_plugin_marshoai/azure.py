@@ -37,9 +37,10 @@ save_context_cmd = on_command("savecontext", permission=SUPERUSER)
 load_context_cmd = on_command("loadcontext", permission=SUPERUSER)
 marsho_cmd = on_alconna(
     Alconna(
-        "marsho",
+        config.marshoai_default_name,
         Args["text?", AllParam],
-    )
+    ),
+    aliases=config.marshoai_aliases,
 )
 nickname_cmd = on_alconna(
     Alconna(
