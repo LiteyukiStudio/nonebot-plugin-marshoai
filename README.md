@@ -122,10 +122,10 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 |      配置项       | 必填 | 默认值 |                             说明                             |
 | :---------------: | :--: | :----: | :----------------------------------------------------------: |
 | MARSHOAI_TOKEN |  是  |   无    | 调用 API 必需的访问 token |
-| MARSHOAI_DEFAULT_NAME | 否 | `marsho` | 调用 marsho 默认的命令前缀 |
-| MARSHOAI_ALIASES | 否 | `set{"小绵"}` | 调用 marsho 的命令别名 |
+| MARSHOAI_DEFAULT_NAME | 否 | `marsho` | 调用 Marsho 默认的命令前缀 |
+| MARSHOAI_ALIASES | 否 | `set{"小棉"}` | 调用 Marsho 的命令别名 |
 | MARSHOAI_DEFAULT_MODEL | 否 | `gpt-4o-mini` | Marsho 默认调用的模型 |
-| MARSHOAI_PROMPT | 否 | 猫娘 Marsho 人设提示词 | Marsho 的基本系统提示词 **推理模型(o1等)不支持系统提示词。** |
+| MARSHOAI_PROMPT | 否 | 猫娘 Marsho 人设提示词 | Marsho 的基本系统提示词 **※部分推理模型(o1等)不支持系统提示词。** |
 | MARSHOAI_ADDITIONAL_PROMPT | 否 | 无 | Marsho 的扩展系统提示词 |
 | MARSHOAI_POKE_SUFFIX | 否 | `揉了揉你的猫耳` | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳`。 |
 | MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | 否 | `true` | 启用后用户发送带图请求时若模型不支持图片，则提示用户 |
@@ -142,5 +142,6 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 ## 🕊️ TODO
 - [x] 对聊天发起者的认知（认出是谁在问 Marsho）（初步实现）
+- [ ] 自定义 API 接入点（不局限于Azure）
 - [ ] 上下文通过数据库持久化存储
 - [x] [Melobot](https://github.com/Meloland/melobot) 实现
