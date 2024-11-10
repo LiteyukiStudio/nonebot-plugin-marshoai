@@ -85,9 +85,8 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 </details>
 
 ## 🤖 获取 token
-- 如果你未获取GitHub Models的早期访问权限，请前往[GitHub Marketplace中的Models分页](https://github.com/marketplace/models)，点击`Get early access`按钮获取早期访问权限。**进入waitlist阶段后，需要等待数日直到通过申请。** ~~也可以试着白嫖其它人的token~~
-- [新建一个personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
-- 将新建的 token 复制，添加到`MARSHOAI_TOKEN`配置项中。
+- 新建一个[personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
+- 将新建的 token 复制，添加到`config.py`文件中的`MARSHOAI_TOKEN`配置项中。
 ## 🎉 使用
 
 发送`marsho`指令可以获取使用说明(若在配置中自定义了指令前缀请使用自定义的指令前缀)。
@@ -120,7 +119,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 在 nonebot2 项目的`.env`文件中添加下表中的配置
 
 |      配置项       | 必填 | 默认值 |                             说明                             |
-| :---------------: | :--: | :----: | :----------------------------------------------------------: |
+| :---------------: | :--: |:------:| :----------------------------------------------------------: |
 | MARSHOAI_TOKEN |  是  |   无    | 调用 API 必需的访问 token |
 | MARSHOAI_DEFAULT_NAME | 否 | `marsho` | 调用 Marsho 默认的命令前缀 |
 | MARSHOAI_ALIASES | 否 | `set{"小棉"}` | 调用 Marsho 的命令别名 |
@@ -138,10 +137,12 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 | MARSHOAI_MAX_TOKENS | 否 | 无 | 返回消息的最大 token 数 |
 
 ## ❤ 鸣谢&版权说明
-"Marsho" logo 由 [@Asankilp](https://github.com/Asankilp) 绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
+"Marsho" logo 由 [@Asankilp](https://github.com/Asankilp) 绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。
+"nonebot-plugin-marshoai" 基于 [MIT](https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/blob/main/LICENSE) 许可下提供。
 
 ## 🕊️ TODO
+- [x] [Melobot](https://github.com/Meloland/melobot) 实现
 - [x] 对聊天发起者的认知（认出是谁在问 Marsho）（初步实现）
 - [ ] 自定义 API 接入点（不局限于Azure）
 - [ ] 上下文通过数据库持久化存储
-- [x] [Melobot](https://github.com/Meloland/melobot) 实现
+
