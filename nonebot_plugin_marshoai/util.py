@@ -7,7 +7,7 @@ import httpx
 import nonebot_plugin_localstore as store
 from datetime import datetime
 
-from cashews.backends.redis.client_side import logger
+from nonebot.log import logger
 from zhDateTime import DateTime  # type: ignore
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
@@ -110,6 +110,7 @@ async def set_nickname(user_id: str, name: str):
 
 
 async def get_nicknames():
+    '''获取nickname_json, 优先来源于全局变量'''
     global nickname_json
     if nickname_json is None:
         filename = store.get_plugin_data_file("nickname.json")
@@ -119,6 +120,16 @@ async def get_nicknames():
         except Exception:
             nickname_json = {}
     return nickname_json
+
+async def refresh_nickname_json():
+    '''强制刷新nickname_json, 刷新全局变量'''
+    global nickname_json
+    filename = store.get_plugin_data_file("nickname.json")
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            nickname_json = json.load(f)
+    except Exception:
+        logger.error("Error loading nickname.json")
 
 
 def get_prompt():

@@ -48,6 +48,7 @@ nickname_cmd = on_alconna(
         Args["name?", str],
         )
 )
+refresh_data = on_alconna("refresh_data", permission=SUPERUSER)
 model_name = config.marshoai_default_model
 context = MarshoContext()
 token = config.marshoai_token
@@ -127,6 +128,10 @@ async def nickname(event: Event, name=None):
         await set_nickname(user_id, name)
         await nickname_cmd.finish("已设置昵称为：" + name)
 
+@refresh_data.handle()
+async def refresh_data():
+    await refresh_nickname_json()
+    await refresh_data.finish("已刷新数据")
 
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
