@@ -86,7 +86,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 ## 🤖 获取 token
 - 新建一个[personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
-- 将新建的 token 复制，添加到`config.py`文件中的`MARSHOAI_TOKEN`配置项中。
+- 将新建的 token 复制，添加到`.env`文件中的`marshoai_token`配置项中。
 ## 🎉 使用
 
 发送`marsho`指令可以获取使用说明(若在配置中自定义了指令前缀请使用自定义的指令前缀)。
@@ -114,7 +114,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 }
 ```
 
-## ⚙️ 配置
+## ⚙️ 可配置项
 
 在 nonebot2 项目的`.env`文件中添加下表中的配置
 
@@ -138,7 +138,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 ## ❤ 鸣谢&版权说明
 "Marsho" logo 由 [@Asankilp](https://github.com/Asankilp) 绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。
-"nonebot-plugin-marshoai" 基于 [MIT](https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/blob/main/LICENSE) 许可下提供。
+"nonebot-plugin-marshoai" 基于 [MIT](./LICENSE) 许可下提供。
 
 ## 🕊️ TODO
 - [x] [Melobot](https://github.com/Meloland/melobot) 实现

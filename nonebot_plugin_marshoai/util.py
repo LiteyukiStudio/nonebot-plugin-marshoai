@@ -6,11 +6,14 @@ from typing import Any
 import httpx
 import nonebot_plugin_localstore as store
 from datetime import datetime
+
+from cashews.backends.redis.client_side import logger
 from zhDateTime import DateTime  # type: ignore
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
 from .config import config
 
+nickname_json = None
 
 async def get_image_b64(url):
     headers = {
@@ -91,6 +94,7 @@ async def load_context_from_json(name: str):
 
 
 async def set_nickname(user_id: str, name: str):
+    global nickname_json
     filename = store.get_plugin_data_file("nickname.json")
     if not os.path.exists(filename):
         data = {}
@@ -98,17 +102,23 @@ async def set_nickname(user_id: str, name: str):
         with open(filename, "r", encoding="utf-8") as f:
             data = json.load(f)
     data[user_id] = name
+    if name == "" and user_id in data:
+        del data[user_id]
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
+    nickname_json = data
 
 
 async def get_nicknames():
-    filename = store.get_plugin_data_file("nickname.json")
-    try:
-        with open(filename, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {}
+    global nickname_json
+    if nickname_json is None:
+        filename = store.get_plugin_data_file("nickname.json")
+        try:
+            with open(filename, "r", encoding="utf-8") as f:
+                nickname_json =  json.load(f)
+        except Exception:
+            nickname_json = {}
+    return nickname_json
 
 
 def get_prompt():

@@ -117,6 +117,8 @@ async def nickname(event: Event, name=None):
     nicknames = await get_nicknames()
     user_id = event.get_user_id()
     if not name:
+        if user_id not in nicknames:
+            await nickname_cmd.finish("你未设置昵称")
         await nickname_cmd.finish("你的昵称为：" + str(nicknames[user_id]))
     if name == "reset":
         await set_nickname(user_id, "")
@@ -142,6 +144,8 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
             nickname_prompt = f"\n*此消息的说话者:{nickname}*"
         else:
             nickname_prompt = ""
+            #user_nickname = event.sender.nickname
+            #nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
             if config.marshoai_enable_nickname_tip:
                 await UniMessage(
                     "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
