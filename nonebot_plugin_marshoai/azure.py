@@ -19,7 +19,6 @@ from nonebot.permission import SUPERUSER
 from nonebot_plugin_alconna import on_alconna, MsgTarget
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from nonebot import get_driver
-from nonebot_plugin_waiter import prompt
 
 from .constants import *
 from .metadata import metadata
@@ -184,9 +183,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         if not context_msg and target.id not in loaded_target_list:
             context_msg = list(await load_context_from_json(f"back_up_context_{target.id}", "contexts/backup"))
             loaded_target_list.append(target.id)
-        msg_prompt = get_prompt()
-        context_msg = [msg_prompt] + context_msg
-        print(str(context_msg))
+        context_msg = [get_prompt()] + context_msg
         target_list.append([target.id, target.private])
         if is_reasoning_model:
             context_msg = context_msg[1:]
