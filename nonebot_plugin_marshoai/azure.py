@@ -187,11 +187,10 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 channel_id = "group_" + target.id
             context_msg = list(await load_context_from_json(f"back_up_context_{channel_id}", "contexts/backup"))
             loaded_target_list.append(target.id)
-        context_msg = [get_prompt()] + context_msg
         target_list.append([target.id, target.private])
-        if is_reasoning_model:
-            context_msg = context_msg[1:]
-            # o1等推理模型不支持系统提示词，故截断
+        if not is_reasoning_model:
+            context_msg = [get_prompt()] + context_msg
+            # o1等推理模型不支持系统提示词
         response = await make_chat(
             client=client,
             model_name=model_name,
