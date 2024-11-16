@@ -49,7 +49,7 @@ nickname_cmd = on_alconna(
         Args["name?", str],
     )
 )
-refresh_data_cmd = on_alconna("refresh_data", permission=SUPERUSER)
+refresh_data_cmd = on_command("refresh_data", permission=SUPERUSER)
 
 model_name = config.marshoai_default_model
 context = MarshoContext()
@@ -181,7 +181,11 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                     await UniMessage("*此模型不支持图片处理。").send()
         context_msg = context.build(target.id, target.private)
         if not context_msg and target.id not in loaded_target_list:
-            context_msg = list(await load_context_from_json(f"back_up_context_{target.id}", "contexts/backup"))
+            if target.private:
+                channel_id = "private_" + target.id
+            else:
+                channel_id = "group_" + target.id
+            context_msg = list(await load_context_from_json(f"back_up_context_{channel_id}", "contexts/backup"))
             loaded_target_list.append(target.id)
         context_msg = [get_prompt()] + context_msg
         target_list.append([target.id, target.private])
@@ -253,4 +257,8 @@ async def save_context():
     for target_info in target_list:
         target_id, target_private = target_info
         contexts_data = context.build(target_id, target_private)[1:]
-        await save_context_to_json(f"back_up_context_{target_id}", contexts_data, "contexts/backup")
+        if target_private:
+            channel_id = "private_" + target_id
+        else:
+            channel_id = "group_" + target_id
+        await save_context_to_json(f"back_up_context_{channel_id}", contexts_data, "contexts/backup")
