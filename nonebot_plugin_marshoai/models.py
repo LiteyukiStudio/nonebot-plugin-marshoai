@@ -36,7 +36,8 @@ class MarshoContext:
         重置上下文
         """
         target_dict = self._get_target_dict(is_private)
-        target_dict[target_id].clear()
+        if target_id in target_dict:
+            target_dict[target_id].clear()
 
     def build(self, target_id: str, is_private: bool) -> list:
         """
