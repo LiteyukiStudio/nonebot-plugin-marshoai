@@ -83,7 +83,7 @@ async def praises():
 
 @contexts_cmd.handle()
 async def contexts(target: MsgTarget):
-    await contexts_cmd.finish(str(context.build(target.id, target.private)[1:]))
+    await contexts_cmd.finish(str(context.build(target.id, target.private)))
 
 
 @save_context_cmd.handle()
