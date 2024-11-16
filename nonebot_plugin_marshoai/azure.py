@@ -88,7 +88,7 @@ async def contexts(target: MsgTarget):
 
 @save_context_cmd.handle()
 async def save_context(target: MsgTarget, arg: Message = CommandArg()):
-    contexts_data = context.build(target.id, target.private)[1:]
+    contexts_data = context.build(target.id, target.private)
     if msg := arg.extract_plain_text():
         await save_context_to_json(msg, contexts_data, "contexts")
         await save_context_cmd.finish("已保存上下文")
@@ -256,7 +256,7 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
 async def save_context():
     for target_info in target_list:
         target_id, target_private = target_info
-        contexts_data = context.build(target_id, target_private)[1:]
+        contexts_data = context.build(target_id, target_private)
         if target_private:
             channel_id = "private_" + target_id
         else:
