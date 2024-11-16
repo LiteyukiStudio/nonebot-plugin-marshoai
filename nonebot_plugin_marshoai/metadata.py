@@ -1,5 +1,6 @@
 from nonebot.plugin import PluginMetadata, inherit_supported_adapters
-from .config import ConfigModel, config
+
+from .config import ConfigModel
 from .constants import USAGE
 
 metadata = PluginMetadata(
