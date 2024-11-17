@@ -82,9 +82,9 @@ async def praises():
 
 @contexts_cmd.handle()
 async def contexts(target: MsgTarget):
-    context.set_context(
-        await get_backup_context(target.id, target.private), target.id, target.private
-    )  # 加载历史记录
+    backup_context = await get_backup_context(target.id, target.private)
+    if not backup_context:
+        context.set_context(backup_context, target.id, target.private)  # 加载历史记录
     await contexts_cmd.finish(str(context.build(target.id, target.private)))
 
 
@@ -183,9 +183,9 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                     )
                 elif config.marshoai_enable_support_image_tip:
                     await UniMessage("*此模型不支持图片处理。").send()
-        context.set_context(
-            await get_backup_context(target.id, target.private), target.id, target.private
-        )  # 加载历史记录
+        backup_context = await get_backup_context(target.id, target.private)
+        if not backup_context:
+            context.set_context(backup_context, target.id, target.private)  # 加载历史记录
         context_msg = context.build(target.id, target.private)
         target_list.append([target.id, target.private])
         if not is_reasoning_model:
