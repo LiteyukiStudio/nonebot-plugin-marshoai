@@ -8,7 +8,7 @@
 
 # nonebot-plugin-marshoai
 
-_✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
+_✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 <a href="./LICENSE">
     <img src="https://img.shields.io/github/license/LiteyukiStudio/nonebot-plugin-marshoai.svg" alt="license">
@@ -22,10 +22,10 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 ## 📖 介绍
 
-通过调用由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API 来实现聊天的插件。  
+通过调用 OpenAI 标准格式 API(例如由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API) 来实现聊天的插件。  
 插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
 *谁不喜欢回复消息快又可爱的猫娘呢？*  
-**※对 Azure AI Studio等的支持待定。对 OneBot 以外的适配器支持未经过完全验证。**
+**对 OneBot 以外的适配器与非 GitHub Models API的支持未经过完全验证。**
 [Melobot 实现](https://github.com/LiteyukiStudio/marshoai-melo)
 
 ## 🐱 设定
@@ -87,7 +87,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 </details>
 
-## 🤖 获取 token
+## 🤖 获取 token(GitHub Models)
 
 - 新建一个[personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
 - 将新建的 token 复制，添加到`.env`文件中的`marshoai_token`配置项中。
@@ -129,7 +129,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 
 |                配置项                | 必填 |                   默认值                   |                                              说明                                               |
 |:---------------------------------:|:--:|:---------------------------------------:|:---------------------------------------------------------------------------------------------:|
-|          MARSHOAI_TOKEN           | 是  |                    无                    |                                      调用 API 必需的访问 token                                       |
+|          MARSHOAI_TOKEN           | 是?  |                    无                    |                                      调用 API 所需的访问 token                                       |
 |       MARSHOAI_DEFAULT_NAME       | 否  |                `marsho`                 |                                       调用 Marsho 默认的命令前缀                                       |
 |         MARSHOAI_ALIASES          | 否  |               `set{"小棉"}`               |                                        调用 Marsho 的命令别名                                        |
 |      MARSHOAI_DEFAULT_MODEL       | 否  |              `gpt-4o-mini`              |                                        Marsho 默认调用的模型                                         |
@@ -140,7 +140,7 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 |   MARSHOAI_ENABLE_NICKNAME_TIP    | 否  |                 `true`                  |                                       启用后用户未设置昵称时提示用户设置                                       |
 |      MARSHOAI_ENABLE_PRAISES      | 否  |                 `true`                  |                                          是否启用夸赞名单功能                                           |
 |    MARSHOAI_ENABLE_TIME_PROMPT    | 否  |                 `true`                  |                                是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词                                 |
-|      MARSHOAI_AZURE_ENDPOINT      | 否  | `https://models.inference.ai.azure.com` |                                  调用 Azure OpenAI 服务的 API 终结点                                  |
+|      MARSHOAI_AZURE_ENDPOINT      | 否  | `https://models.inference.ai.azure.com` |                                  OpenAI 标准格式 API 端点                                  |
 |       MARSHOAI_TEMPERATURE        | 否  |                    无                    |                                          进行推理时的温度参数                                           |
 |          MARSHOAI_TOP_P           | 否  |                    无                    |                                          进行推理时的核采样参数                                          |
 |        MARSHOAI_MAX_TOKENS        | 否  |                    无                    |                                        返回消息的最大 token 数                                        |
@@ -148,13 +148,13 @@ _✨ 使用 Azure OpenAI 推理服务的聊天机器人插件 ✨_
 ## ❤ 鸣谢&版权说明
 
 "Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)
-绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。
+绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
 "nonebot-plugin-marshoai" 基于 [MIT](./LICENSE) 许可下提供。
 
 ## 🕊️ TODO
 
 - [x] [Melobot](https://github.com/Meloland/melobot) 实现
 - [x] 对聊天发起者的认知（认出是谁在问 Marsho）（初步实现）
-- [ ] 自定义 API 接入点（不局限于Azure）
+- [ ] 自定义 API 接入点的适配（不局限于GitHub Models）
 - [ ] 上下文通过数据库持久化存储
 

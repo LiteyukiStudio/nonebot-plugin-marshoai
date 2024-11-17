@@ -12,7 +12,7 @@ from azure.ai.inference.models import (
     CompletionsFinishReason,
 )
 from azure.core.credentials import AzureKeyCredential
-from nonebot import on_command
+from nonebot import on_command, logger
 from nonebot.adapters import Message, Event
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
@@ -56,7 +56,7 @@ context = MarshoContext()
 token = config.marshoai_token
 endpoint = config.marshoai_azure_endpoint
 client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
-target_list = []  # 记录需保存历史记录的列表
+target_list = []  # 记录需保存历史上下文的列表
 
 
 @add_usermsg_cmd.handle()
@@ -101,6 +101,7 @@ async def save_context(target: MsgTarget, arg: Message = CommandArg()):
 @load_context_cmd.handle()
 async def load_context(target: MsgTarget, arg: Message = CommandArg()):
     if msg := arg.extract_plain_text():
+        await get_backup_context(target.id, target.private) # 为了将当前会话添加到"已恢复过备份"的列表而添加，防止上下文被覆盖（好奇怪QwQ
         context.set_context(
             await load_context_from_json(msg, "contexts"), target.id, target.private
         )
@@ -109,6 +110,7 @@ async def load_context(target: MsgTarget, arg: Message = CommandArg()):
 
 @resetmem_cmd.handle()
 async def resetmem(target: MsgTarget):
+    if [target.id, target.private] not in target_list:                                          target_list.append([target.id, target.private])
     context.reset(target.id, target.private)
     await resetmem_cmd.finish("上下文已重置")
 
@@ -158,8 +160,10 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         if nickname != "":
             nickname_prompt = f"\n*此消息的说话者:{user_nickname}*"
         else:
-            user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
-            nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
+            nickname_prompt = ""
+            #用户名无法获取，暂时注释
+            #user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
+            #nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
             if config.marshoai_enable_nickname_tip:
                 await UniMessage(
                     "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
@@ -186,8 +190,8 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         backup_context = await get_backup_context(target.id, target.private)
         if backup_context:
             context.set_context(backup_context, target.id, target.private)  # 加载历史记录
+            logger.info(f"已恢复会话 {target.id} 的上下文备份~")
         context_msg = context.build(target.id, target.private)
-        target_list.append([target.id, target.private])
         if not is_reasoning_model:
             context_msg = [get_prompt()] + context_msg
             # o1等推理模型不支持系统提示词, 故不添加
@@ -205,6 +209,8 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 UserMessage(content=usermsg).as_dict(), target.id, target.private
             )
             context.append(choice.message.as_dict(), target.id, target.private)
+            if [target.id, target.private] not in target_list:
+                target_list.append([target.id, target.private])
         elif choice["finish_reason"] == CompletionsFinishReason.CONTENT_FILTERED:
             await UniMessage("*已被内容过滤器过滤。请调整聊天内容后重试。").send(
                 reply_to=True
@@ -252,7 +258,7 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
 
 
 @driver.on_shutdown
-async def save_context():
+async def auto_backup_context():
     for target_info in target_list:
         target_id, target_private = target_info
         contexts_data = context.build(target_id, target_private)
@@ -261,3 +267,4 @@ async def save_context():
         else:
             target_uid = "group_" + target_id
         await save_context_to_json(f"back_up_context_{target_uid}", contexts_data, "contexts/backup")
+        logger.info(f"已保存会话 {target_id} 的上下文备份，将在下次对话时恢复~")

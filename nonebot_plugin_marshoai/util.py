@@ -14,8 +14,8 @@ from azure.ai.inference.models import SystemMessage
 from .config import config
 
 nickname_json = None  # 记录昵称
-praises_json = None  # 记录赞扬名单
-loaded_target_list = []  # 记录已恢复历史记录的列表
+praises_json = None  # 记录夸赞名单
+loaded_target_list = []  # 记录已恢复备份的上下文的列表
 
 
 async def get_image_b64(url):
@@ -192,7 +192,7 @@ def suggest_solution(errinfo: str) -> str:
         "RateLimitReached": "模型达到调用速率限制。请稍等一段时间或联系Bot管理员。",
         "tokens_limit_reached": "请求token达到上限。请重置上下文。",
         "content_length_limit": "请求体过大。请重置上下文。",
-        "unauthorized": "Azure凭据无效。请联系Bot管理员。",
+        "unauthorized": "访问token无效。请联系Bot管理员。",
         "invalid type: parameter messages.content is of type array but should be of type string.": "聊天请求体包含此模型不支持的数据类型。请重置上下文。",
         "At most 1 image(s) may be provided in one request.": "此模型只能在上下文中包含1张图片。如果此前的聊天已经发送过图片，请重置上下文。",
     }
@@ -205,7 +205,7 @@ def suggest_solution(errinfo: str) -> str:
 
 
 async def get_backup_context(target_id: str, target_private: bool) -> list:
-    """获取历史记录"""
+    """获取历史上下文"""
     global loaded_target_list
     if target_private:
         target_uid = f"private_{target_id}"
