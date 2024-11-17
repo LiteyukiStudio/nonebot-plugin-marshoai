@@ -157,7 +157,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         user_id = event.get_user_id()
         nicknames = await get_nicknames()
         user_nickname = nicknames.get(user_id, "")
-        if nickname != "":
+        if user_nickname != "":
             nickname_prompt = f"\n*此消息的说话者:{user_nickname}*"
         else:
             nickname_prompt = ""
