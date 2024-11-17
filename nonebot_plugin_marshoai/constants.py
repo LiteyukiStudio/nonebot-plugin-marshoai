@@ -12,6 +12,7 @@ USAGE: str = f"""MarshoAI-NoneBot Beta by Asankilp
   assistantmsg <消息> : 往当前会话添加助手消息(AssistantMessage)。
   savecontext <文件名> : 保存当前会话的上下文至插件数据目录下的contexts/<文件名>.json里。
   loadcontext <文件名> : 从插件数据目录下的contexts/<文件名>.json里读取上下文并覆盖到当前会话。
+  refresh_data : 从文件刷新已加载的昵称与夸赞名单。
 ※本AI的回答"按原样"提供，不提供任何担保。AI也会犯错，请仔细甄别回答的准确性。"""
 
 SUPPORT_IMAGE_MODELS: list = ["gpt-4o","gpt-4o-mini","phi-3.5-vision-instruct","llama-3.2-90b-vision-instruct","llama-3.2-11b-vision-instruct"]
