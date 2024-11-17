@@ -56,8 +56,7 @@ context = MarshoContext()
 token = config.marshoai_token
 endpoint = config.marshoai_azure_endpoint
 client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
-target_list = []
-loaded_target_list = []
+target_list = []  # 记录需保存历史记录的列表
 
 
 @add_usermsg_cmd.handle()
@@ -83,12 +82,17 @@ async def praises():
 
 @contexts_cmd.handle()
 async def contexts(target: MsgTarget):
+    context.set_context(
+        await get_backup_context(target.id, target.private), target.id, target.private
+    )  # 加载历史记录
     await contexts_cmd.finish(str(context.build(target.id, target.private)))
 
 
 @save_context_cmd.handle()
 async def save_context(target: MsgTarget, arg: Message = CommandArg()):
     contexts_data = context.build(target.id, target.private)
+    if not context:
+        await save_context_cmd.finish("暂无上下文可以保存")
     if msg := arg.extract_plain_text():
         await save_context_to_json(msg, contexts_data, "contexts")
         await save_context_cmd.finish("已保存上下文")
@@ -142,7 +146,7 @@ async def refresh_data():
 
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
-    global target_list, loaded_target_list
+    global target_list
     if not text:
         # 发送说明
         await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
@@ -179,18 +183,14 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                     )
                 elif config.marshoai_enable_support_image_tip:
                     await UniMessage("*此模型不支持图片处理。").send()
+        context.set_context(
+            await get_backup_context(target.id, target.private), target.id, target.private
+        )  # 加载历史记录
         context_msg = context.build(target.id, target.private)
-        if not context_msg and target.id not in loaded_target_list:
-            if target.private:
-                channel_id = "private_" + target.id
-            else:
-                channel_id = "group_" + target.id
-            context_msg = list(await load_context_from_json(f"back_up_context_{channel_id}", "contexts/backup"))
-            loaded_target_list.append(target.id)
         target_list.append([target.id, target.private])
         if not is_reasoning_model:
             context_msg = [get_prompt()] + context_msg
-            # o1等推理模型不支持系统提示词
+            # o1等推理模型不支持系统提示词, 故不添加
         response = await make_chat(
             client=client,
             model_name=model_name,
@@ -257,7 +257,7 @@ async def save_context():
         target_id, target_private = target_info
         contexts_data = context.build(target_id, target_private)
         if target_private:
-            channel_id = "private_" + target_id
+            target_uid = "private_" + target_id
         else:
-            channel_id = "group_" + target_id
-        await save_context_to_json(f"back_up_context_{channel_id}", contexts_data, "contexts/backup")
+            target_uid = "group_" + target_id
+        await save_context_to_json(f"back_up_context_{target_uid}", contexts_data, "contexts/backup")

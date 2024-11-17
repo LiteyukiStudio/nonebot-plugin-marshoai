@@ -13,8 +13,9 @@ from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
 from .config import config
 
-nickname_json = None
-praises_json = None
+nickname_json = None  # 记录昵称
+praises_json = None  # 记录赞扬名单
+loaded_target_list = []  # 记录已恢复历史记录的列表
 
 
 async def get_image_b64(url):
@@ -111,7 +112,8 @@ async def save_context_to_json(name: str, context: Any, path: str):
         json.dump(context, json_file, ensure_ascii=False, indent=4)
 
 
-async def load_context_from_json(name: str, path:str):
+async def load_context_from_json(name: str, path: str) -> list:
+    """从指定路径加载历史记录"""
     context_dir = store.get_plugin_data_dir() / path
     os.makedirs(context_dir, exist_ok=True)
     file_path = os.path.join(context_dir, f"{name}.json")
@@ -165,6 +167,7 @@ async def refresh_nickname_json():
 
 
 def get_prompt():
+    """获取系统提示词"""
     prompts = ""
     prompts += config.marshoai_additional_prompt
     if config.marshoai_enable_praises:
@@ -199,3 +202,16 @@ def suggest_solution(errinfo: str) -> str:
             return f"\n{suggestion}"
 
     return ""
+
+
+async def get_backup_context(target_id: str, target_private: bool) -> list:
+    """获取历史记录"""
+    global loaded_target_list
+    if target_private:
+        target_uid = f"private_{target_id}"
+    else:
+        target_uid = f"group_{target_id}"
+    if target_uid not in loaded_target_list:
+        loaded_target_list.append(target_uid)
+        return await load_context_from_json(f"back_up_context_{target_uid}", "contexts/backup")
+    return []
