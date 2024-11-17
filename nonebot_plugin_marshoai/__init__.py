@@ -1,4 +1,4 @@
-from nonebot.plugin import PluginMetadata, inherit_supported_adapters, require
+from nonebot.plugin import require
 
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")

@@ -1,9 +1,11 @@
 from .util import *
 
+
 class MarshoContext:
     """
     Marsho 的上下文类
     """
+
     def __init__(self):
         self.contents = {
             "private": {},
@@ -34,14 +36,14 @@ class MarshoContext:
         重置上下文
         """
         target_dict = self._get_target_dict(is_private)
-        target_dict[target_id].clear()
+        if target_id in target_dict:
+            target_dict[target_id].clear()
 
     def build(self, target_id: str, is_private: bool) -> list:
         """
-        构建返回的上下文，其中包括系统消息
+        构建返回的上下文，不包括系统消息
         """
-        spell = get_prompt()
         target_dict = self._get_target_dict(is_private)
         if target_id not in target_dict:
             target_dict[target_id] = []
-        return [spell] + target_dict[target_id]
+        return target_dict[target_id]

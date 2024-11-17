@@ -1,30 +1,31 @@
-from nonebot import on_command
-from nonebot.adapters import Message, Event
-from nonebot.params import CommandArg
-from nonebot.permission import SUPERUSER
-from nonebot_plugin_alconna import on_alconna, MsgTarget
-from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
-from arclet.alconna import Alconna, Args, AllParam
-from .util import *
-import traceback
 import contextlib
-from azure.ai.inference.aio import ChatCompletionsClient
+import traceback
+from typing import Optional
+
+from arclet.alconna import Alconna, Args, AllParam
 from azure.ai.inference.models import (
     UserMessage,
     AssistantMessage,
-    ContentItem,
     TextContentItem,
     ImageContentItem,
     ImageUrl,
     CompletionsFinishReason,
 )
 from azure.core.credentials import AzureKeyCredential
-from typing import Any, Optional
+from nonebot import on_command
+from nonebot.adapters import Message, Event
+from nonebot.params import CommandArg
+from nonebot.permission import SUPERUSER
+from nonebot_plugin_alconna import on_alconna, MsgTarget
+from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
+from nonebot import get_driver
 
-from .metadata import metadata
-from .config import config
-from .models import MarshoContext
 from .constants import *
+from .metadata import metadata
+from .models import MarshoContext
+from .util import *
+
+driver = get_driver()
 
 changemodel_cmd = on_command("changemodel", permission=SUPERUSER)
 resetmem_cmd = on_command("reset")
@@ -46,13 +47,16 @@ nickname_cmd = on_alconna(
     Alconna(
         "nickname",
         Args["name?", str],
-        )
+    )
 )
+refresh_data_cmd = on_command("refresh_data", permission=SUPERUSER)
+
 model_name = config.marshoai_default_model
 context = MarshoContext()
 token = config.marshoai_token
 endpoint = config.marshoai_azure_endpoint
 client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
+target_list = []  # 记录需保存历史记录的列表
 
 
 @add_usermsg_cmd.handle()
@@ -78,14 +82,19 @@ async def praises():
 
 @contexts_cmd.handle()
 async def contexts(target: MsgTarget):
-    await contexts_cmd.finish(str(context.build(target.id, target.private)[1:]))
+    backup_context = await get_backup_context(target.id, target.private)
+    if backup_context:
+        context.set_context(backup_context, target.id, target.private)  # 加载历史记录
+    await contexts_cmd.finish(str(context.build(target.id, target.private)))
 
 
 @save_context_cmd.handle()
 async def save_context(target: MsgTarget, arg: Message = CommandArg()):
-    contexts = context.build(target.id, target.private)[1:]
+    contexts_data = context.build(target.id, target.private)
+    if not context:
+        await save_context_cmd.finish("暂无上下文可以保存")
     if msg := arg.extract_plain_text():
-        await save_context_to_json(msg, contexts)
+        await save_context_to_json(msg, contexts_data, "contexts")
         await save_context_cmd.finish("已保存上下文")
 
 
@@ -93,7 +102,7 @@ async def save_context(target: MsgTarget, arg: Message = CommandArg()):
 async def load_context(target: MsgTarget, arg: Message = CommandArg()):
     if msg := arg.extract_plain_text():
         context.set_context(
-            await load_context_from_json(msg), target.id, target.private
+            await load_context_from_json(msg, "contexts"), target.id, target.private
         )
         await load_context_cmd.finish("已加载并覆盖上下文")
 
@@ -117,6 +126,8 @@ async def nickname(event: Event, name=None):
     nicknames = await get_nicknames()
     user_id = event.get_user_id()
     if not name:
+        if user_id not in nicknames:
+            await nickname_cmd.finish("你未设置昵称")
         await nickname_cmd.finish("你的昵称为：" + str(nicknames[user_id]))
     if name == "reset":
         await set_nickname(user_id, "")
@@ -126,22 +137,29 @@ async def nickname(event: Event, name=None):
         await nickname_cmd.finish("已设置昵称为：" + name)
 
 
+@refresh_data_cmd.handle()
+async def refresh_data():
+    await refresh_nickname_json()
+    await refresh_praises_json()
+    await refresh_data_cmd.finish("已刷新数据")
+
+
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
+    global target_list
     if not text:
+        # 发送说明
         await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
         await marsho_cmd.finish(INTRODUCTION)
-        return
-
     try:
-
         user_id = event.get_user_id()
         nicknames = await get_nicknames()
-        nickname = nicknames.get(user_id, "")
+        user_nickname = nicknames.get(user_id, "")
         if nickname != "":
-            nickname_prompt = f"\n*此消息的说话者:{nickname}*"
+            nickname_prompt = f"\n*此消息的说话者:{user_nickname}*"
         else:
-            nickname_prompt = ""
+            user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
+            nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
             if config.marshoai_enable_nickname_tip:
                 await UniMessage(
                     "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
@@ -158,25 +176,30 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                     usermsg += str(i.data["text"] + nickname_prompt)
             elif i.type == "image":
                 if is_support_image_model:
-                 usermsg.append(
+                    usermsg.append(
                         ImageContentItem(
                             image_url=ImageUrl(url=str(await get_image_b64(i.data["url"])))
                         )
                     )
                 elif config.marshoai_enable_support_image_tip:
                     await UniMessage("*此模型不支持图片处理。").send()
+        backup_context = await get_backup_context(target.id, target.private)
+        if backup_context:
+            context.set_context(backup_context, target.id, target.private)  # 加载历史记录
         context_msg = context.build(target.id, target.private)
-        if is_reasoning_model: context_msg = context_msg[1:] #o1等推理模型不支持系统提示词，故截断
+        target_list.append([target.id, target.private])
+        if not is_reasoning_model:
+            context_msg = [get_prompt()] + context_msg
+            # o1等推理模型不支持系统提示词, 故不添加
         response = await make_chat(
             client=client,
             model_name=model_name,
-            msg=context_msg
-            + [UserMessage(content=usermsg)],
+            msg=context_msg + [UserMessage(content=usermsg)],
         )
         # await UniMessage(str(response)).send()
         choice = response.choices[0]
         if (
-            choice["finish_reason"] == CompletionsFinishReason.STOPPED
+                choice["finish_reason"] == CompletionsFinishReason.STOPPED
         ):  # 当对话成功时，将dict的上下文添加到上下文类中
             context.append(
                 UserMessage(content=usermsg).as_dict(), target.id, target.private
@@ -198,12 +221,13 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
     import nonebot.adapters.onebot.v11  # type: ignore
     from .azure_onebot import poke_notify
 
+
     @poke_notify.handle()
-    async def poke(event: Event, target: MsgTarget):
+    async def poke(event: Event):
 
         user_id = event.get_user_id()
         nicknames = await get_nicknames()
-        nickname = nicknames.get(user_id, "")
+        user_nickname = nicknames.get(user_id, "")
         try:
             if config.marshoai_poke_suffix != "":
                 response = await make_chat(
@@ -212,7 +236,7 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
                     msg=[
                         get_prompt(),
                         UserMessage(
-                            content=f"*{nickname}{config.marshoai_poke_suffix}"
+                            content=f"*{user_nickname}{config.marshoai_poke_suffix}"
                         ),
                     ],
                 )
@@ -225,3 +249,15 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
             await UniMessage(str(e) + suggest_solution(str(e))).send()
             traceback.print_exc()
             return
+
+
+@driver.on_shutdown
+async def save_context():
+    for target_info in target_list:
+        target_id, target_private = target_info
+        contexts_data = context.build(target_id, target_private)
+        if target_private:
+            target_uid = "private_" + target_id
+        else:
+            target_uid = "group_" + target_id
+        await save_context_to_json(f"back_up_context_{target_uid}", contexts_data, "contexts/backup")
