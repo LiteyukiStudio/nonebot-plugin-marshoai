@@ -28,6 +28,7 @@ class ConfigModel(BaseModel):
     marshoai_temperature: float | None = None
     marshoai_max_tokens: int | None = None
     marshoai_top_p: float | None = None
+    marshoai_additional_image_models: list = []
 
 
 config: ConfigModel = get_plugin_config(ConfigModel)

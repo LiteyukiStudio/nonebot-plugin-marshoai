@@ -144,6 +144,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 |       MARSHOAI_TEMPERATURE        | 否  |                    无                    |                                          进行推理时的温度参数                                           |
 |          MARSHOAI_TOP_P           | 否  |                    无                    |                                          进行推理时的核采样参数                                          |
 |        MARSHOAI_MAX_TOKENS        | 否  |                    无                    |                                        返回消息的最大 token 数                                        |
+|    MARSHOAI_ADDITIONAL_IMAGE_MODELS    | 否   |            `[]`                    |                                 额外添加的支持图片的模型列表，例如`hunyuan-vision`             |
 
 ## ❤ 鸣谢&版权说明
 

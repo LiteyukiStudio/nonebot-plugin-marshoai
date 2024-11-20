@@ -169,7 +169,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                     "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
                 ).send()
 
-        is_support_image_model = model_name.lower() in SUPPORT_IMAGE_MODELS
+        is_support_image_model = model_name.lower() in SUPPORT_IMAGE_MODELS + config.marshoai_additional_image_models
         is_reasoning_model = model_name.lower() in REASONING_MODELS
         usermsg = [] if is_support_image_model else ""
         for i in text:
