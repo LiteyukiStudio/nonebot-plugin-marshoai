@@ -3,6 +3,7 @@ from nonebot.plugin import require
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 from .azure import *
+from .hunyuan import *
 from nonebot import get_driver, logger
 from .config import config
 from .metadata import metadata

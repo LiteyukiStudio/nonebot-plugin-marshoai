@@ -29,6 +29,8 @@ class ConfigModel(BaseModel):
     marshoai_max_tokens: int | None = None
     marshoai_top_p: float | None = None
     marshoai_additional_image_models: list = []
+    marshoai_tencent_secretid: str | None = None
+    marshoai_tencent_secretkey:str | None = None
 
 
 config: ConfigModel = get_plugin_config(ConfigModel)

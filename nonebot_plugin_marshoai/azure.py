@@ -110,7 +110,8 @@ async def load_context(target: MsgTarget, arg: Message = CommandArg()):
 
 @resetmem_cmd.handle()
 async def resetmem(target: MsgTarget):
-    if [target.id, target.private] not in target_list:                                          target_list.append([target.id, target.private])
+    if [target.id, target.private] not in target_list:
+        target_list.append([target.id, target.private])
     context.reset(target.id, target.private)
     await resetmem_cmd.finish("上下文已重置")
 
