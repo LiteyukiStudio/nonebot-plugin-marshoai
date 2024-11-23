@@ -167,3 +167,4 @@ cython_debug/
 bot.py
 pdm.lock
 praises.json
+*.bak
