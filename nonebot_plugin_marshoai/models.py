@@ -79,7 +79,7 @@ class MarshoTools:
                 if os.path.exists(json_path):
                     try:
                         with open(json_path, 'r') as json_file:
-                            data = json.load(json_file)
+                            data = json.load(json_file,encoding="utf-8")
                             for i in data:
                                 self.tools_list.append(i)
                             # 导入包
