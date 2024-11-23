@@ -3,9 +3,7 @@
         "type": "function",
         "function": {
             "name": "marshoai-basic__get_current_time",
-            "description": "获取现在的时间。",
-            "parameters": {  
-            }
+            "description": "获取现在的时间。"
         }
     }
 ]
