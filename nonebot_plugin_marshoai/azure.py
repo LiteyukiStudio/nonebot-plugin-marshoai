@@ -67,7 +67,8 @@ target_list = []  # 记录需保存历史上下文的列表
 async def _preload_tools():
     tools_dir = store.get_plugin_data_dir() / "tools"
     os.makedirs(tools_dir, exist_ok=True)
-    tools.load_tools(Path(__file__).parent / "tools")
+    if config.marshoai_load_builtin_tools:
+        tools.load_tools(Path(__file__).parent / "tools")
     tools.load_tools(store.get_plugin_data_dir() / "tools")
 
 @add_usermsg_cmd.handle()

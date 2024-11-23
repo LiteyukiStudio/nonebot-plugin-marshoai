@@ -25,6 +25,7 @@ class ConfigModel(BaseModel):
     marshoai_enable_praises: bool = True
     marshoai_enable_time_prompt: bool = True
     marshoai_enable_tools: bool = True
+    marshoai_load_builtin_tools: bool = True
     marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
     marshoai_temperature: float | None = None
     marshoai_max_tokens: int | None = None

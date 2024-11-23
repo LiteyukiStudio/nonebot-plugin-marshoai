@@ -143,6 +143,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 |   MARSHOAI_ENABLE_NICKNAME_TIP    | 否  |                 `true`                  |                                       启用后用户未设置昵称时提示用户设置                                       |
 |      MARSHOAI_ENABLE_PRAISES      | 否  |                 `true`                  |                                          是否启用夸赞名单功能                                           |
 |    MARSHOAI_ENABLE_TOOLS    | 否  |                 `true`                  |                                是否启用小棉工具(MarshoTools)                                 |
+|    MARSHOAI_LOAD_BUILTIN_TOOLS   | 否  |            `true`               |                                  是否加载内置工具包                                            |
 |      MARSHOAI_AZURE_ENDPOINT      | 否  | `https://models.inference.ai.azure.com` |                                  OpenAI 标准格式 API 端点                                  |
 |       MARSHOAI_TEMPERATURE        | 否  |                    无                    |                                          进行推理时的温度参数                                           |
 |          MARSHOAI_TOP_P           | 否  |                    无                    |                                          进行推理时的核采样参数                                          |
