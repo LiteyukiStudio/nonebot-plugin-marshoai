@@ -1,0 +1,21 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "marshoai-memory__write_memory",
+            "description": "当你想记住有关与你对话的人的一些信息的时候，调用此函数。",
+            "parameters": {  
+                "type": "object",
+                "properties": {
+                    "memory": {
+                        "type": "string",
+                        "description": "你想记住的内容，概括并保留关键内容。"
+                    }
+                }
+            },
+            "required": [
+                "memory"
+            ]
+        }
+    }
+]

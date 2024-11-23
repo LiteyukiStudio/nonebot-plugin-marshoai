@@ -40,7 +40,7 @@ async def get_image_b64(url):
             return None
 
 
-async def make_chat(client: ChatCompletionsClient, msg: list, model_name: str):
+async def make_chat(client: ChatCompletionsClient, msg: list, model_name: str, tools: list = None):
     """调用ai获取回复
 
     参数:
@@ -50,6 +50,7 @@ async def make_chat(client: ChatCompletionsClient, msg: list, model_name: str):
     return await client.complete(
         messages=msg,
         model=model_name,
+        tools=tools,
         temperature=config.marshoai_temperature,
         max_tokens=config.marshoai_max_tokens,
         top_p=config.marshoai_top_p,
@@ -173,13 +174,6 @@ def get_prompt():
     if config.marshoai_enable_praises:
         praises_prompt = build_praises()
         prompts += praises_prompt
-    if config.marshoai_enable_time_prompt:
-        current_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
-        current_lunar_date = (
-            DateTime.now().to_lunar().date_hanzify()[5:]
-        )  # 库更新之前使用切片
-        time_prompt = f"现在的时间是{current_time}，农历{current_lunar_date}。"
-        prompts += time_prompt
     marsho_prompt = config.marshoai_prompt
     spell = SystemMessage(content=marsho_prompt + prompts).as_dict()
     return spell

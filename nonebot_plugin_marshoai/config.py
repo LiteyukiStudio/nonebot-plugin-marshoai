@@ -24,13 +24,15 @@ class ConfigModel(BaseModel):
     marshoai_enable_support_image_tip: bool = True
     marshoai_enable_praises: bool = True
     marshoai_enable_time_prompt: bool = True
+    marshoai_enable_tools: bool = True
     marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
     marshoai_temperature: float | None = None
     marshoai_max_tokens: int | None = None
     marshoai_top_p: float | None = None
     marshoai_additional_image_models: list = []
     marshoai_tencent_secretid: str | None = None
-    marshoai_tencent_secretkey:str | None = None
+    marshoai_tencent_secretkey: str | None = None
+    
 
 
 config: ConfigModel = get_plugin_config(ConfigModel)

@@ -100,6 +100,9 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 当 nonebot 连接到支持的 OneBot v11 实现端时，可以接收头像双击戳一戳消息并进行响应。详见`MARSHOAI_POKE_SUFFIX`配置项。
 
+## 🛠️ 小棉工具
+小棉工具(MarshoTools)是`v0.5.0`版本的新增功能，支持加载外部函数库来为 Marsho 提供 Function Call 功能。[使用文档](./README_TOOLS.md)  
+
 ## 👍 夸赞名单
 
 夸赞名单存储于插件数据目录下的`praises.json`里（该目录路径会在 Bot 启动时输出到日志），当配置项为`true`
@@ -139,7 +142,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 | MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | 否  |                 `true`                  |                                  启用后用户发送带图请求时若模型不支持图片，则提示用户                                   |
 |   MARSHOAI_ENABLE_NICKNAME_TIP    | 否  |                 `true`                  |                                       启用后用户未设置昵称时提示用户设置                                       |
 |      MARSHOAI_ENABLE_PRAISES      | 否  |                 `true`                  |                                          是否启用夸赞名单功能                                           |
-|    MARSHOAI_ENABLE_TIME_PROMPT    | 否  |                 `true`                  |                                是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词                                 |
+|    MARSHOAI_ENABLE_TOOLS    | 否  |                 `true`                  |                                是否启用小棉工具(MarshoTools)                                 |
 |      MARSHOAI_AZURE_ENDPOINT      | 否  | `https://models.inference.ai.azure.com` |                                  OpenAI 标准格式 API 端点                                  |
 |       MARSHOAI_TEMPERATURE        | 否  |                    无                    |                                          进行推理时的温度参数                                           |
 |          MARSHOAI_TOP_P           | 否  |                    无                    |                                          进行推理时的核采样参数                                          |
