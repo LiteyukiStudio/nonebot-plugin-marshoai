@@ -12,6 +12,7 @@ class ConfigModel(BaseModel):
     marshoai_token: str = ""
     # marshoai_support_image_models: list = ["gpt-4o","gpt-4o-mini"]
     marshoai_default_name: str = "marsho"
+    marshoai_at: bool = False
     marshoai_aliases: set[str] = {
         "小棉",
     }

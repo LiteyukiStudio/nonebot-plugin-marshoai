@@ -6,6 +6,8 @@ marshoai_default_name: "marsho"  # 默认名称，设定为marsho。
 marshoai_aliases:
   - 小棉
 
+marshoai_at: false # 决定是否开启at响应
+
 marshoai_default_model: "gpt-4o-mini"  # 默认模型，设定为gpt-4o-mini。
 
 # 主提示词，定义了Marsho的性格和行为，包含多语言名字翻译规则和对特定问题的回答约束。

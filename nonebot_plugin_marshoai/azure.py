@@ -15,10 +15,11 @@ from azure.ai.inference.models import (
     ChatCompletionsToolCall,
 )
 from azure.core.credentials import AzureKeyCredential
-from nonebot import on_command, logger
+from nonebot import on_command, on_message, logger
 from nonebot.adapters import Message, Event
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
+from nonebot.rule import Rule, to_me
 from nonebot_plugin_alconna import on_alconna, MsgTarget
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 import nonebot_plugin_localstore as store
@@ -28,6 +29,11 @@ from .constants import *
 from .metadata import metadata
 from .models import MarshoContext, MarshoTools
 from .util import *
+
+
+async def at_enable():
+    return config.marshoai_at
+
 
 driver = get_driver()
 
@@ -47,6 +53,7 @@ marsho_cmd = on_alconna(
     ),
     aliases=config.marshoai_aliases,
 )
+marsho_at = on_message(rule=to_me()&at_enable)
 nickname_cmd = on_alconna(
     Alconna(
         "nickname",
@@ -63,6 +70,7 @@ endpoint = config.marshoai_azure_endpoint
 client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
 target_list = []  # 记录需保存历史上下文的列表
 
+
 @driver.on_startup
 async def _preload_tools():
     tools_dir = store.get_plugin_data_dir() / "tools"
@@ -70,6 +78,7 @@ async def _preload_tools():
     if config.marshoai_load_builtin_tools:
         tools.load_tools(Path(__file__).parent / "tools")
     tools.load_tools(store.get_plugin_data_dir() / "tools")
+
 
 @add_usermsg_cmd.handle()
 async def add_usermsg(target: MsgTarget, arg: Message = CommandArg()):
@@ -89,7 +98,7 @@ async def add_assistantmsg(target: MsgTarget, arg: Message = CommandArg()):
 
 @praises_cmd.handle()
 async def praises():
-    #await UniMessage(await tools.call("marshoai-weather.get_weather", {"location":"杭州"})).send()
+    # await UniMessage(await tools.call("marshoai-weather.get_weather", {"location":"杭州"})).send()
     await praises_cmd.finish(build_praises())
 
 
@@ -114,7 +123,7 @@ async def save_context(target: MsgTarget, arg: Message = CommandArg()):
 @load_context_cmd.handle()
 async def load_context(target: MsgTarget, arg: Message = CommandArg()):
     if msg := arg.extract_plain_text():
-        await get_backup_context(target.id, target.private) # 为了将当前会话添加到"已恢复过备份"的列表而添加，防止上下文被覆盖（好奇怪QwQ
+        await get_backup_context(target.id, target.private)  # 为了将当前会话添加到"已恢复过备份"的列表而添加，防止上下文被覆盖（好奇怪QwQ
         context.set_context(
             await load_context_from_json(msg, "contexts"), target.id, target.private
         )
@@ -160,9 +169,12 @@ async def refresh_data():
     await refresh_data_cmd.finish("已刷新数据")
 
 
+@marsho_at.handle()
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
     global target_list
+    if event.get_message() and not text:
+        text = event.get_message()
     if not text:
         # 发送说明
         await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
@@ -175,9 +187,9 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
             nickname_prompt = f"\n*此消息的说话者:{user_nickname}*"
         else:
             nickname_prompt = ""
-            #用户名无法获取，暂时注释
-            #user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
-            #nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
+            # 用户名无法获取，暂时注释
+            # user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
+            # nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
             if config.marshoai_enable_nickname_tip:
                 await UniMessage(
                     "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
@@ -242,14 +254,14 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 response = await make_chat(
                     client=client,
                     model_name=model_name,
-                    msg = context_msg + [UserMessage(content=usermsg)] + tool_msg,
+                    msg=context_msg + [UserMessage(content=usermsg)] + tool_msg,
                     tools=tools.get_tools_list()
-                   )
+                )
                 choice = response.choices[0]
             context.append(
                 UserMessage(content=usermsg).as_dict(), target.id, target.private
             )
-            #context.append(tool_msg, target.id, target.private)
+            # context.append(tool_msg, target.id, target.private)
             context.append(choice.message.as_dict(), target.id, target.private)
             await UniMessage(str(choice.message.content)).send(reply_to=True)
     except Exception as e:
