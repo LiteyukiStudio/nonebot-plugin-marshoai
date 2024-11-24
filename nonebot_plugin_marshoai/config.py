@@ -1,5 +1,10 @@
+import shutil
+
 from pydantic import BaseModel
-from nonebot import get_plugin_config
+from nonebot import logger
+from ruamel.yaml import YAML
+import yaml as yaml_
+from pathlib import Path
 
 
 class ConfigModel(BaseModel):
@@ -33,7 +38,77 @@ class ConfigModel(BaseModel):
     marshoai_additional_image_models: list = []
     marshoai_tencent_secretid: str | None = None
     marshoai_tencent_secretkey: str | None = None
-    
 
 
-config: ConfigModel = get_plugin_config(ConfigModel)
+yaml = YAML()
+
+config_file_path = Path("config/marshoai/config.yaml").resolve()
+
+current_dir = Path(__file__).parent.resolve()
+source_template = current_dir / "config_example.yaml"
+
+destination_folder = Path("config/marshoai/")
+destination_file = destination_folder / "config.yaml"
+
+
+def copy_config(source_template, destination_file):
+    """
+    复制模板配置文件到config
+    """
+    shutil.copy(source_template, destination_file)
+
+
+def check_yaml_is_changed(source_template):
+    """
+    检查配置文件是否需要更新
+    """
+    with open(config_file_path, 'r', encoding="utf-8") as f:
+        old = yaml.load(f)
+    with open(source_template, 'r', encoding="utf-8") as f:
+        example_ = yaml.load(f)
+    keys1 = set(example_.keys())
+    keys2 = set(old.keys())
+    if keys1 == keys2:
+        return False
+    else:
+        return True
+
+
+def merge_configs(old_config, new_config):
+    """
+    合并配置文件
+    """
+    for key, value in new_config.items():
+        if key in old_config:
+            continue
+        else:
+            logger.info(f"新增配置项: {key} = {value}")
+            old_config[key] = value
+    return old_config
+
+
+if not config_file_path.exists():
+    logger.info("配置文件不存在,正在创建")
+    config_file_path.parent.mkdir(parents=True, exist_ok=True)
+    copy_config(source_template, destination_file)
+else:
+    logger.info("配置文件存在,正在读取")
+
+    if check_yaml_is_changed(source_template):
+        logger.info("插件新的配置已更新, 正在更新")
+
+        with open(config_file_path, 'r', encoding="utf-8") as f:
+            old_config = yaml.load(f)
+
+        with open(source_template, 'r', encoding="utf-8") as f:
+            new_config = yaml.load(f)
+
+        merged_config = merge_configs(old_config, new_config)
+
+        with open(destination_file, 'w', encoding="utf-8") as f:
+            yaml.dump(merged_config, f)
+
+with open(config_file_path, "r", encoding="utf-8") as f:
+    yaml_config = yaml_.load(f, Loader=yaml_.FullLoader)
+
+    config = ConfigModel(**yaml_config)
