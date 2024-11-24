@@ -1,0 +1,9 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "marshoai-bangumi__get_bangumi_news",
+            "description": "获取今天的新番（动漫）列表，在调用之前，你需要知道今天星期几。"
+    }
+  }
+]

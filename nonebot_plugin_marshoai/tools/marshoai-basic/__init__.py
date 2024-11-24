@@ -10,6 +10,11 @@ async def get_current_env():
 
 async def get_current_time():
     current_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
+    current_weekday = datetime.now().weekday()
+
+    weekdays = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
+    current_weekday_name = weekdays[current_weekday]
+
     current_lunar_date = (DateTime.now().to_lunar().date_hanzify()[5:])
-    time_prompt = f"现在的时间是{current_time}，农历{current_lunar_date}。"
+    time_prompt = f"现在的时间是{current_time}，{current_weekday_name}，农历{current_lunar_date}。"
     return time_prompt
