@@ -130,25 +130,44 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 在 nonebot2 项目的`.env`文件中添加下表中的配置
 
-|                配置项                | 必填 |                   默认值                   |                                              说明                                               |
-|:---------------------------------:|:--:|:---------------------------------------:|:---------------------------------------------------------------------------------------------:|
-|          MARSHOAI_TOKEN           | 是?  |                    无                    |                                      调用 API 所需的访问 token                                       |
-|       MARSHOAI_DEFAULT_NAME       | 否  |                `marsho`                 |                                       调用 Marsho 默认的命令前缀                                       |
-|         MARSHOAI_ALIASES          | 否  |               `set{"小棉"}`               |                                        调用 Marsho 的命令别名                                        |
-|      MARSHOAI_DEFAULT_MODEL       | 否  |              `gpt-4o-mini`              |                                        Marsho 默认调用的模型                                         |
-|          MARSHOAI_PROMPT          | 否  |             猫娘 Marsho 人设提示词             |                           Marsho 的基本系统提示词 **※部分推理模型(o1等)不支持系统提示词。**                           |
-|    MARSHOAI_ADDITIONAL_PROMPT     | 否  |                    无                    |                                        Marsho 的扩展系统提示词                                        |
-|       MARSHOAI_POKE_SUFFIX        | 否  |                `揉了揉你的猫耳`                | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳`。 |
-| MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | 否  |                 `true`                  |                                  启用后用户发送带图请求时若模型不支持图片，则提示用户                                   |
-|   MARSHOAI_ENABLE_NICKNAME_TIP    | 否  |                 `true`                  |                                       启用后用户未设置昵称时提示用户设置                                       |
-|      MARSHOAI_ENABLE_PRAISES      | 否  |                 `true`                  |                                          是否启用夸赞名单功能                                           |
-|    MARSHOAI_ENABLE_TOOLS    | 否  |                 `true`                  |                                是否启用小棉工具(MarshoTools)                                 |
-|    MARSHOAI_LOAD_BUILTIN_TOOLS   | 否  |            `true`               |                                  是否加载内置工具包                                            |
-|      MARSHOAI_AZURE_ENDPOINT      | 否  | `https://models.inference.ai.azure.com` |                                  OpenAI 标准格式 API 端点                                  |
-|       MARSHOAI_TEMPERATURE        | 否  |                    无                    |                                          进行推理时的温度参数                                           |
-|          MARSHOAI_TOP_P           | 否  |                    无                    |                                          进行推理时的核采样参数                                          |
-|        MARSHOAI_MAX_TOKENS        | 否  |                    无                    |                                        返回消息的最大 token 数                                        |
-|    MARSHOAI_ADDITIONAL_IMAGE_MODELS    | 否   |            `[]`                    |                                 额外添加的支持图片的模型列表，例如`hunyuan-vision`             |
+#### 插件行为
+
+| 配置项                      | 类型     | 默认值     | 说明               |
+| ------------------------ | ------ | ------- | ---------------- |
+| MARSHOAI_USE_YAML_CONFIG | `bool` | `false` | 是否使用 YAML 配置文件格式 |
+
+#### Marsho 使用方式
+
+| 配置项                   | 类型         | 默认值         | 说明                |
+| --------------------- | ---------- | ----------- | ----------------- |
+| MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | 调用 Marsho 默认的命令前缀 |
+| MARSHOAI_ALIASES      | `set[str]` | `set{"小棉"}` | 调用 Marsho 的命令别名   |
+
+#### AI 调用
+
+| 配置项                              | 类型      | 默认值                                     | 说明                                                                                            |
+| -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
+| MARSHOAI_TOKEN                   | `str`   |                                         | 调用 AI API 所需的 token                                                                           |
+| MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | Marsho 默认调用的模型                                                                                |
+| MARSHOAI_PROMPT                  | `str`   | 猫娘 Marsho 人设提示词                         | Marsho 的基本系统提示词 **※部分模型(o1等)不支持系统提示词。**                                                       |
+| MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho 的扩展系统提示词                                                                               |
+| MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳。` |
+| MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI 标准格式 API 端点                                                                            |
+| MARSHOAI_TEMPERATURE             | `float` | `null`                                  | 推理生成多样性（温度）参数                                                                                 |
+| MARSHOAI_TOP_P                   | `float` | `null`                                  | 推理核采样参数                                                                                       |
+| MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | 最大生成 token 数                                                                                  |
+| MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | 额外添加的支持图片的模型列表，例如`hunyuan-vision`                                                             |
+
+#### 功能开关
+
+| 配置项                               | 类型     | 默认值    | 说明                         |
+| --------------------------------- | ------ | ------ | -------------------------- |
+| MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | `bool` | `true` | 启用后用户发送带图请求时若模型不支持图片，则提示用户 |
+| MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | 启用后用户未设置昵称时提示用户设置          |
+| MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | 是否启用夸赞名单功能                 |
+| MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | 是否启用小棉工具                   |
+| MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | 是否加载内置工具包                  |
+
 
 ## ❤ 鸣谢&版权说明
 
@@ -162,4 +181,3 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 - [x] 对聊天发起者的认知（认出是谁在问 Marsho）（初步实现）
 - [ ] 自定义 API 接入点的适配（不局限于GitHub Models）
 - [ ] 上下文通过数据库持久化存储
-
