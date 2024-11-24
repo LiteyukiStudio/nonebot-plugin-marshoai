@@ -178,7 +178,7 @@ async def refresh_data():
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
     global target_list
-    if event.get_message() and (not text or text == config.marshoai_default_name):
+    if event.get_message().extract_plain_text() and (not text and event.get_message().extract_plain_text() != config.marshoai_default_name):
         text = event.get_message()
     if not text:
         # 发送说明
