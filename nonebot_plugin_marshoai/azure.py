@@ -178,9 +178,8 @@ async def refresh_data():
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
     global target_list
-    if event.get_message() and (not text and text == config.marshoai_default_name):
+    if event.get_message() and (not text or text == config.marshoai_default_name):
         text = event.get_message()
-    print(text)
     if not text:
         # 发送说明
         await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
