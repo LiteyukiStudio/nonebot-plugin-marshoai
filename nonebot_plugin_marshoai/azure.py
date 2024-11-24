@@ -37,31 +37,36 @@ async def at_enable():
 
 driver = get_driver()
 
-changemodel_cmd = on_command("changemodel", permission=SUPERUSER)
-resetmem_cmd = on_command("reset")
+changemodel_cmd = on_command("changemodel", permission=SUPERUSER, priority=10, block=True)
+resetmem_cmd = on_command("reset", priority=10, block=True)
 # setprompt_cmd = on_command("prompt",permission=SUPERUSER)
-praises_cmd = on_command("praises", permission=SUPERUSER)
-add_usermsg_cmd = on_command("usermsg", permission=SUPERUSER)
-add_assistantmsg_cmd = on_command("assistantmsg", permission=SUPERUSER)
-contexts_cmd = on_command("contexts", permission=SUPERUSER)
-save_context_cmd = on_command("savecontext", permission=SUPERUSER)
-load_context_cmd = on_command("loadcontext", permission=SUPERUSER)
+praises_cmd = on_command("praises", permission=SUPERUSER, priority=10, block=True)
+add_usermsg_cmd = on_command("usermsg", permission=SUPERUSER, priority=10, block=True)
+add_assistantmsg_cmd = on_command("assistantmsg", permission=SUPERUSER, priority=10, block=True)
+contexts_cmd = on_command("contexts", permission=SUPERUSER, priority=10, block=True)
+save_context_cmd = on_command("savecontext", permission=SUPERUSER, priority=10, block=True)
+load_context_cmd = on_command("loadcontext", permission=SUPERUSER, priority=10, block=True)
 marsho_cmd = on_alconna(
     Alconna(
         config.marshoai_default_name,
         Args["text?", AllParam],
     ),
     aliases=config.marshoai_aliases,
+    priority=10,
+    block=True
 )
-marsho_at = on_message(rule=to_me()&at_enable)
+marsho_at = on_message(rule=to_me()&at_enable, priority=11)
 nickname_cmd = on_alconna(
     Alconna(
         "nickname",
         Args["name?", str],
-    )
+    ),
+    priority = 10,
+    block = True
 )
-refresh_data_cmd = on_command("refresh_data", permission=SUPERUSER)
+refresh_data_cmd = on_command("refresh_data", permission=SUPERUSER, priority=10, block=True)
 
+command_start = driver.config.command_start
 model_name = config.marshoai_default_model
 context = MarshoContext()
 tools = MarshoTools()
