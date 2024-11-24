@@ -168,3 +168,4 @@ bot.py
 pdm.lock
 praises.json
 *.bak
+config/
