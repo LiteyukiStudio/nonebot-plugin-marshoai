@@ -95,7 +95,6 @@ else:
     logger.info("配置文件存在,正在读取")
 
     if check_yaml_is_changed(source_template):
-        yaml = YAML()
         logger.info("插件新的配置已更新, 正在更新")
 
         with open(config_file_path, 'r', encoding="utf-8") as f:
