@@ -142,6 +142,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 | --------------------- | ---------- | ----------- | ----------------- |
 | MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | 调用 Marsho 默认的命令前缀 |
 | MARSHOAI_ALIASES      | `set[str]` | `set{"小棉"}` | 调用 Marsho 的命令别名   |
+| MARSHOAI_AT           | `bool`     | `false`     | 决定是否使用at触发
 
 #### AI 调用
 
