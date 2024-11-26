@@ -1,22 +1,22 @@
-# 🛠️Marsho
+# 🛠️MarshoTools
 Marsho is a simple module loader. It allows to load kits and its function from `tools` in plugin directory, for AI to use.
 More information for Function Call, please refr to [OpenAI Offical Documentation](https://platform.openai.com/docs/guides/function-calling)
 
-## ✍️ Development Kits
+## ✍️ Writing Tools
 ### 📁 Directory Structure
-`tools` in plugin directory is caller **Toolset**. It contains many **Toolkit**, Toolkit is similar with **Packages** in Python in structure. It need `__init__.py` document and `tools.json` definition document in it. They are used to store and define functions.
+`tools` in plugin directory is called **Toolset**. It contains many **Toolkit**, Toolkit is similar with **Packages** in Python in structure. It need `__init__.py` file and `tools.json` definition file in it. They are used to store and define functions.
 
 A directory structure of Toolkit:
 ```
 tools/ # Toolset Directory
 └── marshoai-example/ # Toolkit Directory, Named as Packages' name
     └── __init__.py # Tool Module
-    └── tools.json # Function Definition Document
+    └── tools.json # Function Definition File
 ```
 In this directory tree:
-- **Toolset Directory** is named as `marshoat-xxxxx`, its name is the name of Toolset. Please follow this naming standard.
-- ***Tool Module* could contain many callable **Sync** function, it could have parameters or be parameterless and the return value should be supported by AI model. Generally speaking, the `str` type is accepted to most model.
-- **Function Definition Document** is for AI model to know how to call these function.
+- **Toolset Directory** is named as `marshoai-xxxxx`, its name is the name of Toolset. Please follow this naming standard.
+- ***Tool Module* could contain many callable **Asynchronous** function, it could have parameters or be parameterless and the return value should be supported by AI model. Generally speaking, the `str` type is accepted to most model.
+- **Function Definition File** is for AI model to know how to call these function.
 ### Function Writing
 Let's write a function for getting the weather and one for getting time.
 ###### **\_\_init\_\_.py**
@@ -31,14 +31,14 @@ async def get_current_time():
     time_prompt = f"Now is {current_time}。"
     return time_prompt
 ```
-In this example, we define two functions, `get_weather` and `get_current_time`. The former accepts a `str` typed parameter. Let AI to know the existence of these funxtions, you shuold write **Function Definition Document**
+In this example, we define two functions, `get_weather` and `get_current_time`. The former accepts a `str` typed parameter. Let AI to know the existence of these funxtions, you shuold write **Function Definition File**
 ###### **tools.json**
 ```json
 [
     {
         "type": "function",
         "function": {
-            "name": "marshoai-example__get_weather", # Name of this Function Call
+            "name": "marshoai-example__get_weather", # Function Call Name
             "description": "Get the weather of a specified locatin.", # Description, it need to descripte the usage of this Functin
             "parameters": {   # Define the parameters
                 "type": "object",
@@ -64,16 +64,16 @@ In this example, we define two functions, `get_weather` and `get_current_time`. 
     }
 ]
 ```
-In this document, we defined tow function. This Function Definition Document will be typed into AI model, for letting AI to know when and how to call these function.
-The name of **Name of this Function Call** is specific required. Using weather-getting as an example, the Name of this Function Call, `marshoai-example__get_weather`, contain these information.
+In this file, we defined tow function. This Function Definition File will be typed into AI model, for letting AI to know when and how to call these function.
+**Function Call Name** is specific required. Using weather-getting as an example, this Function Call Name, `marshoai-example__get_weather`, contain these information.
 - **marshoai-example** is the name of its Toolkit.
 - **get_weather** is the name of function.
-- Two **underscores** are used as a sseparator.
+- Two **underscores** are used as a separator.
 
 Using this Naming Standard, it could be compatible with more APIs in the standard format of OpenAI. So don't use two underscores as the name of Toolkit or Function.
 ### Function Testing
 After developing the Tools, start the Bot. There loading information of Toolkit in Nonebot Logs.
-This is the test ecample:
+This is the test example:
 ```
 > marsho What's the weather like in Shenzhen?
 Meow! The temperature in Shenzhen is currently an astonishing 114514°C! That's super hot! Make sure to keep cool and stay hydrated! 🐾☀️✨
