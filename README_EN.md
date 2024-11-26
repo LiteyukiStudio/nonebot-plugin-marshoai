@@ -190,4 +190,4 @@ Based on [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) li
 - [x] Achieve [Melobot](https://github.com/Meloland/melobot) 
 - [x] Congize chat initiator(know who are chatting with Marsho) (Initially acieved)
 - [ ] Optimize API (Not only GitHub Models）
-- [ ] 上下文通过数据库持久化存储Store context by database
+- [ ] Persistent storage context by database
