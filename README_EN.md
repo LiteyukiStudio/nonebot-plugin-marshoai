@@ -22,7 +22,7 @@ _✨ A chat bot plugin which use OpenAI standard API ✨_
 
 ## 📖 Indroduction
 
-A plugin made by call OpenAI standard API(Such as drive by Azure OpenAI, GitHub Models provides AI logic API) 
+A plugin made by call OpenAI standard API(Such as GitHub Models API) 
 
 Plugin internally installed the catgirl character of Marsho, is able to have a cute conversation!
 
@@ -51,7 +51,7 @@ Plugin internally installed the catgirl character of Marsho, is able to have a c
 <details open>
 <summary>Install with nb-cli</summary>
   
-Open cmd under the root directory of nonebot2, input the instruction below.
+Open shell under the root directory of nonebot2, input the command below.
 
     nb plugin install nonebot-plugin-marshoai
 
@@ -60,7 +60,7 @@ Open cmd under the root directory of nonebot2, input the instruction below.
 <details>
 <summary>Install with pack manager</summary>
   
-Open cmd under the plugin directory of nonebot2, input corresponding instruction by your pack manager.
+Open shell under the plugin directory of nonebot2, input corresponding command according to your pack manager.
 
 <details>
 <summary>pip</summary>
@@ -95,20 +95,20 @@ Open the `pyproject.toml` file under nonebot2's root directory, Add to`[tool.non
 
 ## 🤖 Get token(GitHub Models)
 
-- Create new [personal access token](https://github.com/settings/tokens/new)，**Don't need any access rights**。
+- Create new [personal access token](https://github.com/settings/tokens/new)，**Don't need any permissions**.
 - Copy the new token, add to the `.env` file's `marshoai_token` option.
 
 ## 🎉 Usage
 
-End `marsho` in order to get direction for use(If you optimise the instruction, please use the optimised one).
+End `marsho` in order to get direction for use(If you configured the custom command, please use the configured one).
 
 #### 👉 Double click avatar
 
-When nonebot linked to OneBot v11, can recieve double click and response to it. More detail in the `MARSHOAI_POKE_SUFFIX` option.
+When nonebot linked to OneBot v11 adapter, can recieve double click and response to it. More detail in the `MARSHOAI_POKE_SUFFIX` option.
 
 ## 🛠️ MarshoTools
 
-MarshoTools is a function added in `v0.5.0`, support loading external function library to provide Function Call for Marsho. [Usage document](./README_TOOLS_EN.md)  
+MarshoTools is a feature added in `v0.5.0`, support loading external function library to provide Function Call for Marsho. [Documentation](./README_TOOLS_EN.md)  
 
 ## 👍 Praise list
 
@@ -136,38 +136,38 @@ It's structure is similar to:
 
 ## ⚙️ Configurable options
 
-In nonebot2,Add options in the `.env` file from the diagram below.
+Add options in the `.env` file from the diagram below in nonebot2 project.
 
 #### plugin behaviour
 
-| Option                   | Type   | Default | Describe         |
+| Option                   | Type   | Default | Description         |
 | ------------------------ | ------ | ------- | ---------------- |
-| MARSHOAI_USE_YAML_CONFIG | `bool` | `false` | Use YAML to configurate file format or not|
+| MARSHOAI_USE_YAML_CONFIG | `bool` | `false` | Use YAML config format |
 
-#### How to use Marsho 
+#### Marsho usage
 
-| Option                | Type       | Default     | Describe          |
+| Option                | Type       | Default     | Description          |
 | --------------------- | ---------- | ----------- | ----------------- |
-| MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | Instruction to call Marsho |
-| MARSHOAI_ALIASES      | `set[str]` | `set{"Marsho"}` | Other name to call Marsho |
+| MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | Command to call Marsho |
+| MARSHOAI_ALIASES      | `set[str]` | `set{"Marsho"}` | Other name(Alias) to call Marsho |
 | MARSHOAI_AT           | `bool`     | `false`     | Call by @ or not |
 
-#### AI 调用
+#### AI call
 
-| Option                           | Type    | Default                                 | Describe                                                                                           |
+| Option                           | Type    | Default                                 | Description                                                                                           |
 | -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
 | MARSHOAI_TOKEN                   | `str`   |                                         | The token needed to call AI API |
 | MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | The default model of Marsho                                                                        |
-| MARSHOAI_PROMPT                  | `str`   | Catgirl Marsho's character call-words                    | Marsho's basic system call-words **※Some models(o1 and so on) don't support it**                                                       |
-| MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho's external system call-words                                                                              |
-| MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 When OneBot user connected by Marsho double click, the content. When it's empty string, double click function is off. Such as, the default content is `*[昵称]揉了揉你的猫耳。` |
+| MARSHOAI_PROMPT                  | `str`   | Catgirl Marsho's character prompt                    | Marsho's basic system prompt **※Some models(o1 and so on) don't support it**                                                       |
+| MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho's external system prompt                                                                              |
+| MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | When double click Marsho who connected to OneBot adapter, the chat content. When it's empty string, double click function is off. Such as, the default content is `*[昵称]揉了揉你的猫耳。` |
 | MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI standard API                                                                            |
-| MARSHOAI_TEMPERATURE             | `float` | `null`                                  | logical generate diverse(temperature) parameter                                                                         |
-| MARSHOAI_TOP_P                   | `float` | `null`                                  | Logical core sampling parameter                                                                       |
+| MARSHOAI_TEMPERATURE             | `float` | `null`                                  | temperature parameter                                                                         |
+| MARSHOAI_TOP_P                   | `float` | `null`                                  | Nucleus Sampling parameter                                                                       |
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | Max token number                                                                                |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | External image-support model list, such as `hunyuan-vision`                                                 |
 
-#### Swithes
+#### Feature Switches
 
 | Option                            | Type   | Default | Description                        |
 | --------------------------------- | ------ | ------ | -------------------------- |
@@ -181,13 +181,13 @@ In nonebot2,Add options in the `.env` file from the diagram below.
 ## ❤ Thanks&Copyright
 
 "Marsho" logo contributed by [@Asankilp](https://github.com/Asankilp),
-Based on [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.
+licensed under [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.
 
-"nonebot-plugin-marshoai" is based on [MIT](./LICENSE) license.
+"nonebot-plugin-marshoai" is licensed under [MIT](./LICENSE) license.
 
 ## 🕊️ TODO
 
-- [x] Achieve [Melobot](https://github.com/Meloland/melobot) 
-- [x] Congize chat initiator(know who are chatting with Marsho) (Initially acieved)
+- [x] [Melobot](https://github.com/Meloland/melobot) implementation
+- [x] Congize chat initiator(know who are chatting with Marsho) (Initially implement)
 - [ ] Optimize API (Not only GitHub Models）
 - [ ] Persistent storage context by database
