@@ -8,7 +8,7 @@
 
 # nonebot-plugin-marshoai
 
-_✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
+_✨ A chat bot plugin which use OpenAI standard API ✨_
 
 <a href="./LICENSE">
     <img src="https://img.shields.io/github/license/LiteyukiStudio/nonebot-plugin-marshoai.svg" alt="license">
@@ -20,41 +20,47 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 </div>
 
-## 📖 介绍
+## 📖 Indroduction
 
-通过调用 OpenAI 标准格式 API(例如由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API) 来实现聊天的插件。  
-插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
-*谁不喜欢回复消息快又可爱的猫娘呢？*  
-**对 OneBot 以外的适配器与非 GitHub Models API的支持未经过完全验证。**
-[Melobot 实现](https://github.com/LiteyukiStudio/marshoai-melo)
+A plugin made by call OpenAI standard API(Such as drive by Azure OpenAI, GitHub Models provides AI logic API) 
 
-## 🐱 设定
+Plugin internally installed the catgirl character of Marsho, is able to have a cute conversation!
 
-#### 基本信息
+*Who don't like a cute catgirl with fast answer speed？*  
 
-- 名字：小棉(Marsho)
-- 生日：9月6日
+**Support for adapters other than OneBot and non-Github Models APIs is not fully verified.**
 
-#### 喜好
+[Melobot implementation](https://github.com/LiteyukiStudio/marshoai-melo)
 
-- 🌞 晒太阳晒到融化
-- 🤱 撒娇啊～谁不喜欢呢～
-- 🍫 吃零食！肉肉好吃！
-- 🐾 玩！我喜欢和朋友们一起玩！
+## 🐱 Character setting
 
-## 💿 安装
+#### Basic information
+
+- Name : Marsho
+- Birthday : September 6th
+
+#### Hobbies
+
+- 🌞 Melt in sunshine
+- 🤱 Coquetry~ who don't like that~
+- 🍫 Eating snacks! Meat is yummy!
+- 🐾 Play! I like play with friends!
+
+## 💿 Install
 
 <details open>
-<summary>使用 nb-cli 安装</summary>
-在 nonebot2 项目的根目录下打开命令行, 输入以下指令即可安装
+<summary>Install with nb-cli</summary>
+  
+Open cmd under the root directory of nonebot2, input the instruction below.
 
     nb plugin install nonebot-plugin-marshoai
 
 </details>
 
 <details>
-<summary>使用包管理器安装</summary>
-在 nonebot2 项目的插件目录下, 打开命令行, 根据你使用的包管理器, 输入相应的安装命令
+<summary>Install with pack manager</summary>
+  
+Open cmd under the plugin directory of nonebot2, input corresponding instruction by your pack manager.
 
 <details>
 <summary>pip</summary>
@@ -81,34 +87,36 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 </details>
 
-打开 nonebot2 项目根目录下的 `pyproject.toml` 文件, 在 `[tool.nonebot]` 部分追加写入
+Open the `pyproject.toml` file under nonebot2's root directory, Add to`[tool.nonebot]`.
 
     plugins = ["nonebot_plugin_marshoai"]
 
 </details>
 
-## 🤖 获取 token(GitHub Models)
+## 🤖 Get token(GitHub Models)
 
-- 新建一个[personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
-- 将新建的 token 复制，添加到`.env`文件中的`marshoai_token`配置项中。
+- Create new [personal access token](https://github.com/settings/tokens/new)，**Don't need any access rights**。
+- Copy the new token, add to the `.env` file's `marshoai_token` option.
 
-## 🎉 使用
+## 🎉 Usage
 
-发送`marsho`指令可以获取使用说明(若在配置中自定义了指令前缀请使用自定义的指令前缀)。
+End `marsho` in order to get direction for use(If you optimise the instruction, please use the optimised one).
 
-#### 👉 戳一戳
+#### 👉 Double click avatar
 
-当 nonebot 连接到支持的 OneBot v11 实现端时，可以接收头像双击戳一戳消息并进行响应。详见`MARSHOAI_POKE_SUFFIX`配置项。
+When nonebot linked to OneBot v11, can recieve double click and response to it. More detail in the `MARSHOAI_POKE_SUFFIX` option.
 
-## 🛠️ 小棉工具
-小棉工具(MarshoTools)是`v0.5.0`版本的新增功能，支持加载外部函数库来为 Marsho 提供 Function Call 功能。[使用文档](./README_TOOLS.md)  
+## 🛠️ MarshoTools
 
-## 👍 夸赞名单
+MarshoTools is a function added in `v0.5.0`, support loading external function library to provide Function Call for Marsho. [Usage document](./README_TOOLS_EN.md)  
 
-夸赞名单存储于插件数据目录下的`praises.json`里（该目录路径会在 Bot 启动时输出到日志），当配置项为`true`
-时发起一次聊天后自动生成，包含人物名字与人物优点两个基本数据。  
-存储于其中的人物会被 Marsho “认识”和“喜欢”。  
-其结构类似于：
+## 👍 Praise list
+
+Praise list stored in the `praises.json` in plugin directory（This directory will putput to log when Bot start), it'll automatically generate when option is `true`, include character name and advantage two basic data.
+
+The character stored in it would be “know” and “like” by Marsho.
+
+It's structure is similar to:
 
 ```json
 {
@@ -126,59 +134,60 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 }
 ```
 
-## ⚙️ 可配置项
+## ⚙️ Configurable options
 
-在 nonebot2 项目的`.env`文件中添加下表中的配置
+In nonebot2,Add options in the `.env` file from the diagram below.
 
-#### 插件行为
+#### plugin behaviour
 
-| 配置项                      | 类型     | 默认值     | 说明               |
+| Option                   | Type   | Default | Describe         |
 | ------------------------ | ------ | ------- | ---------------- |
-| MARSHOAI_USE_YAML_CONFIG | `bool` | `false` | 是否使用 YAML 配置文件格式 |
+| MARSHOAI_USE_YAML_CONFIG | `bool` | `false` | Use YAML to configurate file format or not|
 
-#### Marsho 使用方式
+#### How to use Marsho 
 
-| 配置项                   | 类型         | 默认值         | 说明                |
+| Option                | Type       | Default     | Describe          |
 | --------------------- | ---------- | ----------- | ----------------- |
-| MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | 调用 Marsho 默认的命令前缀 |
-| MARSHOAI_ALIASES      | `set[str]` | `set{"小棉"}` | 调用 Marsho 的命令别名   |
-| MARSHOAI_AT           | `bool`     | `false`     | 决定是否使用at触发
+| MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | Instruction to call Marsho |
+| MARSHOAI_ALIASES      | `set[str]` | `set{"Marsho"}` | Other name to call Marsho |
+| MARSHOAI_AT           | `bool`     | `false`     | Call by @ or not |
 
 #### AI 调用
 
-| 配置项                              | 类型      | 默认值                                     | 说明                                                                                            |
+| Option                           | Type    | Default                                 | Describe                                                                                           |
 | -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
-| MARSHOAI_TOKEN                   | `str`   |                                         | 调用 AI API 所需的 token                                                                           |
-| MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | Marsho 默认调用的模型                                                                                |
-| MARSHOAI_PROMPT                  | `str`   | 猫娘 Marsho 人设提示词                         | Marsho 的基本系统提示词 **※部分模型(o1等)不支持系统提示词。**                                                       |
-| MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho 的扩展系统提示词                                                                               |
-| MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳。` |
-| MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI 标准格式 API 端点                                                                            |
-| MARSHOAI_TEMPERATURE             | `float` | `null`                                  | 推理生成多样性（温度）参数                                                                                 |
-| MARSHOAI_TOP_P                   | `float` | `null`                                  | 推理核采样参数                                                                                       |
-| MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | 最大生成 token 数                                                                                  |
-| MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | 额外添加的支持图片的模型列表，例如`hunyuan-vision`                                                             |
+| MARSHOAI_TOKEN                   | `str`   |                                         | The token needed to call AI API |
+| MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | The default model of Marsho                                                                        |
+| MARSHOAI_PROMPT                  | `str`   | Catgirl Marsho's character call-words                    | Marsho's basic system call-words **※Some models(o1 and so on) don't support it**                                                       |
+| MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho's external system call-words                                                                              |
+| MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 When OneBot user connected by Marsho double click, the content. When it's empty string, double click function is off. Such as, the default content is `*[昵称]揉了揉你的猫耳。` |
+| MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI standard API                                                                            |
+| MARSHOAI_TEMPERATURE             | `float` | `null`                                  | logical generate diverse(temperature) parameter                                                                         |
+| MARSHOAI_TOP_P                   | `float` | `null`                                  | Logical core sampling parameter                                                                       |
+| MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | Max token number                                                                                |
+| MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | External image-support model list, such as `hunyuan-vision`                                                 |
 
-#### 功能开关
+#### Swithes
 
-| 配置项                               | 类型     | 默认值    | 说明                         |
+| Option                            | Type   | Default | Description                        |
 | --------------------------------- | ------ | ------ | -------------------------- |
-| MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | `bool` | `true` | 启用后用户发送带图请求时若模型不支持图片，则提示用户 |
-| MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | 启用后用户未设置昵称时提示用户设置          |
-| MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | 是否启用夸赞名单功能                 |
-| MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | 是否启用小棉工具                   |
-| MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | 是否加载内置工具包                  |
+| MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | `bool` | `true` | When on, if user send request with photo and model don't support that, remind the user |
+| MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | When on, if user haven't set username, remind user to set       |
+| MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | Turn on Praise list or not           |
+| MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | Turn on Marsho Tools or not           |
+| MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | Loading the built-in tool pack or not |
 
 
-## ❤ 鸣谢&版权说明
+## ❤ Thanks&Copyright
 
-"Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)
-绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
-"nonebot-plugin-marshoai" 基于 [MIT](./LICENSE) 许可下提供。
+"Marsho" logo contributed by [@Asankilp](https://github.com/Asankilp),
+Based on [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.
+
+"nonebot-plugin-marshoai" is based on [MIT](./LICENSE) license.
 
 ## 🕊️ TODO
 
-- [x] [Melobot](https://github.com/Meloland/melobot) 实现
-- [x] 对聊天发起者的认知（认出是谁在问 Marsho）（初步实现）
-- [ ] 自定义 API 接入点的适配（不局限于GitHub Models）
-- [ ] 上下文通过数据库持久化存储
+- [x] Achieve [Melobot](https://github.com/Meloland/melobot) 
+- [x] Congize chat initiator(know who are chatting with Marsho) (Initially acieved)
+- [ ] Optimize API (Not only GitHub Models）
+- [ ] 上下文通过数据库持久化存储Store context by database
