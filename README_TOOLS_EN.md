@@ -1,5 +1,5 @@
 # 🛠️MarshoTools
-Marsho is a simple module loader. It allows to load kits and its function from `tools` in plugin directory, for AI to use.
+MarshoTools is a simple module loader. It allows to load kits and its function from `tools` in plugin directory, for AI to use.
 More information for Function Call, please refr to [OpenAI Offical Documentation](https://platform.openai.com/docs/guides/function-calling)
 
 ## ✍️ Writing Tools
