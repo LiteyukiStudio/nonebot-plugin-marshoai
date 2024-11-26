@@ -1,0 +1,81 @@
+# 🛠️Marsho
+Marsho is a simple module loader. It allows to load kits and its function from `tools` in plugin directory, for AI to use.
+More information for Function Call, please refr to [OpenAI Offical Documentation](https://platform.openai.com/docs/guides/function-calling)
+
+## ✍️ Development Kits
+### 📁 Directory Structure
+`tools` in plugin directory is caller **Toolset**. It contains many **Toolkit**, Toolkit is similar with **Packages** in Python in structure. It need `__init__.py` document and `tools.json` definition document in it. They are used to store and define functions.
+
+A directory structure of Toolkit:
+```
+tools/ # Toolset Directory
+└── marshoai-example/ # Toolkit Directory, Named as Packages' name
+    └── __init__.py # Tool Module
+    └── tools.json # Function Definition Document
+```
+In this directory tree:
+- **Toolset Directory** is named as `marshoat-xxxxx`, its name is the name of Toolset. Please follow this naming standard.
+- ***Tool Module* could contain many callable **Sync** function, it could have parameters or be parameterless and the return value should be supported by AI model. Generally speaking, the `str` type is accepted to most model.
+- **Function Definition Document** is for AI model to know how to call these function.
+### Function Writing
+Let's write a function for getting the weather and one for getting time.
+###### **\_\_init\_\_.py**
+```python
+from datetime import datetime
+
+async def get_weather(location: str):
+    return f"The temperature of {location} is 114514℃。" #To simulate the return value of weather.
+
+async def get_current_time():
+    current_time = datetime.now().strftime("%Y.%m.%d %H:%M:%S")
+    time_prompt = f"Now is {current_time}。"
+    return time_prompt
+```
+In this example, we define two functions, `get_weather` and `get_current_time`. The former accepts a `str` typed parameter. Let AI to know the existence of these funxtions, you shuold write **Function Definition Document**
+###### **tools.json**
+```json
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "marshoai-example__get_weather", # Name of this Function Call
+            "description": "Get the weather of a specified locatin.", # Description, it need to descripte the usage of this Functin
+            "parameters": {   # Define the parameters
+                "type": "object",
+                "properties": {
+                    "location": { # 'location' is the name that _init__.py had defined.
+                        "type": "string", # the Type of patameters
+                        "description": "City or district. Such as Beijing, Hangzhou, Yuhang District" # Description，it need to descripte the type or example of Actual Parameter
+                    }
+                }
+            },
+            "required": [ # Define the Required Parameters
+                "location"
+            ]
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "marshoai-example__get_current_time",
+            "description": "Get time",
+            "parameters": {} # No parameter requried, so it is blanked
+        }
+    }
+]
+```
+In this document, we defined tow function. This Function Definition Document will be typed into AI model, for letting AI to know when and how to call these function.
+The name of **Name of this Function Call** is specific required. Using weather-getting as an example, the Name of this Function Call, `marshoai-example__get_weather`, contain these information.
+- **marshoai-example** is the name of its Toolkit.
+- **get_weather** is the name of function.
+- Two **underscores** are used as a sseparator.
+
+Using this Naming Standard, it could be compatible with more APIs in the standard format of OpenAI. So don't use two underscores as the name of Toolkit or Function.
+### Function Testing
+After developing the Tools, start the Bot. There loading information of Toolkit in Nonebot Logs.
+This is the test ecample:
+```
+> marsho What's the weather like in Shenzhen?
+> marsho Please tell me the weather in Shimokitazawa, Hangzhou, and Suzhou separately.
+> marsho What time is it now?
+```
