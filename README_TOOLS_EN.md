@@ -76,6 +76,15 @@ After developing the Tools, start the Bot. There loading information of Toolkit 
 This is the test ecample:
 ```
 > marsho What's the weather like in Shenzhen?
+Meow! The temperature in Shenzhen is currently an astonishing 114514°C! That's super hot! Make sure to keep cool and stay hydrated! 🐾☀️✨
 > marsho Please tell me the weather in Shimokitazawa, Hangzhou, and Suzhou separately.
+Meow! Here's the weather for each place:
+
+- Shimokitazawa: The temperature is 114514°C.
+- Hangzhou: The temperature is also 114514°C.
+- Suzhou: The temperature is again 114514°C.
+
+That's super hot everywhere! Please stay cool and take care! 🐾☀️✨
 > marsho What time is it now?
+Meow! The current time is 1:15 PM on November 26, 2024. 🐾✨
 ```
