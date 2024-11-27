@@ -80,9 +80,13 @@ target_list = []  # 记录需保存历史上下文的列表
 async def _preload_tools():
     tools_dir = store.get_plugin_data_dir() / "tools"
     os.makedirs(tools_dir, exist_ok=True)
-    if config.marshoai_load_builtin_tools:
-        tools.load_tools(Path(__file__).parent / "tools")
-    tools.load_tools(store.get_plugin_data_dir() / "tools")
+    if config.marshoai_enable_tools:
+        if config.marshoai_load_builtin_tools:
+            tools.load_tools(Path(__file__).parent / "tools")
+        tools.load_tools(store.get_plugin_data_dir() / "tools")
+        for tool_dir in config.marshoai_toolset_dir:
+            tools.load_tools(tool_dir)
+        logger.info("如果启用小棉工具后使用的模型出现报错，请尝试将 MARSHOAI_ENABLE_TOOLS 设为 false。")
 
 
 @add_usermsg_cmd.handle()
@@ -250,11 +254,11 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
             while choice.message.tool_calls != None:
                 tool_msg.append(AssistantMessage(tool_calls=response.choices[0].message.tool_calls))
                 for tool_call in choice.message.tool_calls:
-                    if isinstance(tool_call, ChatCompletionsToolCall):
+                    if isinstance(tool_call, ChatCompletionsToolCall): # 循环调用工具直到不需要调用
                         function_args = json.loads(tool_call.function.arguments.replace("'", '"'))
                         logger.info(f"调用函数 {tool_call.function.name} ,参数为 {function_args}")
                         await UniMessage(f"调用函数 {tool_call.function.name} ,参数为 {function_args}").send()
-                        func_return = await tools.call(tool_call.function.name, function_args)
+                        func_return = await tools.call(tool_call.function.name, function_args) # 获取返回值
                         tool_msg.append(ToolMessage(tool_call_id=tool_call.id, content=func_return))
                 response = await make_chat(
                     client=client,
@@ -263,12 +267,17 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                     tools=tools.get_tools_list()
                 )
                 choice = response.choices[0]
-            context.append(
-                UserMessage(content=usermsg).as_dict(), target.id, target.private
-            )
+            if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
+                context.append(
+                    UserMessage(content=usermsg).as_dict(), target.id, target.private
+                )
             # context.append(tool_msg, target.id, target.private)
-            context.append(choice.message.as_dict(), target.id, target.private)
-            await UniMessage(str(choice.message.content)).send(reply_to=True)
+                context.append(choice.message.as_dict(), target.id, target.private)
+                await UniMessage(str(choice.message.content)).send(reply_to=True)
+            else:
+                await marsho_cmd.finish(f"意外的完成原因:{choice['finish_reason']}")
+        else:
+            await marsho_cmd.finish(f"意外的完成原因:{choice['finish_reason']}")
     except Exception as e:
         await UniMessage(str(e) + suggest_solution(str(e))).send()
         traceback.print_exc()

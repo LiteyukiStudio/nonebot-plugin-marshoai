@@ -87,7 +87,7 @@ class MarshoTools:
                             package = importlib.util.module_from_spec(spec)
                             spec.loader.exec_module(package)
                             self.imported_packages[package_name] = package
-                            logger.info(f"成功加载工具包 {package_name}")
+                            logger.success(f"成功加载工具包 {package_name}")
                     except json.JSONDecodeError as e:
                         logger.error(f"解码 JSON {json_path} 时发生错误: {e}")
                     except Exception as e:
@@ -114,10 +114,10 @@ class MarshoTools:
             try:
                 function = getattr(package, function_name)
                 return await function(**args)
-            except AttributeError:
-                logger.error(f"函数 '{function_name}' 在 '{package_name}' 中找不到。")
-            except TypeError as e:
-                logger.error(f"调用函数 '{function_name}' 时发生错误: {e}")
+            except Exception as e:
+                errinfo = f"调用函数 '{function_name}'时发生错误:{e}"
+                logger.error(errinfo)
+                return errinfo
         else:
             logger.error(f"工具包 '{package_name}' 未导入")
     

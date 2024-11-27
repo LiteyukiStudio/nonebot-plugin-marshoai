@@ -168,7 +168,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | 是否启用夸赞名单功能                 |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | 是否启用小棉工具                   |
 | MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | 是否加载内置工具包                  |
-
+| MARSHOAI_TOOLSET_DIR             | `list`   | `[]`   |   外部工具集路径列表            |
 
 ## ❤ 鸣谢&版权说明
 
