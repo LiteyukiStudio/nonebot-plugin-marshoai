@@ -5,10 +5,9 @@ import json
 from typing import Any
 import httpx
 import nonebot_plugin_localstore as store
-from datetime import datetime
 
 from nonebot.log import logger
-from zhDateTime import DateTime  # type: ignore
+from zhDateTime import DateTime
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
 from .config import config
@@ -40,7 +39,9 @@ async def get_image_b64(url):
             return None
 
 
-async def make_chat(client: ChatCompletionsClient, msg: list, model_name: str, tools: list = None):
+async def make_chat(
+    client: ChatCompletionsClient, msg: list, model_name: str, tools: list = None
+):
     """调用ai获取回复
 
     参数:
@@ -60,7 +61,9 @@ async def make_chat(client: ChatCompletionsClient, msg: list, model_name: str, t
 def get_praises():
     global praises_json
     if praises_json is None:
-        praises_file = store.get_plugin_data_file("praises.json")  # 夸赞名单文件使用localstore存储
+        praises_file = store.get_plugin_data_file(
+            "praises.json"
+        )  # 夸赞名单文件使用localstore存储
         if not os.path.exists(praises_file):
             init_data = {
                 "like": [
@@ -207,5 +210,7 @@ async def get_backup_context(target_id: str, target_private: bool) -> list:
         target_uid = f"group_{target_id}"
     if target_uid not in loaded_target_list:
         loaded_target_list.append(target_uid)
-        return await load_context_from_json(f"back_up_context_{target_uid}", "contexts/backup")
+        return await load_context_from_json(
+            f"back_up_context_{target_uid}", "contexts/backup"
+        )
     return []
