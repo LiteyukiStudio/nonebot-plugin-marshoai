@@ -234,14 +234,27 @@ async def send_markdown(msg: str):
     人工智能给出的回答一般不会包含 HTML 嵌入其中，但是包含图片或者 LaTeX 公式、代码块，都很正常。
     这个函数会把这些都以图片形式嵌入消息体。
     """
+
+    if not IMG_TAG_PATTERN.search(msg):  # 没有图片标签
+        await UniMessage(msg).send(reply_to=True)
+        return
+
     result_msg = UniMessage()
     code_blank_uuid_map = [
         (uuid.uuid4().hex, cbp.group()) for cbp in CODE_BLOCK_PATTERN.finditer(msg)
     ]
 
+    last_tag_index = 0
+
     # 代码块渲染麻烦，先不处理
     for rep, torep in code_blank_uuid_map:
         msg = msg.replace(torep, rep)
+
+    # for to_rep in CODE_SINGLE_PATTERN.finditer(msg):
+    #     code_blank_uuid_map.append((rep := uuid.uuid4().hex, to_rep.group()))
+    #     msg = msg.replace(to_rep.group(), rep)
+
+    print("#####################\n", msg, "\n\n")
 
     # 插入图片
     for each_img_tag in IMG_TAG_PATTERN.finditer(msg):
@@ -254,14 +267,28 @@ async def send_markdown(msg: str):
         result_msg.append(
             TextMsg(
                 await get_back_uuidcodeblock(
-                    msg[: msg.find(img_tag)], code_blank_uuid_map
+                    msg[last_tag_index : msg.find(img_tag)], code_blank_uuid_map
                 )
             )
         )
 
-        result_msg.append(ImageMsg(url=image_url, name=image_description + ".png"))
+        last_tag_index = msg.find(img_tag) + len(img_tag)
 
-        result_msg.append(TextMsg("（{}）".format(image_description)))
+        if image_ := await get_image_raw_and_type(image_url):
+
+            result_msg.append(
+                ImageMsg(
+                    raw=image_[0], mimetype=image_[1], name=image_description + ".png"
+                )
+            )
+            result_msg.append(TextMsg("（{}）".format(image_description)))
+
+        else:
+            result_msg.append(TextMsg(img_tag))
+
+    result_msg.append(
+        TextMsg(await get_back_uuidcodeblock(msg[last_tag_index:], code_blank_uuid_map))
+    )
 
     await result_msg.send(reply_to=True)
 
