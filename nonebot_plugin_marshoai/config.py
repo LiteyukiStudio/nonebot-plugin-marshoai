@@ -55,19 +55,19 @@ destination_file = destination_folder / "config.yaml"
 
 
 def copy_config(source_template, destination_file):
-    '''
+    """
     复制模板配置文件到config
-    '''
+    """
     shutil.copy(source_template, destination_file)
 
 
 def check_yaml_is_changed(source_template):
-    '''
+    """
     检查配置文件是否需要更新
-    '''
-    with open(config_file_path, 'r', encoding="utf-8") as f:
+    """
+    with open(config_file_path, "r", encoding="utf-8") as f:
         old = yaml.load(f)
-    with open(source_template, 'r', encoding="utf-8") as f:
+    with open(source_template, "r", encoding="utf-8") as f:
         example_ = yaml.load(f)
     keys1 = set(example_.keys())
     keys2 = set(old.keys())
@@ -78,9 +78,9 @@ def check_yaml_is_changed(source_template):
 
 
 def merge_configs(old_config, new_config):
-    '''
+    """
     合并配置文件
-    '''
+    """
     for key, value in new_config.items():
         if key in old_config:
             continue
@@ -88,6 +88,7 @@ def merge_configs(old_config, new_config):
             logger.info(f"新增配置项: {key} = {value}")
             old_config[key] = value
     return old_config
+
 
 config: ConfigModel = get_plugin_config(ConfigModel)
 if config.marshoai_use_yaml_config:
@@ -97,25 +98,27 @@ if config.marshoai_use_yaml_config:
         copy_config(source_template, destination_file)
     else:
         logger.info("配置文件存在,正在读取")
-    
+
         if check_yaml_is_changed(source_template):
             yaml_2 = YAML()
             logger.info("插件新的配置已更新, 正在更新")
-    
-            with open(config_file_path, 'r', encoding="utf-8") as f:
+
+            with open(config_file_path, "r", encoding="utf-8") as f:
                 old_config = yaml_2.load(f)
-    
-            with open(source_template, 'r', encoding="utf-8") as f:
+
+            with open(source_template, "r", encoding="utf-8") as f:
                 new_config = yaml_2.load(f)
-    
+
             merged_config = merge_configs(old_config, new_config)
-    
-            with open(destination_file, 'w', encoding="utf-8") as f:
+
+            with open(destination_file, "w", encoding="utf-8") as f:
                 yaml_2.dump(merged_config, f)
-    
+
     with open(config_file_path, "r", encoding="utf-8") as f:
         yaml_config = yaml_.load(f, Loader=yaml_.FullLoader)
-    
+
         config = ConfigModel(**yaml_config)
 else:
-    logger.info("MarshoAI 支持新的 YAML 配置系统，若要使用，请将 MARSHOAI_USE_YAML_CONFIG 配置项设置为 true。")
+    logger.info(
+        "MarshoAI 支持新的 YAML 配置系统，若要使用，请将 MARSHOAI_USE_YAML_CONFIG 配置项设置为 true。"
+    )

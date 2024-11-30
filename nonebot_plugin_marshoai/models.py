@@ -4,9 +4,11 @@ import os
 import re
 import json
 import importlib
-#import importlib.util
+
+# import importlib.util
 import traceback
 from nonebot import logger
+
 
 class MarshoContext:
     """
@@ -14,10 +16,7 @@ class MarshoContext:
     """
 
     def __init__(self):
-        self.contents = {
-            "private": {},
-            "non-private": {}
-        }
+        self.contents = {"private": {}, "non-private": {}}
 
     def _get_target_dict(self, is_private):
         return self.contents["private"] if is_private else self.contents["non-private"]
@@ -60,6 +59,7 @@ class MarshoTools:
     """
     Marsho 的工具类
     """
+
     def __init__(self):
         self.tools_list = []
         self.imported_packages = {}
@@ -74,16 +74,20 @@ class MarshoTools:
 
         for package_name in os.listdir(tools_dir):
             package_path = os.path.join(tools_dir, package_name)
-            if os.path.isdir(package_path) and os.path.exists(os.path.join(package_path, '__init__.py')):
-                json_path = os.path.join(package_path, 'tools.json')
+            if os.path.isdir(package_path) and os.path.exists(
+                os.path.join(package_path, "__init__.py")
+            ):
+                json_path = os.path.join(package_path, "tools.json")
                 if os.path.exists(json_path):
                     try:
-                        with open(json_path, 'r', encoding="utf-8") as json_file:
+                        with open(json_path, "r", encoding="utf-8") as json_file:
                             data = json.load(json_file)
                             for i in data:
                                 self.tools_list.append(i)
                             # 导入包
-                            spec = importlib.util.spec_from_file_location(package_name, os.path.join(package_path, "__init__.py"))
+                            spec = importlib.util.spec_from_file_location(
+                                package_name, os.path.join(package_path, "__init__.py")
+                            )
                             package = importlib.util.module_from_spec(spec)
                             spec.loader.exec_module(package)
                             self.imported_packages[package_name] = package
@@ -94,7 +98,9 @@ class MarshoTools:
                         logger.error(f"加载工具包时发生错误: {e}")
                         traceback.print_exc()
                 else:
-                    logger.warning(f"在工具包 {package_path} 下找不到tools.json，跳过加载。")
+                    logger.warning(
+                        f"在工具包 {package_path} 下找不到tools.json，跳过加载。"
+                    )
             else:
                 logger.warning(f"{package_path} 不是有效的工具包路径，跳过加载。")
 
@@ -120,10 +126,8 @@ class MarshoTools:
                 return errinfo
         else:
             logger.error(f"工具包 '{package_name}' 未导入")
-    
+
     def get_tools_list(self):
         if not self.tools_list or not config.marshoai_enable_tools:
             return None
         return self.tools_list
-
-

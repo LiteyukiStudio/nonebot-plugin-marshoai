@@ -15,7 +15,7 @@ dependencies = [
     "httpx>=0.27.0",
     "ruamel.yaml>=0.18.6",
     "pyyaml>=6.0.2"
-
+    
 ]
 license = { text = "MIT" }
 

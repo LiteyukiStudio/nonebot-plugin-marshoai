@@ -1,15 +1,19 @@
 from nonebot.plugin import require
+
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
-from .azure import *
-#from .hunyuan import *
+
 from nonebot import get_driver, logger
+import nonebot_plugin_localstore as store
+
+# from .hunyuan import *
+from .azure import *
 from .config import config
 from .metadata import metadata
-import nonebot_plugin_localstore as store
 
 __author__ = "Asankilp"
 __plugin_meta__ = metadata
+
 driver = get_driver()
 
 

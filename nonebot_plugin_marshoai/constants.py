@@ -1,4 +1,6 @@
+import re
 from .config import config
+
 USAGE: str = f"""MarshoAI-NoneBot Beta by Asankilp
 用法：
   {config.marshoai_default_name} <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
@@ -15,9 +17,15 @@ USAGE: str = f"""MarshoAI-NoneBot Beta by Asankilp
   refresh_data : 从文件刷新已加载的昵称与夸赞名单。
 ※本AI的回答"按原样"提供，不提供任何担保。AI也会犯错，请仔细甄别回答的准确性。"""
 
-SUPPORT_IMAGE_MODELS: list = ["gpt-4o","gpt-4o-mini","phi-3.5-vision-instruct","llama-3.2-90b-vision-instruct","llama-3.2-11b-vision-instruct"]
-REASONING_MODELS: list = ["o1-preview","o1-mini"]
-INTRODUCTION: str =  """你好喵~我是一只可爱的猫娘AI，名叫小棉~🐾！
+SUPPORT_IMAGE_MODELS: list = [
+    "gpt-4o",
+    "gpt-4o-mini",
+    "phi-3.5-vision-instruct",
+    "llama-3.2-90b-vision-instruct",
+    "llama-3.2-11b-vision-instruct",
+]
+REASONING_MODELS: list = ["o1-preview", "o1-mini"]
+INTRODUCTION: str = """你好喵~我是一只可爱的猫娘AI，名叫小棉~🐾！
 我的代码在这里哦~↓↓↓
 https://github.com/LiteyukiStudio/nonebot-plugin-marshoai
 
@@ -25,3 +33,19 @@ https://github.com/LiteyukiStudio/nonebot-plugin-marshoai
 https://github.com/Meloland/melobot
 我与 Melobot 酱贴贴的代码在这里喵~↓↓↓
 https://github.com/LiteyukiStudio/marshoai-melo"""
+
+
+# 正则匹配代码块
+CODE_BLOCK_PATTERN = re.compile(
+    r"```(.*?)```|`(.*?)`", re.DOTALL
+)
+# 正则匹配完整图片标签字段
+IMG_TAG_PATTERN = re.compile(r"!\[[^\]]*\]\([^()]*\)")
+# # 正则匹配图片标签中的图片url字段
+# INTAG_URL_PATTERN = re.compile(r'\(([^)]*)')
+# # 正则匹配图片标签中的文本描述字段
+# INTAG_TEXT_PATTERN = re.compile(r'!\[([^\]]*)\]')
+# 正则匹配 LaTeX 公式内容
+LATEX_PATTERN = re.compile(
+    r"\\begin\{equation\}(.*?)\\end\{equation\}|(?<!\$)(\$(.*?)\$|\$\$(.*?)\$\$|\\\[(.*?)\\\]|\\\[.*?\\\]|\\\((.*?)\\\))",
+)

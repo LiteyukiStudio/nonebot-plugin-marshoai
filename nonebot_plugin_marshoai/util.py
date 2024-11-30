@@ -2,13 +2,12 @@ import base64
 import mimetypes
 import os
 import json
-from typing import Any
+from typing import Any, Optional
 import httpx
 import nonebot_plugin_localstore as store
-from datetime import datetime
 
 from nonebot.log import logger
-from zhDateTime import DateTime  # type: ignore
+from zhDateTime import DateTime
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
 from .config import config
@@ -17,30 +16,66 @@ nickname_json = None  # 记录昵称
 praises_json = None  # 记录夸赞名单
 loaded_target_list = []  # 记录已恢复备份的上下文的列表
 
+# noinspection LongLine
+chromium_headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+}
 
-async def get_image_b64(url):
-    # noinspection LongLine
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
+
+async def get_image_raw_and_type(
+    url: str, timeout: int = 10
+) -> Optional[tuple[bytes, str]]:
+    """
+    获取图片的二进制数据
+
+    参数:
+        url: str 图片链接
+        timeout: int 超时时间 秒
+
+    return:
+        tuple[bytes, str]: 图片二进制数据, 图片MIME格式
+
+    """
 
     async with httpx.AsyncClient() as client:
-        response = await client.get(url, headers=headers)
+        response = await client.get(url, headers=chromium_headers, timeout=timeout)
         if response.status_code == 200:
             # 获取图片数据
-            image_data = response.content
             content_type = response.headers.get("Content-Type")
             if not content_type:
                 content_type = mimetypes.guess_type(url)[0]
             # image_format = content_type.split("/")[1] if content_type else "jpeg"
-            base64_image = base64.b64encode(image_data).decode("utf-8")
-            data_url = f"data:{content_type};base64,{base64_image}"
-            return data_url
+            return response.content, str(content_type)
         else:
             return None
 
 
-async def make_chat(client: ChatCompletionsClient, msg: list, model_name: str, tools: list = None):
+async def get_image_b64(url: str, timeout: int = 10) -> Optional[str]:
+    """
+    获取图片的base64编码
+
+    参数:
+        url: 图片链接
+        timeout: 超时时间 秒
+
+    return: 图片base64编码
+    """
+
+    if data_type := await get_image_raw_and_type(url, timeout):
+        # image_format = content_type.split("/")[1] if content_type else "jpeg"
+        base64_image = base64.b64encode(data_type[0]).decode("utf-8")
+        data_url = "data:{};base64,{}".format(data_type[1], base64_image)
+        return data_url
+    else:
+        return None
+
+
+async def make_chat(
+    client: ChatCompletionsClient,
+    msg: list,
+    model_name: str,
+    tools: Optional[list] = None,
+):
     """调用ai获取回复
 
     参数:
@@ -60,7 +95,9 @@ async def make_chat(client: ChatCompletionsClient, msg: list, model_name: str, t
 def get_praises():
     global praises_json
     if praises_json is None:
-        praises_file = store.get_plugin_data_file("praises.json")  # 夸赞名单文件使用localstore存储
+        praises_file = store.get_plugin_data_file(
+            "praises.json"
+        )  # 夸赞名单文件使用localstore存储
         if not os.path.exists(praises_file):
             init_data = {
                 "like": [
@@ -207,5 +244,7 @@ async def get_backup_context(target_id: str, target_private: bool) -> list:
         target_uid = f"group_{target_id}"
     if target_uid not in loaded_target_list:
         loaded_target_list.append(target_uid)
-        return await load_context_from_json(f"back_up_context_{target_uid}", "contexts/backup")
+        return await load_context_from_json(
+            f"back_up_context_{target_uid}", "contexts/backup"
+        )
     return []
