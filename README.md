@@ -142,7 +142,8 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 | --------------------- | ---------- | ----------- | ----------------- |
 | MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | 调用 Marsho 默认的命令前缀 |
 | MARSHOAI_ALIASES      | `set[str]` | `set{"小棉"}` | 调用 Marsho 的命令别名   |
-| MARSHOAI_AT           | `bool`     | `false`     | 决定是否使用at触发
+| MARSHOAI_AT           | `bool`     | `false`     | 决定是否使用at触发   |
+| MARSHOAI_MAIN_COLOUR  | `str`      | `FFAAAA`      | 主题色，部分工具和功能可用   |
 
 #### AI 调用
 
@@ -168,7 +169,9 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | 是否启用夸赞名单功能                 |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | 是否启用小棉工具                   |
 | MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | 是否加载内置工具包                  |
-| MARSHOAI_TOOLSET_DIR             | `list`   | `[]`   |   外部工具集路径列表            |
+| MARSHOAI_TOOLSET_DIR              | `list` | `[]`   |   外部工具集路径列表            |
+| MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` |   是否启用自动解析消息（若包含图片链接则发送图片、若包含LaTeX公式则发送公式图）           |
+| MARSHOAI_SINGLE_LATEX_PARSE    | `bool` | `false` |   单行公式是否渲染（当消息富文本解析启用时可用）（如果单行也渲……只能说不好看）           |
 
 ## ❤ 鸣谢&版权说明
 

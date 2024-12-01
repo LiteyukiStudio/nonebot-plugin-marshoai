@@ -36,11 +36,22 @@ https://github.com/LiteyukiStudio/marshoai-melo"""
 
 
 # 正则匹配代码块
-CODE_BLOCK_PATTERN = re.compile(
-    r"```(.*?)```|`(.*?)`", re.DOTALL
+CODE_BLOCK_PATTERN = re.compile(r"```(.*?)```|`(.*?)`", re.DOTALL)
+
+# 通用正则匹配（LaTeX和Markdown图片）
+IMG_LATEX_PATTERN = re.compile(
+    (
+        r"(!\[[^\]]*\]\([^()]*\))|(\\begin\{equation\}.*?\\end\{equation\}|\$.*?\$|\$\$.*?\$\$|\\\[.*?\\\]|\\\(.*?\\\))"
+        if config.marshoai_single_latex_prase
+        else r"(!\[[^\]]*\]\([^()]*\))|(\\begin\{equation\}.*?\\end\{equation\}|\$\$.*?\$\$|\\\[.*?\\\])"
+    ),
+    re.DOTALL,
 )
+
 # 正则匹配完整图片标签字段
-IMG_TAG_PATTERN = re.compile(r"!\[[^\]]*\]\([^()]*\)")
+IMG_TAG_PATTERN = re.compile(
+    r"!\[[^\]]*\]\([^()]*\)",
+)
 # # 正则匹配图片标签中的图片url字段
 # INTAG_URL_PATTERN = re.compile(r'\(([^)]*)')
 # # 正则匹配图片标签中的文本描述字段
@@ -48,4 +59,5 @@ IMG_TAG_PATTERN = re.compile(r"!\[[^\]]*\]\([^()]*\)")
 # 正则匹配 LaTeX 公式内容
 LATEX_PATTERN = re.compile(
     r"\\begin\{equation\}(.*?)\\end\{equation\}|(?<!\$)(\$(.*?)\$|\$\$(.*?)\$\$|\\\[(.*?)\\\]|\\\[.*?\\\]|\\\((.*?)\\\))",
+    re.DOTALL,
 )

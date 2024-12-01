@@ -1,16 +1,30 @@
-import base64
-import mimetypes
 import os
 import json
-from typing import Any, Optional
+import uuid
 import httpx
-import nonebot_plugin_localstore as store
+import base64
+import mimetypes
+
+from typing import Any, Optional
 
 from nonebot.log import logger
-from zhDateTime import DateTime
+
+import nonebot_plugin_localstore as store
+
+from nonebot_plugin_alconna import (
+    Text as TextMsg,
+    Image as ImageMsg,
+    UniMessage,
+)
+
+
+# from zhDateTime import DateTime
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
+
 from .config import config
+from .constants import *
+from .deal_latex import ConvertLatex
 
 nickname_json = None  # 记录昵称
 praises_json = None  # 记录夸赞名单
@@ -248,3 +262,153 @@ async def get_backup_context(target_id: str, target_private: bool) -> list:
             f"back_up_context_{target_uid}", "contexts/backup"
         )
     return []
+
+
+"""
+以下函数依照 Mulan PSL v2 协议授权
+
+函数: parse_markdown, get_uuid_back2codeblock
+
+版权所有 © 2024 金羿ELS
+Copyright (R) 2024 Eilles(EillesWan@outlook.com)
+
+Licensed under Mulan PSL v2.
+You can use this software according to the terms and conditions of the Mulan PSL v2.
+You may obtain a copy of Mulan PSL v2 at:
+         http://license.coscl.org.cn/MulanPSL2
+THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+See the Mulan PSL v2 for more details.
+"""
+
+if config.marshoai_enable_richtext_prase:
+
+    latex_convert = ConvertLatex()  # 开启一个转换实例
+
+    async def get_uuid_back2codeblock(
+        msg: str, code_blank_uuid_map: list[tuple[str, str]]
+    ):
+
+        for torep, rep in code_blank_uuid_map:
+            msg = msg.replace(torep, rep)
+
+        return msg
+
+    async def parse_richtext(msg: str) -> UniMessage:
+        """
+        人工智能给出的回答一般不会包含 HTML 嵌入其中，但是包含图片或者 LaTeX 公式、代码块，都很正常。
+        这个函数会把这些都以图片形式嵌入消息体。
+        """
+
+        if not IMG_LATEX_PATTERN.search(msg):  # 没有图片和LaTeX标签
+            return UniMessage(msg)
+
+        result_msg = UniMessage()
+        code_blank_uuid_map = [
+            (uuid.uuid4().hex, cbp.group()) for cbp in CODE_BLOCK_PATTERN.finditer(msg)
+        ]
+
+        last_tag_index = 0
+
+        # 代码块渲染麻烦，先不处理
+        for rep, torep in code_blank_uuid_map:
+            msg = msg.replace(torep, rep)
+
+        # for to_rep in CODE_SINGLE_PATTERN.finditer(msg):
+        #     code_blank_uuid_map.append((rep := uuid.uuid4().hex, to_rep.group()))
+        #     msg = msg.replace(to_rep.group(), rep)
+
+        # print("#####################\n", msg, "\n\n")
+
+        # 插入图片
+        for each_find_tag in IMG_LATEX_PATTERN.finditer(msg):
+
+            tag_found = await get_uuid_back2codeblock(
+                each_find_tag.group(), code_blank_uuid_map
+            )
+            result_msg.append(
+                TextMsg(
+                    await get_uuid_back2codeblock(
+                        msg[last_tag_index : msg.find(tag_found)], code_blank_uuid_map
+                    )
+                )
+            )
+
+            last_tag_index = msg.find(tag_found) + len(tag_found)
+
+            if each_find_tag.group(1):
+                
+                # 图形一定要优先考虑
+                # 别忘了有些图形的地址就是 LaTeX，所以要优先判断
+
+                image_description = tag_found[2 : tag_found.find("]")]
+                image_url = tag_found[tag_found.find("(") + 1 : -1]
+
+                if image_ := await get_image_raw_and_type(image_url):
+
+                    result_msg.append(
+                        ImageMsg(
+                            raw=image_[0],
+                            mimetype=image_[1],
+                            name=image_description + ".png",
+                        )
+                    )
+                    result_msg.append(TextMsg("（{}）".format(image_description)))
+
+                else:
+                    result_msg.append(TextMsg(tag_found))
+            elif each_find_tag.group(2):
+
+                latex_exp = await get_uuid_back2codeblock(
+                    each_find_tag.group()
+                    .replace("$", "")
+                    .replace("\\(", "")
+                    .replace("\\)", "")
+                    .replace("\\[", "")
+                    .replace("\\]", ""),
+                    code_blank_uuid_map,
+                )
+                latex_generate_ok, latex_generate_result = (
+                    await latex_convert.generate_png(
+                        latex_exp,
+                        dpi=300,
+                        foreground_colour=config.marshoai_main_colour,
+                    )
+                )
+
+                if latex_generate_ok:
+                    result_msg.append(
+                        ImageMsg(
+                            raw=latex_generate_result,
+                            mimetype="image/png",
+                            name="latex.png",
+                        )
+                    )
+                else:
+                    result_msg.append(TextMsg(latex_exp + "（公式解析失败）"))
+                    if isinstance(latex_generate_result, str):
+                        result_msg.append(TextMsg(latex_generate_result))
+                    else:
+                        result_msg.append(
+                            ImageMsg(
+                                raw=latex_generate_result,
+                                mimetype="image/png",
+                                name="latex_error.png",
+                            )
+                        )
+            else:
+                result_msg.append(TextMsg(tag_found + "（未知内容解析失败）"))
+
+        result_msg.append(
+            TextMsg(
+                await get_uuid_back2codeblock(msg[last_tag_index:], code_blank_uuid_map)
+            )
+        )
+
+        return result_msg
+
+
+"""
+Mulan PSL v2 协议授权部分结束
+"""
