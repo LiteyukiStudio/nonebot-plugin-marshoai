@@ -265,7 +265,7 @@ async def get_backup_context(target_id: str, target_private: bool) -> list:
 
 
 """
-以下函数依照 Apache 2.0 协议授权
+以下函数依照 Mulan PSL v2. 协议授权
 
 函数: parse_markdown, get_uuid_back2codeblock
 
@@ -341,7 +341,7 @@ if config.marshoai_enable_richtext_prase:
                 
                 # 图形一定要优先考虑
                 # 别忘了有些图形的地址就是 LaTeX，所以要优先判断
-                
+
                 image_description = tag_found[2 : tag_found.find("]")]
                 image_url = tag_found[tag_found.find("(") + 1 : -1]
 
