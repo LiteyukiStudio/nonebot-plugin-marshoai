@@ -265,7 +265,7 @@ async def get_backup_context(target_id: str, target_private: bool) -> list:
 
 
 """
-以下函数依照 Mulan PSL v2. 协议授权
+以下函数依照 Mulan PSL v2 协议授权
 
 函数: parse_markdown, get_uuid_back2codeblock
 
