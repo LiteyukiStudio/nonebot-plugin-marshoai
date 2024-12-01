@@ -1,4 +1,3 @@
-import uuid
 import traceback
 import contextlib
 from typing import Optional
@@ -26,13 +25,10 @@ from nonebot_plugin_alconna import (
     MsgTarget,
     UniMessage,
     UniMsg,
-    Text as TextMsg,
-    Image as ImageMsg,
 )
 import nonebot_plugin_localstore as store
 
 
-from .constants import *
 from .metadata import metadata
 from .models import MarshoContext, MarshoTools
 from .util import *
@@ -199,105 +195,6 @@ async def refresh_data():
     await refresh_data_cmd.finish("已刷新数据")
 
 
-"""
-以下函数依照 Apache 2.0 协议授权
-
-函数： get_back_uuidcodeblock、send_markdown
-
-版权所有 © 2024 金羿ELS
-Copyright (R) 2024 Eilles(EillesWan@outlook.com)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-"""
-
-
-async def get_back_uuidcodeblock(msg: str, code_blank_uuid_map: list[tuple[str, str]]):
-
-    for torep, rep in code_blank_uuid_map:
-        msg = msg.replace(torep, rep)
-
-    return msg
-
-
-async def send_markdown(msg: str):
-    """
-    人工智能给出的回答一般不会包含 HTML 嵌入其中，但是包含图片或者 LaTeX 公式、代码块，都很正常。
-    这个函数会把这些都以图片形式嵌入消息体。
-    """
-
-    if not IMG_TAG_PATTERN.search(msg):  # 没有图片标签
-        await UniMessage(msg).send(reply_to=True)
-        return
-
-    result_msg = UniMessage()
-    code_blank_uuid_map = [
-        (uuid.uuid4().hex, cbp.group()) for cbp in CODE_BLOCK_PATTERN.finditer(msg)
-    ]
-
-    last_tag_index = 0
-
-    # 代码块渲染麻烦，先不处理
-    for rep, torep in code_blank_uuid_map:
-        msg = msg.replace(torep, rep)
-
-    # for to_rep in CODE_SINGLE_PATTERN.finditer(msg):
-    #     code_blank_uuid_map.append((rep := uuid.uuid4().hex, to_rep.group()))
-    #     msg = msg.replace(to_rep.group(), rep)
-
-    print("#####################\n", msg, "\n\n")
-
-    # 插入图片
-    for each_img_tag in IMG_TAG_PATTERN.finditer(msg):
-        img_tag = await get_back_uuidcodeblock(
-            each_img_tag.group(), code_blank_uuid_map
-        )
-        image_description = img_tag[2 : img_tag.find("]")]
-        image_url = img_tag[img_tag.find("(") + 1 : -1]
-
-        result_msg.append(
-            TextMsg(
-                await get_back_uuidcodeblock(
-                    msg[last_tag_index : msg.find(img_tag)], code_blank_uuid_map
-                )
-            )
-        )
-
-        last_tag_index = msg.find(img_tag) + len(img_tag)
-
-        if image_ := await get_image_raw_and_type(image_url):
-
-            result_msg.append(
-                ImageMsg(
-                    raw=image_[0], mimetype=image_[1], name=image_description + ".png"
-                )
-            )
-            result_msg.append(TextMsg("（{}）".format(image_description)))
-
-        else:
-            result_msg.append(TextMsg(img_tag))
-
-    result_msg.append(
-        TextMsg(await get_back_uuidcodeblock(msg[last_tag_index:], code_blank_uuid_map))
-    )
-
-    await result_msg.send(reply_to=True)
-
-
-"""
-Apache 2.0 协议授权部分结束
-"""
-
-
 @marsho_at.handle()
 @marsho_cmd.handle()
 async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
@@ -378,7 +275,12 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 target_list.append([target.id, target.private])
 
             # 对话成功发送消息
-            await send_markdown(str(choice.message.content))
+            if config.marshoai_enable_richtext_prase:
+                await (await parse_richtext(str(choice.message.content))).send(
+                    reply_to=True
+                )
+            else:
+                await UniMessage(str(choice.message.content)).send(reply_to=True)
         elif choice["finish_reason"] == CompletionsFinishReason.CONTENT_FILTERED:
 
             # 对话失败，消息过滤
@@ -431,7 +333,12 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 context.append(choice.message.as_dict(), target.id, target.private)
 
                 # 发送消息
-                await send_markdown(str(choice.message.content))
+                if config.marshoai_enable_richtext_prase:
+                    await (await parse_richtext(str(choice.message.content))).send(
+                        reply_to=True
+                    )
+                else:
+                    await UniMessage(str(choice.message.content)).send(reply_to=True)
             else:
                 await marsho_cmd.finish(f"意外的完成原因:{choice['finish_reason']}")
         else:
