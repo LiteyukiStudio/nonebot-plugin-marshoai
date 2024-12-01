@@ -30,8 +30,8 @@ class ConfigModel(BaseModel):
     )
     marshoai_additional_prompt: str = ""
     marshoai_poke_suffix: str = "揉了揉你的猫耳"
-    marshoai_enable_richtext_prase: bool = True
-    marshoai_single_latex_prase: bool = False
+    marshoai_enable_richtext_parse: bool = True
+    marshoai_single_latex_parse: bool = False
     marshoai_enable_nickname_tip: bool = True
     marshoai_enable_support_image_tip: bool = True
     marshoai_enable_praises: bool = True
