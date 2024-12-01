@@ -410,5 +410,5 @@ if config.marshoai_enable_richtext_prase:
 
 
 """
-Apache 2.0 协议授权部分结束
+Mulan PSL v2 协议授权部分结束
 """
