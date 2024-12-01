@@ -52,6 +52,7 @@ class L2PChannel(ConvertChannel):
 
         async with httpx.AsyncClient(
             timeout=timeout,
+            verify=False,
         ) as client:
             while retry > 0:
                 try:
@@ -88,7 +89,7 @@ class L2PChannel(ConvertChannel):
 
     @staticmethod
     def channel_test() -> int:
-        with httpx.Client(timeout=5) as client:
+        with httpx.Client(timeout=5,verify=False) as client:
             try:
                 start_time = time.time_ns()
                 latex2png = (
@@ -128,6 +129,7 @@ class CDCChannel(ConvertChannel):
     ) -> Tuple[Literal[True], bytes] | Tuple[Literal[False], bytes | str]:
         async with httpx.AsyncClient(
             timeout=timeout,
+            verify=False,
         ) as client:
 
             while retry > 0:
@@ -153,7 +155,7 @@ class CDCChannel(ConvertChannel):
 
     @staticmethod
     def channel_test() -> int:
-        with httpx.Client(timeout=5) as client:
+        with httpx.Client(timeout=5,verify=False) as client:
             try:
                 start_time = time.time_ns()
                 codecogs = (
@@ -185,6 +187,7 @@ class JRTChannel(ConvertChannel):
 
         async with httpx.AsyncClient(
             timeout=timeout,
+            verify=False,
         ) as client:
             while retry > 0:
                 try:
@@ -219,7 +222,7 @@ class JRTChannel(ConvertChannel):
 
     @staticmethod
     def channel_test() -> int:
-        with httpx.Client(timeout=5) as client:
+        with httpx.Client(timeout=5,verify=False) as client:
             try:
                 start_time = time.time_ns()
                 joeraut = (

@@ -282,7 +282,7 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 """
 
-if config.marshoai_enable_richtext_prase:
+if config.marshoai_enable_richtext_parse:
 
     latex_convert = ConvertLatex()  # 开启一个转换实例
 

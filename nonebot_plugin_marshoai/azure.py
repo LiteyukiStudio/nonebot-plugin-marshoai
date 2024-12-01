@@ -275,7 +275,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 target_list.append([target.id, target.private])
 
             # 对话成功发送消息
-            if config.marshoai_enable_richtext_prase:
+            if config.marshoai_enable_richtext_parse:
                 await (await parse_richtext(str(choice.message.content))).send(
                     reply_to=True
                 )
@@ -333,7 +333,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 context.append(choice.message.as_dict(), target.id, target.private)
 
                 # 发送消息
-                if config.marshoai_enable_richtext_prase:
+                if config.marshoai_enable_richtext_parse:
                     await (await parse_richtext(str(choice.message.content))).send(
                         reply_to=True
                     )
