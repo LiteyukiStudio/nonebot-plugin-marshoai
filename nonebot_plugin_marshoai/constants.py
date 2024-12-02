@@ -42,7 +42,7 @@ CODE_BLOCK_PATTERN = re.compile(r"```(.*?)```|`(.*?)`", re.DOTALL)
 IMG_LATEX_PATTERN = re.compile(
     (
         r"(!\[[^\]]*\]\([^()]*\))|(\\begin\{equation\}.*?\\end\{equation\}|\$.*?\$|\$\$.*?\$\$|\\\[.*?\\\]|\\\(.*?\\\))"
-        if config.marshoai_single_latex_prase
+        if config.marshoai_single_latex_parse
         else r"(!\[[^\]]*\]\([^()]*\))|(\\begin\{equation\}.*?\\end\{equation\}|\$\$.*?\$\$|\\\[.*?\\\])"
     ),
     re.DOTALL,

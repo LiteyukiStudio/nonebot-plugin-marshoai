@@ -174,10 +174,13 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 | MARSHOAI_SINGLE_LATEX_PARSE    | `bool` | `false` |   单行公式是否渲染（当消息富文本解析启用时可用）（如果单行也渲……只能说不好看）           |
 
 ## ❤ 鸣谢&版权说明
+本项目使用了以下项目的代码：
+- [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex) 
 
 "Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)
 绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
-"nonebot-plugin-marshoai" 基于 [MIT](./LICENSE) 许可下提供。
+"nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。
+部分指定的代码基于 [Mulan PSL v2](./LICENSE-MULAN) 许可下提供。
 
 ## 🕊️ TODO
 
