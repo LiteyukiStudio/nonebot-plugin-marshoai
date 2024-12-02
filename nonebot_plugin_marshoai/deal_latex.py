@@ -15,6 +15,7 @@ See the Mulan PSL v2 for more details.
 """
 
 from typing import Optional, Literal, Tuple
+from nonebot import logger
 import httpx
 import time
 
@@ -39,7 +40,7 @@ class ConvertChannel:
 
 class L2PChannel(ConvertChannel):
 
-    URL = "https://www.latex2png.com"
+    URL = "http://www.latex2png.com"
 
     async def get_to_convert(
         self,
@@ -94,9 +95,9 @@ class L2PChannel(ConvertChannel):
                 start_time = time.time_ns()
                 latex2png = (
                     client.get(
-                        "https://www.latex2png.com{}"
+                        "http://www.latex2png.com{}"
                         + client.post(
-                            "https://www.latex2png.com/api/convert",
+                            "http://www.latex2png.com/api/convert",
                             json={
                                 "auth": {"user": "guest", "password": "guest"},
                                 "latex": "\\\\int_{a}^{b} x^2 \\\\, dx = \\\\frac{b^3}{3} - \\\\frac{a^3}{5}\n",
@@ -228,7 +229,7 @@ class JRTChannel(ConvertChannel):
                 joeraut = (
                     client.get(
                         client.post(
-                            "https://www.latex2png.com/api/convert",
+                            "http://www.latex2png.com/api/convert",
                             json={
                                 "latexInput": "\\\\int_{a}^{b} x^2 \\\\, dx = \\\\frac{b^3}{3} - \\\\frac{a^3}{5}",
                                 "outputFormat": "PNG",
@@ -256,6 +257,7 @@ class ConvertLatex:
     def __init__(self, channel: Optional[ConvertChannel] = None) -> None:
 
         if channel is None:
+            logger.info("正在选择 LaTeX 转换服务频道，请稍等...")
             self.channel = self.auto_choose_channel()
         else:
             self.channel = channel
