@@ -96,6 +96,7 @@ async def make_chat(
         client: 用于与AI模型进行通信
         msg: 消息内容
         model_name: 指定AI模型名"""
+
     return await client.complete(
         messages=msg,
         model=model_name,

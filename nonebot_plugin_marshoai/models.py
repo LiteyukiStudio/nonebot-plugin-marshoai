@@ -1,4 +1,6 @@
 from nonebot_plugin_alconna.uniseg.adapters import module
+from requests.packages import package
+from six import spec_from_loader
 
 from .util import *
 from .config import config
@@ -80,8 +82,6 @@ class MarshoTools:
 
             logger.info(f"尝试加载工具包 {package_name}")
 
-            sys.path.append(package_path)
-
             if os.path.isdir(package_path) and os.path.exists(
                 os.path.join(package_path, "__init__.py")
             ):
@@ -96,9 +96,10 @@ class MarshoTools:
                             spec = importlib.util.spec_from_file_location(
                                 package_name, os.path.join(package_path, "__init__.py")
                             )
-                            module = importlib.util.module_from_spec(spec)
-                            sys.modules[spec.name] = module
-                            spec.loader.exec_module(sys.modules[spec.name])
+                            package = importlib.util.module_from_spec(spec)
+                            self.imported_packages[package_name] = package
+                            sys.modules[package_name] = package
+                            spec.loader.exec_module(package)
 
                             logger.success(f"成功加载工具包 {package_name}")
                     except json.JSONDecodeError as e:
