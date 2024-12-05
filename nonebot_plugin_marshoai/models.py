@@ -1,9 +1,9 @@
 from .util import *
 from .config import config
 import os
-import re
 import json
 import importlib
+import sys
 
 # import importlib.util
 import traceback
@@ -74,6 +74,9 @@ class MarshoTools:
 
         for package_name in os.listdir(tools_dir):
             package_path = os.path.join(tools_dir, package_name)
+
+            logger.info(f"尝试加载工具包 {package_name}")
+
             if os.path.isdir(package_path) and os.path.exists(
                 os.path.join(package_path, "__init__.py")
             ):
@@ -84,13 +87,15 @@ class MarshoTools:
                             data = json.load(json_file)
                             for i in data:
                                 self.tools_list.append(i)
-                            # 导入包
+
                             spec = importlib.util.spec_from_file_location(
                                 package_name, os.path.join(package_path, "__init__.py")
                             )
                             package = importlib.util.module_from_spec(spec)
-                            spec.loader.exec_module(package)
                             self.imported_packages[package_name] = package
+                            sys.modules[package_name] = package
+                            spec.loader.exec_module(package)
+
                             logger.success(f"成功加载工具包 {package_name}")
                     except json.JSONDecodeError as e:
                         logger.error(f"解码 JSON {json_path} 时发生错误: {e}")
