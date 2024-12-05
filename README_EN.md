@@ -151,6 +151,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | Command to call Marsho |
 | MARSHOAI_ALIASES      | `set[str]` | `set{"Marsho"}` | Other name(Alias) to call Marsho |
 | MARSHOAI_AT           | `bool`     | `false`     | Call by @ or not |
+| MARSHOAI_MAIN_COLOUR   |  `str`    | `FFAAAA`    | Theme color, used by some tools and features    |
 
 #### AI call
 
@@ -175,15 +176,20 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | When on, if user haven't set username, remind user to set       |
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | Turn on Praise list or not           |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | Turn on Marsho Tools or not           |
-| MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | Loading the built-in tool pack or not |
-
+| MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | Loading the built-in toolkit or not |
+| MARSHOAI_TOOLSET_DIR              | `list` | `[]`   | List of external toolset directory  |
+| MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` | Turn on auto parse rich text feature(including image, LaTeX equation)  |
+| MARSHOAI_SINGLE_LATEX_PARSE       | `bool` | `false`| Render single-line equation or not    |
 
 ## ❤ Thanks&Copyright
+This project uses the following code from other projects:
+- [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)  
 
 "Marsho" logo contributed by [@Asankilp](https://github.com/Asankilp),
 licensed under [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.
 
-"nonebot-plugin-marshoai" is licensed under [MIT](./LICENSE) license.
+"nonebot-plugin-marshoai" is licensed under [MIT](./LICENSE-MIT) license.
+Some of the code is licensed under [Mulan PSL v2](./LICENSE-MULAN) license.
 
 ## 🕊️ TODO
 
