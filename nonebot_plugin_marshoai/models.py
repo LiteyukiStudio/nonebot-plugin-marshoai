@@ -1,11 +1,6 @@
-from nonebot_plugin_alconna.uniseg.adapters import module
-from requests.packages import package
-from six import spec_from_loader
-
 from .util import *
 from .config import config
 import os
-import re
 import json
 import importlib
 import sys
