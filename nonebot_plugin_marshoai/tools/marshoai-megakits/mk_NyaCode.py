@@ -6,7 +6,7 @@ NyaCodeCharset = [
     '喵', '呜', '?', '~'
 ]
 NyaCodeSpecialCharset = [
-    '唔', '!', '...', '....'
+    '唔', '!', '...', '..'
 ]
 NyaCodeEncode = {}
 for i in range(64):
@@ -22,7 +22,10 @@ def nya_encode(msg: str):
     msg_nyastr = ''.join(NyaCodeEncode[base64_char] for base64_char in msg_b64str)
     result = ""
     for char in msg_nyastr:
-        if random.random() < 0.2:
+        if char == '呜'  and random.random() < 0.5:
+            result += "!"
+
+        if random.random() < 0.25:
             result += random.choice(NyaCodeSpecialCharset) + char
         else:
             result += char
@@ -31,7 +34,7 @@ def nya_encode(msg: str):
 
 # NyaCode Decrypt
 def nya_decode(msg: str):
-    msg = msg.replace('唔', '').replace('.', '').replace('!', '')
+    msg = msg.replace('唔', '').replace('!', '').replace('.', '')
     msg_nyastr = []
     i = 0
     if len(msg) % 3 != 0 :
@@ -45,6 +48,7 @@ def nya_decode(msg: str):
         except Exception:
             return "这句话不是正确的猫语"
     msg_b64str = ''.join(NyaCodeDecode[nya_char] for nya_char in msg_nyastr)
+    msg_b64str += "=" * (4 - len(msg_b64str) % 4)
     try:
         result = base64.b64decode(msg_b64str.encode()).decode()
     except Exception:
