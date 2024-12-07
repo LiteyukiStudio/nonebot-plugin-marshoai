@@ -75,8 +75,10 @@ class MarshoTools:
         for package_name in os.listdir(tools_dir):
             package_path = os.path.join(tools_dir, package_name)
 
-            logger.info(f"尝试加载工具包 {package_name}")
-
+          #  logger.info(f"尝试加载工具包 {package_name}")
+            if package_name in config.marshoai_disabled_toolkits:
+                logger.info(f"工具包 {package_name} 已被禁用。")
+                continue
             if os.path.isdir(package_path) and os.path.exists(
                 os.path.join(package_path, "__init__.py")
             ):

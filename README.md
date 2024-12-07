@@ -170,6 +170,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | 是否启用小棉工具                   |
 | MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | 是否加载内置工具包                  |
 | MARSHOAI_TOOLSET_DIR              | `list` | `[]`   |   外部工具集路径列表            |
+| MARSHOAI_DISABLED_TOOLKITS        | `list` | `[]`   |  禁用的工具包包名列表           |
 | MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` |   是否启用自动解析消息（若包含图片链接则发送图片、若包含LaTeX公式则发送公式图）           |
 | MARSHOAI_SINGLE_LATEX_PARSE    | `bool` | `false` |   单行公式是否渲染（当消息富文本解析启用时可用）（如果单行也渲……只能说不好看）           |
 

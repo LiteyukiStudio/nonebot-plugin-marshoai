@@ -40,6 +40,8 @@ marshoai_load_builtin_tools: true  # 是否加载内置工具。
 
 marshoai_toolset_dir: [] # 工具集路径。
 
+marshoai_disabled_toolkits: [] # 已禁用的工具包列表。
+
 marshoai_azure_endpoint: "https://models.inference.ai.azure.com"  # OpenAI 标准格式 API 的端点。
 
 # 模型参数配置

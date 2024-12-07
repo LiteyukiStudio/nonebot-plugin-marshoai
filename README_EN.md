@@ -178,6 +178,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `true` | Turn on Marsho Tools or not           |
 | MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | Loading the built-in toolkit or not |
 | MARSHOAI_TOOLSET_DIR              | `list` | `[]`   | List of external toolset directory  |
+| MARSHOAI_DISABLED_TOOLKITS        | `list` | `[]`   |  List of disabled toolkits' name     |
 | MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` | Turn on auto parse rich text feature(including image, LaTeX equation)  |
 | MARSHOAI_SINGLE_LATEX_PARSE       | `bool` | `false`| Render single-line equation or not    |
 
