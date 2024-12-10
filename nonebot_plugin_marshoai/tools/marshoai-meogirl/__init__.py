@@ -7,4 +7,4 @@ async def meogirl():
 
 # Search
 async def search(msg : str, num : int = 3):
-    return str(mg_Search.search(msg, num))
+    return str(await mg_Search.search(msg, num))
