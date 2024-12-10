@@ -5,5 +5,28 @@
 			"name" : "marshoai-meogirl__meogirl",
 			"description" : "介绍Meogirl"
 		}
+	},
+	{
+		"type" : "function",
+		"function" : {
+			"name" : "marshoai-meogirl__search",
+			"description" : "在萌娘百科中搜索(仅用户指定在萌娘百科中搜索才调用此函数)",
+			"parameters" : {
+				"type" : "object",
+				"properties" : {
+					"msg" : {
+						"type": "string",
+						"description": "搜索关键词"
+					},
+					"num" : {
+						"type": "integer",
+						"description": "数据显示条数, 默认3, 可留空"
+					}
+				}
+			},
+			"required": [
+                "msg"
+            ]
+		}
 	}
 ]
