@@ -17,7 +17,7 @@ NyaCodeDecode = {value: key for key, value in NyaCodeEncode.items()}
 
 
 # NyaCode Encrypt
-def nya_encode(msg: str):
+async def nya_encode(msg: str):
     msg_b64str = base64.b64encode(msg.encode()).decode().replace("=", "")
     msg_nyastr = "".join(NyaCodeEncode[base64_char] for base64_char in msg_b64str)
     result = ""
@@ -33,7 +33,7 @@ def nya_encode(msg: str):
 
 
 # NyaCode Decrypt
-def nya_decode(msg: str):
+async def nya_decode(msg: str):
     msg = msg.replace("唔", "").replace("!", "").replace(".", "")
     msg_nyastr = []
     i = 0

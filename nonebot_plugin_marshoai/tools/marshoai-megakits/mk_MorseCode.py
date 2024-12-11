@@ -17,7 +17,7 @@ MorseDecode = {value: key for key, value in MorseEncode.items()}
 
 
 # MorseCode Encrypt
-def morse_encrypt(msg: str):
+async def morse_encrypt(msg: str):
     result = ""
     msg = msg.upper()
     for char in msg:
@@ -31,7 +31,7 @@ def morse_encrypt(msg: str):
 
 
 # MorseCode Decrypt
-def morse_decrypt(msg: str):
+async def morse_decrypt(msg: str):
     result = ""
 
     msg_arr = msg.split()

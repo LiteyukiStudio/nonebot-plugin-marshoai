@@ -6,32 +6,32 @@ from . import mk_NyaCode
 
 # Twisuki
 async def twisuki():
-    return str(mk_Info.twisuki())
+    return str(await mk_Info.twisuki())
 
 # MegaKits
 async def megakits():
-    return str(mk_Info.megakits())
+    return str(await mk_Info.megakits())
 
 # Random Turntable
-async def random_turntable(upper: int, lower: int = "0"):
-    return str(mk_Common.random_turntable(upper, lower))
+async def random_turntable(upper: int, lower: int = 0):
+    return str(await mk_Common.random_turntable(upper, lower))
 
 # Number Calc
 async def number_calc(a: str, b: str, op: str):
-    return str(mk_Common.number_calc(a, b, op))
+    return str(await mk_Common.number_calc(a, b, op))
 
 # MorseCode Encrypt
 async def morse_encrypt(msg: str):
-    return str(mk_MorseCode.morse_encrypt(msg))
+    return str(await mk_MorseCode.morse_encrypt(msg))
 
 # MorseCode Decrypt
 async def morse_decrypt(msg: str):
-    return str(mk_MorseCode.morse_decrypt(msg))
+    return str(await mk_MorseCode.morse_decrypt(msg))
 
 # NyaCode Encrypt
 async def nya_encode(msg: str):
-    return str(mk_NyaCode.nya_encode(msg))
+    return str(await mk_NyaCode.nya_encode(msg))
 
 # NyaCode Decrypt
 async def nya_decode(msg: str):
-    return str(mk_NyaCode.nya_decode(msg))
+    return str(await mk_NyaCode.nya_decode(msg))
