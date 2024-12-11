@@ -4,26 +4,22 @@ import re
 import httpx
 import urllib.parse
 from bs4 import BeautifulSoup
-from watchfiles import awatch
 
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36'
+}
 
 async def get_async_data (url):
-    async with httpx.AsyncClient() as client:
-        return await client.get(url)
+    async with httpx.AsyncClient(timeout = None) as client:
+        return await client.get(url, headers = headers)
 
 async def search(msg : str, num : int):
     logger.info(f"搜索 : \"{msg}\"")
     result = ""
 
-    # headers = {
-    #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36'
-    # }
     url = "https://mzh.moegirl.org.cn/index.php?search=" + urllib.parse.quote_plus(msg)
-    # client = httpx.AsyncClient()
-    # async with client:
-    #     response = await client.post(url, headers = headers)
     response = await get_async_data(url)
-    logger.info(f"连接\"{response.headers.get('location')}\"中, 状态码 : {response.status_code}")
+    logger.success(f"连接{url}完成, 状态码 : {response.status_code}")
 
     # 正常搜索
     if response.status_code == 200:
@@ -71,11 +67,11 @@ async def search(msg : str, num : int):
 
     # 重定向
     elif response.status_code == 302:
-        logger.info(f"\"{msg}\"已被重定向")
+        logger.info(f"\"{msg}\"已被重定向至\"{response.headers.get('location')}\"")
         # 读取重定向结果
+        response = await get_async_data(response.headers.get('location'))
         soup = BeautifulSoup(response.text, 'html.parser')
         logger.success("重定向成功")
-        logger.info(response)
         num = 0
 
         """
@@ -94,7 +90,7 @@ async def search(msg : str, num : int):
                 p = str(p_tag)
                 p = re.sub(r'<.*?>', '', p)
                 if p != '':
-                    result += str(p) + "\n"
+                    result += str(p)
 
                     num += 1
                     if num >= 5:
@@ -105,4 +101,3 @@ async def search(msg : str, num : int):
     else:
         logger.error(f"网络错误, 状态码 : {response.status_code}")
         return f"网络错误, 状态码 : {response.status_code}"
-
