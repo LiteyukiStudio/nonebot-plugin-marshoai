@@ -88,7 +88,8 @@ async def search(msg : str, num : int):
             p_tags = div.select('p')
             for p_tag in p_tags:
                 p = str(p_tag)
-                p = re.sub(r'<.*?>', '', p)
+                p = re.sub(r'<script.*?</script>|<style.*?</style>', '', p, flags=re.DOTALL)
+                p = re.sub(r'<.*?>', '', p, flags = re.DOTALL)
                 if p != '':
                     result += str(p)
 
