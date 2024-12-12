@@ -18,9 +18,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install pdm
-        pdm install
-
-        source .venv/bin/activate
+        pdm config use_venv false
+        pdm install --no-lock
         pre-commit install
 
     - name: Run pre-commit
