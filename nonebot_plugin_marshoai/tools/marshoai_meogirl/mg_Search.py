@@ -1,7 +1,7 @@
 import urllib.parse
 
 import httpx
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup  # type: ignore
 from nonebot.log import logger
 
 headers = {
@@ -76,9 +76,9 @@ async def search(msg: str, num: int):
     elif response.status_code == 302:
         logger.info(f'"{msg}"已被重定向至"{response.headers.get("location")}"')
         # 读取重定向结果
-        from . import mg_Introduce
+        from . import mg_introduce
 
-        return await mg_Introduce.introduce(msg)
+        return await mg_introduce.introduce(msg)
 
     else:
         logger.error(f"网络错误, 状态码 : {response.status_code}")

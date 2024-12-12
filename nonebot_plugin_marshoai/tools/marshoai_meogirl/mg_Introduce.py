@@ -2,7 +2,7 @@ import re
 import urllib.parse
 
 import httpx
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup  # type: ignore
 from nonebot.log import logger
 
 headers = {
@@ -64,9 +64,9 @@ async def introduce(msg: str):
     elif response.status_code == 404:
         logger.info(f'未找到"{msg}", 进行搜索')
 
-        from . import mg_Search
+        from . import mg_search
 
-        context = await mg_Search.search(msg, 1)
+        context = await mg_search.search(msg, 1)
         keyword = re.search(r".*?\n", context, flags=re.DOTALL).group()[:-1]    # type: ignore
 
         logger.success(f'搜索完成, 打开"{keyword}"')
