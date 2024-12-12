@@ -34,8 +34,6 @@ adapters = [
 
 [tool.pdm]
 distribution = true
-python.use_venv = true
-python.venv_in_project = true
 
 
 [tool.pdm.version]
