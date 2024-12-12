@@ -38,7 +38,7 @@ async def introduce(msg: str):
 
         img = soup.find("img", class_="infobox-image")
         if img:
-            result += f"![ {msg} ]( {img["src"]} ) \n"
+            result += f"![ {msg} ]( {img['src']} ) \n"
 
         div = soup.find("div", class_="mw-parser-output")
         if div:
