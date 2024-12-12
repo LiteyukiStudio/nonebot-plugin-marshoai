@@ -7,20 +7,39 @@
 		}
 	},
 	{
+		"type": "function",
+		"function": {
+			"name": "marshoai-meogirl__search",
+			"description": "查找/搜索 某角色/事物 (使用萌娘百科)",
+			"parameters": {
+				"type": "object",
+				"properties": {
+					"msg": {
+						"type": "string",
+						"description": "搜索关键词"
+					},
+					"num": {
+						"type": "integer",
+						"description": "数据显示条数, 默认3, 可留空"
+					}
+				}
+			},
+			"required": [
+				"msg"
+			]
+		}
+	},
+	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-meogirl__search",
-			"description" : "在萌娘百科中搜索(仅用户指定在萌娘百科中搜索才调用此函数)",
+			"name" : "marshoai-meogirl__introduce",
+			"description" : "介绍/展示 某角色/事物 (使用萌娘百科)",
 			"parameters" : {
 				"type" : "object",
 				"properties" : {
 					"msg" : {
 						"type": "string",
-						"description": "搜索关键词"
-					},
-					"num" : {
-						"type": "integer",
-						"description": "数据显示条数, 默认3, 可留空"
+						"description": "关键词"
 					}
 				}
 			},
