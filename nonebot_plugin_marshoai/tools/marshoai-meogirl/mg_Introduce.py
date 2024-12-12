@@ -74,6 +74,3 @@ async def introduce (msg : str) :
     else :
         logger.error(f"网络错误, 状态码 : {response.status_code}")
         return f"网络错误, 状态码 : {response.status_code}"
-
-# import asyncio
-# print(asyncio.run(show("赤座灯里")))
