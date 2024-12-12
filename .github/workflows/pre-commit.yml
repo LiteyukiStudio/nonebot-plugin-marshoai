@@ -19,7 +19,7 @@ jobs:
       run: |
         python -m pip install pdm
         pdm install --no-lock
-        pre-commit install
+        .venv/bin/python -m pre-commit install
 
     - name: Run pre-commit
-      run: pre-commit run --all-files
+      run: .venv/bin/python -m pre-commit run --all-files
