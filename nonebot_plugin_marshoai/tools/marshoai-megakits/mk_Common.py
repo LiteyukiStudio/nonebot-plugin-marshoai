@@ -1,11 +1,11 @@
 import random
 
 # Random Turntable
-async def random_turntable(upper: int, lower: int = "0"):
+async def random_turntable(upper: int, lower: int):
     return random.randint(lower, upper)
 
 # Number Calc
-def number_calc(a: str, b: str, op: str):
+async def number_calc(a: str, b: str, op: str):
     a, b = float(a), float(b)
     match op:
         case "+":
