@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']  # 添加你想要测试的 Python 版本
 
     steps:
     - name: Checkout code
@@ -13,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: '3.10'  # 选择适合你的项目的 Python 版本
+        python-version: ${{ matrix.python-version }}  # 使用矩阵中的 Python 版本
 
     - name: Install dependencies
       run: |
