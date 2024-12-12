@@ -177,3 +177,6 @@ config/
 
 # dev
 .vscode/
+
+# macos finder
+.DS_Store
