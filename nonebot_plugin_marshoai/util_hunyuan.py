@@ -9,7 +9,7 @@ from tencentcloud.common.profile.client_profile import \
 from tencentcloud.common.profile.http_profile import \
     HttpProfile  # type: ignore
 from tencentcloud.hunyuan.v20230901 import hunyuan_client  # type: ignore
-from tencentcloud.hunyuan.v20230901 import models
+from tencentcloud.hunyuan.v20230901 import models  # type: ignore
 
 from .config import config
 

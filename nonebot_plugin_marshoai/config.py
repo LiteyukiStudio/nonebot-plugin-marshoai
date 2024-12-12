@@ -1,7 +1,7 @@
 import shutil
 from pathlib import Path
 
-import yaml as yaml_
+import yaml as yaml_  # type: ignore
 from nonebot import get_plugin_config, logger
 from pydantic import BaseModel
 from ruamel.yaml import YAML

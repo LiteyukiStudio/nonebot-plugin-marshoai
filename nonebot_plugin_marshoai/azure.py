@@ -220,7 +220,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         )
         is_reasoning_model = model_name.lower() in REASONING_MODELS
         usermsg = [] if is_support_image_model else ""
-        for i in text:
+        for i in text:  # type: ignore
             if i.type == "text":
                 if is_support_image_model:
                     usermsg += [TextContentItem(text=i.data["text"] + nickname_prompt)]  # type: ignore
@@ -230,11 +230,11 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                 if is_support_image_model:
                     usermsg.append(  # type: ignore
                         ImageContentItem(
-                            image_url=ImageUrl(
-                                url=str(await get_image_b64(i.data["url"]))
-                            )
-                        )
-                    )
+                            image_url=ImageUrl(  # type: ignore
+                                url=str(await get_image_b64(i.data["url"]))  # type: ignore
+                            )  # type: ignore
+                        )  # type: ignore
+                    )  # type: ignore
                 elif config.marshoai_enable_support_image_tip:
                     await UniMessage("*此模型不支持图片处理。").send()
         backup_context = await get_backup_context(target.id, target.private)
