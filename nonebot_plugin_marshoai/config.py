@@ -1,10 +1,10 @@
 import shutil
-
-from pydantic import BaseModel
-from nonebot import logger, get_plugin_config
-from ruamel.yaml import YAML
-import yaml as yaml_
 from pathlib import Path
+
+import yaml as yaml_
+from nonebot import get_plugin_config, logger
+from pydantic import BaseModel
+from ruamel.yaml import YAML
 
 
 class ConfigModel(BaseModel):

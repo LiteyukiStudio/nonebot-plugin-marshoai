@@ -14,10 +14,11 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 """
 
-from typing import Optional, Literal, Tuple
-from nonebot import logger
-import httpx
 import time
+from typing import Literal, Optional, Tuple
+
+import httpx
+from nonebot import logger
 
 
 class ConvertChannel:
@@ -90,7 +91,7 @@ class L2PChannel(ConvertChannel):
 
     @staticmethod
     def channel_test() -> int:
-        with httpx.Client(timeout=5,verify=False) as client:
+        with httpx.Client(timeout=5, verify=False) as client:
             try:
                 start_time = time.time_ns()
                 latex2png = (
@@ -156,7 +157,7 @@ class CDCChannel(ConvertChannel):
 
     @staticmethod
     def channel_test() -> int:
-        with httpx.Client(timeout=5,verify=False) as client:
+        with httpx.Client(timeout=5, verify=False) as client:
             try:
                 start_time = time.time_ns()
                 codecogs = (
@@ -223,7 +224,7 @@ class JRTChannel(ConvertChannel):
 
     @staticmethod
     def channel_test() -> int:
-        with httpx.Client(timeout=5,verify=False) as client:
+        with httpx.Client(timeout=5, verify=False) as client:
             try:
                 start_time = time.time_ns()
                 joeraut = (

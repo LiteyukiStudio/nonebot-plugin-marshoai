@@ -3,8 +3,8 @@ from nonebot.plugin import require
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
 
-from nonebot import get_driver, logger
 import nonebot_plugin_localstore as store
+from nonebot import get_driver, logger
 
 # from .hunyuan import *
 from .azure import *

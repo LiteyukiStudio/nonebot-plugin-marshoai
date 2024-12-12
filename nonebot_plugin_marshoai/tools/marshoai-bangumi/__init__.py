@@ -1,14 +1,18 @@
-import httpx
 import traceback
+
+import httpx
+
+
 async def fetch_calendar():
-    url = 'https://api.bgm.tv/calendar'
+    url = "https://api.bgm.tv/calendar"
     headers = {
-        'User-Agent': 'LiteyukiStudio/nonebot-plugin-marshoai (https://github.com/LiteyukiStudio/nonebot-plugin-marshoai)'
+        "User-Agent": "LiteyukiStudio/nonebot-plugin-marshoai (https://github.com/LiteyukiStudio/nonebot-plugin-marshoai)"
     }
     async with httpx.AsyncClient() as client:
         response = await client.get(url, headers=headers)
-        #print(response.text)
+        # print(response.text)
         return response.json()
+
 
 async def get_bangumi_news():
     result = await fetch_calendar()
@@ -16,7 +20,7 @@ async def get_bangumi_news():
     try:
         for i in result:
             weekday = i["weekday"]["cn"]
-            #print(weekday)
+            # print(weekday)
             info += f"{weekday}:"
             items = i["items"]
             for item in items:

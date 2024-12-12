@@ -1,36 +1,38 @@
-from nonebot.log import logger
-
 import re
-import httpx
 import urllib.parse
+
+import httpx
 from bs4 import BeautifulSoup
+from nonebot.log import logger
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36"
 }
 
-async def get_async_data (url) :
-    async with httpx.AsyncClient(timeout = None) as client:
-        return await client.get(url, headers = headers)
 
-async def introduce (msg : str) :
-    logger.info(f"介绍 : \"{msg}\" ...")
+async def get_async_data(url):
+    async with httpx.AsyncClient(timeout=None) as client:
+        return await client.get(url, headers=headers)
+
+
+async def introduce(msg: str):
+    logger.info(f'介绍 : "{msg}" ...')
     result = ""
 
     url = "https://mzh.moegirl.org.cn/" + urllib.parse.quote_plus(msg)
     response = await get_async_data(url)
-    logger.success(f"连接\"{url}\"完成, 状态码 : {response.status_code}")
+    logger.success(f'连接"{url}"完成, 状态码 : {response.status_code}')
 
     soup = BeautifulSoup(response.text, "html.parser")
 
     # 正常页
-    if response.status_code == 200 :
+    if response.status_code == 200:
         """
-            萌娘百科页面结构
-            div#mw-content-text
-            └── div#404search           # 空白页面出现
-            └── div.mw-parser-output    # 正常页面
-                └── div, p, table ...   # 大量的解释项
+        萌娘百科页面结构
+        div#mw-content-text
+        └── div#404search           # 空白页面出现
+        └── div.mw-parser-output    # 正常页面
+            └── div, p, table ...   # 大量的解释项
         """
         result += msg + "\n"
 
@@ -44,7 +46,9 @@ async def introduce (msg : str) :
             num = 0
             for p_tag in p_tags:
                 p = str(p_tag)
-                p = re.sub(r"<script.*?</script>|<style.*?</style>", "", p, flags=re.DOTALL)
+                p = re.sub(
+                    r"<script.*?</script>|<style.*?</style>", "", p, flags=re.DOTALL
+                )
                 p = re.sub(r"<.*?>", "", p, flags=re.DOTALL)
                 p = re.sub(r"\[.*?]", "", p, flags=re.DOTALL)
 
@@ -57,20 +61,21 @@ async def introduce (msg : str) :
         return result
 
     # 空白页
-    elif response.status_code == 404 :
-        logger.info(f"未找到\"{msg}\", 进行搜索")
+    elif response.status_code == 404:
+        logger.info(f'未找到"{msg}", 进行搜索')
 
         from . import mg_Search
-        context = await mg_Search.search(msg, 1)
-        keyword = re.search(r".*?\n", context, flags = re.DOTALL).group()[: -1]
 
-        logger.success(f"搜索完成, 打开\"{keyword}\"")
+        context = await mg_Search.search(msg, 1)
+        keyword = re.search(r".*?\n", context, flags=re.DOTALL).group()[:-1]
+
+        logger.success(f'搜索完成, 打开"{keyword}"')
         return await introduce(keyword)
 
     # 搜索失败
-    elif response.status_code == 301 :
+    elif response.status_code == 301:
         return f"未找到{msg}"
 
-    else :
+    else:
         logger.error(f"网络错误, 状态码 : {response.status_code}")
         return f"网络错误, 状态码 : {response.status_code}"

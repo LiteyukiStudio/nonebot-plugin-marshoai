@@ -1,33 +1,23 @@
-import traceback
 import contextlib
-from typing import Optional
+import traceback
 from pathlib import Path
+from typing import Optional
 
-from arclet.alconna import Alconna, Args, AllParam
-from azure.ai.inference.models import (
-    UserMessage,
-    AssistantMessage,
-    ToolMessage,
-    TextContentItem,
-    ImageContentItem,
-    ImageUrl,
-    CompletionsFinishReason,
-    ChatCompletionsToolCall,
-)
+import nonebot_plugin_localstore as store
+from arclet.alconna import Alconna, AllParam, Args
+from azure.ai.inference.models import (AssistantMessage,
+                                       ChatCompletionsToolCall,
+                                       CompletionsFinishReason,
+                                       ImageContentItem, ImageUrl,
+                                       TextContentItem, ToolMessage,
+                                       UserMessage)
 from azure.core.credentials import AzureKeyCredential
-from nonebot import on_command, on_message, logger, get_driver
-from nonebot.adapters import Message, Event
+from nonebot import get_driver, logger, on_command, on_message
+from nonebot.adapters import Event, Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.rule import Rule, to_me
-from nonebot_plugin_alconna import (
-    on_alconna,
-    MsgTarget,
-    UniMessage,
-    UniMsg,
-)
-import nonebot_plugin_localstore as store
-
+from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
 
 from .metadata import metadata
 from .models import MarshoContext, MarshoTools
@@ -203,7 +193,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         not text
         and event.get_message().extract_plain_text() != config.marshoai_default_name
     ):
-        text = event.get_message()
+        text = event.get_message()  # type: ignore
     if not text:
         # 发送说明
         await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
@@ -233,12 +223,12 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         for i in text:
             if i.type == "text":
                 if is_support_image_model:
-                    usermsg += [TextContentItem(text=i.data["text"] + nickname_prompt)]
+                    usermsg += [TextContentItem(text=i.data["text"] + nickname_prompt)]  # type: ignore
                 else:
-                    usermsg += str(i.data["text"] + nickname_prompt)
+                    usermsg += str(i.data["text"] + nickname_prompt)  # type: ignore
             elif i.type == "image":
                 if is_support_image_model:
-                    usermsg.append(
+                    usermsg.append(  # type: ignore
                         ImageContentItem(
                             image_url=ImageUrl(
                                 url=str(await get_image_b64(i.data["url"]))
@@ -260,7 +250,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         response = await make_chat(
             client=client,
             model_name=model_name,
-            msg=context_msg + [UserMessage(content=usermsg)],
+            msg=context_msg + [UserMessage(content=usermsg)],  # type: ignore
             tools=tools.get_tools_list(),
         )
         # await UniMessage(str(response)).send()
@@ -268,7 +258,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
         if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
             # 当对话成功时，将dict的上下文添加到上下文类中
             context.append(
-                UserMessage(content=usermsg).as_dict(), target.id, target.private
+                UserMessage(content=usermsg).as_dict(), target.id, target.private  # type: ignore
             )
             context.append(choice.message.as_dict(), target.id, target.private)
             if [target.id, target.private] not in target_list:
@@ -314,12 +304,12 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                             tool_call.function.name, function_args
                         )  # 获取返回值
                         tool_msg.append(
-                            ToolMessage(tool_call_id=tool_call.id, content=func_return)
+                            ToolMessage(tool_call_id=tool_call.id, content=func_return)  # type: ignore
                         )
                 response = await make_chat(
                     client=client,
                     model_name=model_name,
-                    msg=context_msg + [UserMessage(content=usermsg)] + tool_msg,
+                    msg=context_msg + [UserMessage(content=usermsg)] + tool_msg,  # type: ignore
                     tools=tools.get_tools_list(),
                 )
                 choice = response.choices[0]
@@ -327,7 +317,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
 
                 # 对话成功 添加上下文
                 context.append(
-                    UserMessage(content=usermsg).as_dict(), target.id, target.private
+                    UserMessage(content=usermsg).as_dict(), target.id, target.private  # type: ignore
                 )
                 # context.append(tool_msg, target.id, target.private)
                 context.append(choice.message.as_dict(), target.id, target.private)
@@ -351,6 +341,7 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
 
 with contextlib.suppress(ImportError):  # 优化先不做（）
     import nonebot.adapters.onebot.v11  # type: ignore
+
     from .azure_onebot import poke_notify
 
     @poke_notify.handle()

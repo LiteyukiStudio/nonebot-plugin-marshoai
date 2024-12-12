@@ -1,8 +1,10 @@
 import random
 
+
 # Random Turntable
 async def random_turntable(upper: int, lower: int):
     return random.randint(lower, upper)
+
 
 # Number Calc
 async def number_calc(a: str, b: str, op: str):
@@ -17,7 +19,7 @@ async def number_calc(a: str, b: str, op: str):
         case "/":
             return str(a / b)
         case "**":
-            return str(a ** b)
+            return str(a**b)
         case "%":
             return str(a % b)
         case _:

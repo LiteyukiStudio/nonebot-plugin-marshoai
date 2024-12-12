@@ -22,11 +22,11 @@ _✨ A chat bot plugin which use OpenAI standard API ✨_
 
 ## 📖 Indroduction
 
-A plugin made by call OpenAI standard API(Such as GitHub Models API) 
+A plugin made by call OpenAI standard API(Such as GitHub Models API)
 
 Plugin internally installed the catgirl character of Marsho, is able to have a cute conversation!
 
-*Who don't like a cute catgirl with fast answer speed？*  
+*Who don't like a cute catgirl with fast answer speed？*
 
 **Support for adapters other than OneBot and non-Github Models APIs is not fully verified.**
 
@@ -50,7 +50,7 @@ Plugin internally installed the catgirl character of Marsho, is able to have a c
 
 <details open>
 <summary>Install with nb-cli</summary>
-  
+
 Open shell under the root directory of nonebot2, input the command below.
 
     nb plugin install nonebot-plugin-marshoai
@@ -59,7 +59,7 @@ Open shell under the root directory of nonebot2, input the command below.
 
 <details>
 <summary>Install with pack manager</summary>
-  
+
 Open shell under the plugin directory of nonebot2, input corresponding command according to your pack manager.
 
 <details>
@@ -108,7 +108,7 @@ When nonebot linked to OneBot v11 adapter, can recieve double click and response
 
 ## 🛠️ MarshoTools
 
-MarshoTools is a feature added in `v0.5.0`, support loading external function library to provide Function Call for Marsho. [Documentation](./README_TOOLS_EN.md)  
+MarshoTools is a feature added in `v0.5.0`, support loading external function library to provide Function Call for Marsho. [Documentation](./README_TOOLS_EN.md)
 
 ## 👍 Praise list
 
@@ -184,7 +184,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 
 ## ❤ Thanks&Copyright
 This project uses the following code from other projects:
-- [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)  
+- [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)
 
 "Marsho" logo contributed by [@Asankilp](https://github.com/Asankilp),
 licensed under [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.

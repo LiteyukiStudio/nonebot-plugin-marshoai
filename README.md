@@ -22,9 +22,9 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 ## 📖 介绍
 
-通过调用 OpenAI 标准格式 API(例如由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API) 来实现聊天的插件。  
-插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
-*谁不喜欢回复消息快又可爱的猫娘呢？*  
+通过调用 OpenAI 标准格式 API(例如由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API) 来实现聊天的插件。
+插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！
+*谁不喜欢回复消息快又可爱的猫娘呢？*
 **对 OneBot 以外的适配器与非 GitHub Models API的支持未经过完全验证。**
 [Melobot 实现](https://github.com/LiteyukiStudio/marshoai-melo)
 
@@ -101,13 +101,13 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 当 nonebot 连接到支持的 OneBot v11 实现端时，可以接收头像双击戳一戳消息并进行响应。详见`MARSHOAI_POKE_SUFFIX`配置项。
 
 ## 🛠️ 小棉工具
-小棉工具(MarshoTools)是`v0.5.0`版本的新增功能，支持加载外部函数库来为 Marsho 提供 Function Call 功能。[使用文档](./README_TOOLS.md)  
+小棉工具(MarshoTools)是`v0.5.0`版本的新增功能，支持加载外部函数库来为 Marsho 提供 Function Call 功能。[使用文档](./README_TOOLS.md)
 
 ## 👍 夸赞名单
 
 夸赞名单存储于插件数据目录下的`praises.json`里（该目录路径会在 Bot 启动时输出到日志），当配置项为`true`
-时发起一次聊天后自动生成，包含人物名字与人物优点两个基本数据。  
-存储于其中的人物会被 Marsho “认识”和“喜欢”。  
+时发起一次聊天后自动生成，包含人物名字与人物优点两个基本数据。
+存储于其中的人物会被 Marsho “认识”和“喜欢”。
 其结构类似于：
 
 ```json
@@ -176,10 +176,10 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 ## ❤ 鸣谢&版权说明
 本项目使用了以下项目的代码：
-- [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex) 
+- [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)
 
 "Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)
-绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
+绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。
 "nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。
 部分指定的代码基于 [Mulan PSL v2](./LICENSE-MULAN) 许可下提供。
 

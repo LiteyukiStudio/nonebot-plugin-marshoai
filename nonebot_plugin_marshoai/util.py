@@ -1,26 +1,19 @@
-import os
-import json
-import uuid
-import httpx
 import base64
+import json
 import mimetypes
-
+import os
+import uuid
 from typing import Any, Optional
 
-from nonebot.log import logger
-
+import httpx
 import nonebot_plugin_localstore as store
-
-from nonebot_plugin_alconna import (
-    Text as TextMsg,
-    Image as ImageMsg,
-    UniMessage,
-)
-
-
 # from zhDateTime import DateTime
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
+from nonebot.log import logger
+from nonebot_plugin_alconna import Image as ImageMsg
+from nonebot_plugin_alconna import Text as TextMsg
+from nonebot_plugin_alconna import UniMessage
 
 from .config import config
 from .constants import *
@@ -304,7 +297,7 @@ if config.marshoai_enable_richtext_parse:
         if not IMG_LATEX_PATTERN.search(msg):  # 没有图片和LaTeX标签
             return UniMessage(msg)
 
-        result_msg = UniMessage()
+        result_msg = UniMessage()  # type: ignore
         code_blank_uuid_map = [
             (uuid.uuid4().hex, cbp.group()) for cbp in CODE_BLOCK_PATTERN.finditer(msg)
         ]
@@ -338,7 +331,7 @@ if config.marshoai_enable_richtext_parse:
             last_tag_index = msg.find(tag_found) + len(tag_found)
 
             if each_find_tag.group(1):
-                
+
                 # 图形一定要优先考虑
                 # 别忘了有些图形的地址就是 LaTeX，所以要优先判断
 
@@ -380,7 +373,7 @@ if config.marshoai_enable_richtext_parse:
                 if latex_generate_ok:
                     result_msg.append(
                         ImageMsg(
-                            raw=latex_generate_result,
+                            raw=latex_generate_result,  # type: ignore
                             mimetype="image/png",
                             name="latex.png",
                         )
