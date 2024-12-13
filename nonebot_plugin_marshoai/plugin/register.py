@@ -4,18 +4,20 @@
 import inspect
 from typing import Any, Callable, Coroutine, TypeAlias
 
-import nonebot
+from nonebot import logger
 
+from .models import FunctionCall, FunctionCallArgument
+from .typing import (
+    ASYNC_FUNCTION_CALL_FUNC,
+    FUNCTION_CALL_FUNC,
+    SYNC_FUNCTION_CALL_FUNC,
+)
 from .utils import is_coroutine_callable
 
-SYNC_FUNCTION_CALL: TypeAlias = Callable[..., str]
-ASYNC_FUNCTION_CALL: TypeAlias = Callable[..., Coroutine[str, Any, str]]
-FUNCTION_CALL: TypeAlias = SYNC_FUNCTION_CALL | ASYNC_FUNCTION_CALL
-
-_loaded_functions: dict[str, FUNCTION_CALL] = {}
+_loaded_functions: dict[str, FUNCTION_CALL_FUNC] = {}
 
 
-def async_wrapper(func: SYNC_FUNCTION_CALL) -> ASYNC_FUNCTION_CALL:
+def async_wrapper(func: SYNC_FUNCTION_CALL_FUNC) -> ASYNC_FUNCTION_CALL_FUNC:
     """将同步函数包装为异步函数，但是不会真正异步执行，仅用于统一调用及函数签名
 
     Args:
@@ -31,7 +33,7 @@ def async_wrapper(func: SYNC_FUNCTION_CALL) -> ASYNC_FUNCTION_CALL:
     return wrapper
 
 
-def function_call(*funcs: FUNCTION_CALL):
+def function_call(*funcs: FUNCTION_CALL_FUNC) -> None:
     """返回一个装饰器，装饰一个函数, 使其注册为一个可被AI调用的function call函数
 
     Args:
@@ -41,15 +43,20 @@ def function_call(*funcs: FUNCTION_CALL):
         str: 函数定义信息
     """
     for func in funcs:
-        if module := inspect.getmodule(func):
-            module_name = module.__name__ + "."
-        else:
-            module_name = ""
-        name = func.__name__
-        if not is_coroutine_callable(func):
-            func = async_wrapper(func)  # type: ignore
+        function_call = get_function_info(func)
+        # TODO: 注册函数
 
-        _loaded_functions[name] = func
-        nonebot.logger.opt(colors=True).info(
-            f"加载 function call: <c>{module_name}{name}</c>"
-        )
+
+def get_function_info(func: FUNCTION_CALL_FUNC):
+    """获取函数信息
+
+    Args:
+        func: 函数对象
+
+    Returns:
+        FunctionCall: 函数信息对象模型
+    """
+    name = func.__name__
+    description = func.__doc__
+    logger.info(f"注册函数: {name} {description}")
+    # TODO: 获取函数参数信息
