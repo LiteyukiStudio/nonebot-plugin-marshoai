@@ -40,15 +40,15 @@ def load_plugin(module_path: str | Path) -> Optional[Plugin]:
         else module_path
     )
     try:
-        module = import_module(module_path) # 导入模块对象
+        module = import_module(module_path)  # 导入模块对象
         plugin = Plugin(
             name=module.__name__,
             module=module,
             module_name=module_path,
         )
-        
+
         plugin.metadata = getattr(module, "__marsho_meta__", None)
-            
+
         _plugins[plugin.name] = plugin
 
         logger.opt(colors=True).success(
@@ -79,15 +79,17 @@ def load_plugins(*plugin_dirs: str) -> set[Plugin]:
             path = Path(os.path.join(plugin_dir, f))
 
             module_name = None
-            
+
             if os.path.isfile(path) and f.endswith(".py"):
                 """单文件加载"""
                 module_name = f"{path_to_module_name(Path(plugin_dir))}.{f[:-3]}"
 
-            elif os.path.isdir(path) and os.path.exists(os.path.join(path, "__init__.py")):
+            elif os.path.isdir(path) and os.path.exists(
+                os.path.join(path, "__init__.py")
+            ):
                 """包加载"""
                 module_name = path_to_module_name(path)
-                
+
             if module_name and (plugin := load_plugin(module_name)):
                 plugins.add(plugin)
     return plugins

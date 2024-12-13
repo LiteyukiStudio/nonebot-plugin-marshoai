@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class Plugin(BaseModel):
     """
     存储插件信息
-    
+
     Attributes:
     ----------
     name: str
@@ -18,6 +18,7 @@ class Plugin(BaseModel):
     metadata: "PluginMeta" | None
         元
     """
+
     name: str
     """包名称 例如marsho_test"""
     module: ModuleType
@@ -26,6 +27,7 @@ class Plugin(BaseModel):
     """点分割模块路径 例如a.b.c"""
     metadata: "PluginMetadata" | None = None
     """元"""
+
 
 class PluginMetadata(BaseModel):
     """
@@ -48,6 +50,7 @@ class PluginMetadata(BaseModel):
     extra: dict[str, Any]
         额外信息，自定义键值对
     """
+
     name: str
     description: str = ""
     usage: str = ""
