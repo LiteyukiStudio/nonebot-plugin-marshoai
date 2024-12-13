@@ -14,7 +14,6 @@ async def random_turntable(upper: int, lower: int):
     return random.randint(lower, upper)
 
 
-
 async def number_calc(a: str, b: str, op: str) -> str:
     """Number Calc
 
@@ -26,20 +25,19 @@ async def number_calc(a: str, b: str, op: str) -> str:
     Returns:
         str: _description_
     """
-    a, b = float(a), float(b)   # type: ignore
+    a, b = float(a), float(b)  # type: ignore
     match op:
         case "+":
-            return str(a + b)   # type: ignore
+            return str(a + b)  # type: ignore
         case "-":
-            return str(a - b)   # type: ignore
+            return str(a - b)  # type: ignore
         case "*":
-            return str(a * b)   # type: ignore
+            return str(a * b)  # type: ignore
         case "/":
-            return str(a / b)   # type: ignore
+            return str(a / b)  # type: ignore
         case "**":
-            return str(a**b)    # type: ignore
+            return str(a**b)  # type: ignore
         case "%":
             return str(a % b)
         case _:
             return "未知运算符"
-        

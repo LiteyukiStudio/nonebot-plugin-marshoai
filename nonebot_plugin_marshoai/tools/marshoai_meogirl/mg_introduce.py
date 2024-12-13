@@ -67,7 +67,7 @@ async def introduce(msg: str):
         from . import mg_search
 
         context = await mg_search.search(msg, 1)
-        keyword = re.search(r".*?\n", context, flags=re.DOTALL).group()[:-1]    # type: ignore
+        keyword = re.search(r".*?\n", context, flags=re.DOTALL).group()[:-1]  # type: ignore
 
         logger.success(f'搜索完成, 打开"{keyword}"')
         return await introduce(keyword)

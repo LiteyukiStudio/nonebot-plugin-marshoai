@@ -4,7 +4,10 @@ dynamic = ["version"]
 description = "Nonebot2插件，调用Azure OpenAI等AI服务实现猫娘聊天"
 readme = "README.md"
 requires-python = "<4.0,>=3.10"
-authors = [{ name = "Asankilp", email = "asankilp@outlook.com" }]
+authors = [
+    { name = "Asankilp", email = "asankilp@outlook.com" },
+    {name="LiteyukiStudio", email = "support@liteyuki.icu"}
+]
 dependencies = [
     "nonebot2>=2.2.0",
     "nonebot-plugin-alconna>=0.48.0",
