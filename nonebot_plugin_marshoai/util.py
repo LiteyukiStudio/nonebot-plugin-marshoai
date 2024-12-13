@@ -7,6 +7,7 @@ from typing import Any, Optional
 
 import httpx
 import nonebot_plugin_localstore as store
+
 # from zhDateTime import DateTime
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage

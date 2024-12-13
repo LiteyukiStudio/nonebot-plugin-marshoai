@@ -5,12 +5,16 @@ from typing import Optional
 
 import nonebot_plugin_localstore as store
 from arclet.alconna import Alconna, AllParam, Args
-from azure.ai.inference.models import (AssistantMessage,
-                                       ChatCompletionsToolCall,
-                                       CompletionsFinishReason,
-                                       ImageContentItem, ImageUrl,
-                                       TextContentItem, ToolMessage,
-                                       UserMessage)
+from azure.ai.inference.models import (
+    AssistantMessage,
+    ChatCompletionsToolCall,
+    CompletionsFinishReason,
+    ImageContentItem,
+    ImageUrl,
+    TextContentItem,
+    ToolMessage,
+    UserMessage,
+)
 from azure.core.credentials import AzureKeyCredential
 from nonebot import get_driver, logger, on_command, on_message
 from nonebot.adapters import Event, Message

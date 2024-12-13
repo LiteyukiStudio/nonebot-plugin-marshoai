@@ -1,9 +1,5 @@
 fail_fast: true
 repos:
-  - repo: https://github.com/timothycrosley/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
 
   - repo: https://github.com/psf/black
     rev: 24.4.2
