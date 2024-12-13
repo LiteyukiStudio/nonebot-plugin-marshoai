@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = "<4.0,>=3.10"
 authors = [
     { name = "Asankilp", email = "asankilp@outlook.com" },
-    {name="LiteyukiStudio", email = "support@liteyuki.icu"}
+    { name="LiteyukiStudio", email = "support@liteyuki.icu"}
 ]
 dependencies = [
     "nonebot2>=2.2.0",
@@ -37,6 +37,9 @@ adapters = [
 
 [tool.pdm]
 distribution = true
+
+[tool.isort]
+profile = "black"
 
 
 [tool.pdm.version]

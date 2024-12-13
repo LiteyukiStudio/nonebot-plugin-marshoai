@@ -2,9 +2,9 @@ import json
 import types
 
 from tencentcloud.common import credential  # type: ignore
-from tencentcloud.common.exception.tencent_cloud_sdk_exception import (
+from tencentcloud.common.exception.tencent_cloud_sdk_exception import (  # type: ignore
     TencentCloudSDKException,
-)  # type: ignore
+)
 from tencentcloud.common.profile.client_profile import ClientProfile  # type: ignore
 from tencentcloud.common.profile.http_profile import HttpProfile  # type: ignore
 from tencentcloud.hunyuan.v20230901 import hunyuan_client  # type: ignore

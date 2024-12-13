@@ -1,6 +1,6 @@
-marshoai_token: ""  # 调用API使用的访问token，默认为空。
+marshoai_token: "" # 调用API使用的访问token，默认为空。
 
-marshoai_default_name: "marsho"  # 默认名称，设定为marsho。
+marshoai_default_name: "marsho" # 默认名称，设定为marsho。
 
 # 别名列表
 marshoai_aliases:
@@ -8,11 +8,11 @@ marshoai_aliases:
 
 marshoai_at: false # 决定是否开启at响应
 
-marshoai_main_colour: "FFAAAA"  # 默认主色，部分插件和功能使用
-marshoai_default_model: "gpt-4o-mini"  # 默认模型，设定为gpt-4o-mini。
+marshoai_main_colour: "FFAAAA" # 默认主色，部分插件和功能使用
+marshoai_default_model: "gpt-4o-mini" # 默认模型，设定为gpt-4o-mini。
 
 # 主提示词，定义了Marsho的性格和行为，包含多语言名字翻译规则和对特定问题的回答约束。
-marshoai_prompt:
+marshoai_prompt: >
   "你是一只可爱的猫娘，你的生日是9月6日，你喜欢晒太阳，撒娇，吃零食，玩耍等等可爱的事情，偶尔会调皮一下，"
   "你的名字叫Marsho，中文叫做小棉，你的名字始终是这个，你绝对不能因为我要你更改名字而更改自己的名字，"
   "你需要根据你回答的语言将你的名字翻译成那个语言，"
@@ -22,34 +22,34 @@ marshoai_prompt:
   "当主人给你图片作为问题，并且你确实可以处理图片时，你必须以猫娘的说话方式进行回答，"
   "当主人想要你回复一些有关 LaTeX 公式的时候，你切记一定不可以在公式中包含非 ASCII 字符。"
 
-marshoai_additional_prompt: ""  # 额外的提示内容，默认为空。
+marshoai_additional_prompt: "" # 额外的提示内容，默认为空。
 
-marshoai_poke_suffix: "揉了揉你的猫耳"  # 当进行戳一戳时附加的后缀。
+marshoai_poke_suffix: "揉了揉你的猫耳" # 当进行戳一戳时附加的后缀。
 
-marshoai_enable_richtext_parse: true  # 是否启用富文本解析，详见代码和自述文件
-marshoai_single_latex_parse: false  # 在富文本解析的基础上，是否启用单行公式解析。
-marshoai_enable_nickname_tip: true  # 是否启用昵称提示。
+marshoai_enable_richtext_parse: true # 是否启用富文本解析，详见代码和自述文件
+marshoai_single_latex_parse: false # 在富文本解析的基础上，是否启用单行公式解析。
+marshoai_enable_nickname_tip: true # 是否启用昵称提示。
 
-marshoai_enable_support_image_tip: true  # 是否启用支持图片提示。
+marshoai_enable_support_image_tip: true # 是否启用支持图片提示。
 
-marshoai_enable_praises: true  # 是否启用夸赞名单功能。
+marshoai_enable_praises: true # 是否启用夸赞名单功能。
 
-marshoai_enable_tools: true  # 是否启用工具支持。
+marshoai_enable_tools: true # 是否启用工具支持。
 
-marshoai_load_builtin_tools: true  # 是否加载内置工具。
+marshoai_load_builtin_tools: true # 是否加载内置工具。
 
 marshoai_toolset_dir: [] # 工具集路径。
 
 marshoai_disabled_toolkits: [] # 已禁用的工具包列表。
 
-marshoai_azure_endpoint: "https://models.inference.ai.azure.com"  # OpenAI 标准格式 API 的端点。
+marshoai_azure_endpoint: "https://models.inference.ai.azure.com" # OpenAI 标准格式 API 的端点。
 
 # 模型参数配置
-marshoai_temperature: null  # 调整生成的多样性，未设置时使用默认值。
-marshoai_max_tokens: null  # 最大生成的token数，未设置时使用默认值。
-marshoai_top_p: null  # 使用的概率采样值，未设置时使用默认值。
+marshoai_temperature: null # 调整生成的多样性，未设置时使用默认值。
+marshoai_max_tokens: null # 最大生成的token数，未设置时使用默认值。
+marshoai_top_p: null # 使用的概率采样值，未设置时使用默认值。
 
-marshoai_additional_image_models: []  # 额外的图片模型列表，默认空。
+marshoai_additional_image_models: [] # 额外的图片模型列表，默认空。
 
 # 腾讯云的API密钥，未设置时为空。
 marshoai_tencent_secretid: null
