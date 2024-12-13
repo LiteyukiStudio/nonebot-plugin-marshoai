@@ -11,6 +11,7 @@ import nonebot_plugin_localstore as store
 # from zhDateTime import DateTime
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage
+from nonebot import get_driver
 from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
@@ -279,6 +280,10 @@ See the Mulan PSL v2 for more details.
 if config.marshoai_enable_richtext_parse:
 
     latex_convert = ConvertLatex()  # 开启一个转换实例
+
+    @get_driver().on_bot_connect
+    async def load_latex_convert():
+        await latex_convert.load_channel(None)
 
     async def get_uuid_back2codeblock(
         msg: str, code_blank_uuid_map: list[tuple[str, str]]

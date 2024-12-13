@@ -25,6 +25,7 @@ from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
 
 from .metadata import metadata
 from .models import MarshoContext, MarshoTools
+from .plugin import _plugins, load_plugins
 from .util import *
 
 
@@ -85,6 +86,7 @@ target_list = []  # 记录需保存历史上下文的列表
 
 @driver.on_startup
 async def _preload_tools():
+    """启动钩子加载工具"""
     tools_dir = store.get_plugin_data_dir() / "tools"
     os.makedirs(tools_dir, exist_ok=True)
     if config.marshoai_enable_tools:
@@ -96,6 +98,15 @@ async def _preload_tools():
         logger.info(
             "如果启用小棉工具后使用的模型出现报错，请尝试将 MARSHOAI_ENABLE_TOOLS 设为 false。"
         )
+
+
+@driver.on_startup
+async def _preload_plugins():
+    """启动钩子加载插件"""
+    marshoai_plugin_dirs = config.marshoai_plugin_dirs
+    marshoai_plugin_dirs.insert(0, Path(__file__).parent / "plugins")
+    load_plugins(*marshoai_plugin_dirs)
+    logger.opt(colors=True).info(f"已加载 <c>{len(_plugins)}</c> 个小棉插件")
 
 
 @add_usermsg_cmd.handle()

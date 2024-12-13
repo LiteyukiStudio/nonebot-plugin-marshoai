@@ -14,6 +14,7 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 """
 
+import asyncio
 import time
 from typing import Literal, Optional, Tuple
 
@@ -35,7 +36,7 @@ class ConvertChannel:
         return False, "请勿直接调用母类"
 
     @staticmethod
-    def channel_test() -> int:
+    async def channel_test() -> int:
         return -1
 
 
@@ -90,21 +91,23 @@ class L2PChannel(ConvertChannel):
         return False, "未知错误"
 
     @staticmethod
-    def channel_test() -> int:
-        with httpx.Client(timeout=5, verify=False) as client:
+    async def channel_test() -> int:
+        async with httpx.AsyncClient(timeout=5, verify=False) as client:
             try:
                 start_time = time.time_ns()
                 latex2png = (
-                    client.get(
+                    await client.get(
                         "http://www.latex2png.com{}"
-                        + client.post(
-                            "http://www.latex2png.com/api/convert",
-                            json={
-                                "auth": {"user": "guest", "password": "guest"},
-                                "latex": "\\\\int_{a}^{b} x^2 \\\\, dx = \\\\frac{b^3}{3} - \\\\frac{a^3}{5}\n",
-                                "resolution": 600,
-                                "color": "000000",
-                            },
+                        + (
+                            await client.post(
+                                "http://www.latex2png.com/api/convert",
+                                json={
+                                    "auth": {"user": "guest", "password": "guest"},
+                                    "latex": "\\\\int_{a}^{b} x^2 \\\\, dx = \\\\frac{b^3}{3} - \\\\frac{a^3}{5}\n",
+                                    "resolution": 600,
+                                    "color": "000000",
+                                },
+                            )
                         ).json()["url"]
                     ),
                     time.time_ns() - start_time,
@@ -156,12 +159,12 @@ class CDCChannel(ConvertChannel):
         return False, "未知错误"
 
     @staticmethod
-    def channel_test() -> int:
-        with httpx.Client(timeout=5, verify=False) as client:
+    async def channel_test() -> int:
+        async with httpx.AsyncClient(timeout=5, verify=False) as client:
             try:
                 start_time = time.time_ns()
                 codecogs = (
-                    client.get(
+                    await client.get(
                         r"https://latex.codecogs.com/png.image?\huge%20\dpi{600}\\int_{a}^{b}x^2\\,dx=\\frac{b^3}{3}-\\frac{a^3}{5}"
                     ),
                     time.time_ns() - start_time,
@@ -223,19 +226,21 @@ class JRTChannel(ConvertChannel):
         return False, "未知错误"
 
     @staticmethod
-    def channel_test() -> int:
-        with httpx.Client(timeout=5, verify=False) as client:
+    async def channel_test() -> int:
+        async with httpx.AsyncClient(timeout=5, verify=False) as client:
             try:
                 start_time = time.time_ns()
                 joeraut = (
-                    client.get(
-                        client.post(
-                            "http://www.latex2png.com/api/convert",
-                            json={
-                                "latexInput": "\\\\int_{a}^{b} x^2 \\\\, dx = \\\\frac{b^3}{3} - \\\\frac{a^3}{5}",
-                                "outputFormat": "PNG",
-                                "outputScale": "1000%",
-                            },
+                    await client.get(
+                        (
+                            await client.post(
+                                "http://www.latex2png.com/api/convert",
+                                json={
+                                    "latexInput": "\\\\int_{a}^{b} x^2 \\\\, dx = \\\\frac{b^3}{3} - \\\\frac{a^3}{5}",
+                                    "outputFormat": "PNG",
+                                    "outputScale": "1000%",
+                                },
+                            )
                         ).json()["imageUrl"]
                     ),
                     time.time_ns() - start_time,
@@ -255,11 +260,14 @@ class ConvertLatex:
 
     channel: ConvertChannel
 
-    def __init__(self, channel: Optional[ConvertChannel] = None) -> None:
+    def __init__(self, channel: Optional[ConvertChannel] = None):
+        logger.info("LaTeX 转换服务将在 Bot 连接时异步加载")
 
+    async def load_channel(self, channel: ConvertChannel | None = None) -> None:
         if channel is None:
             logger.info("正在选择 LaTeX 转换服务频道，请稍等...")
-            self.channel = self.auto_choose_channel()
+            self.channel = await self.auto_choose_channel()
+            logger.info(f"已选择 {self.channel.__class__.__name__} 服务频道")
         else:
             self.channel = channel
 
@@ -297,9 +305,15 @@ class ConvertLatex:
         )
 
     @staticmethod
-    def auto_choose_channel() -> ConvertChannel:
+    async def auto_choose_channel() -> ConvertChannel:
+        async def channel_test_wrapper(
+            channel: type[ConvertChannel],
+        ) -> Tuple[int, type[ConvertChannel]]:
+            score = await channel.channel_test()
+            return score, channel
 
-        return min(
-            channel_list,
-            key=lambda channel: channel.channel_test(),
-        )()
+        results = await asyncio.gather(
+            *(channel_test_wrapper(channel) for channel in channel_list)
+        )
+        best_channel = min(results, key=lambda x: x[0])[1]
+        return best_channel()

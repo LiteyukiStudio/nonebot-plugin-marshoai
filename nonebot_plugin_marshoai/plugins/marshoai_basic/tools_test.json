@@ -1,0 +1,39 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "marshoai-basic__get_weather",
+            "description": "当你想查询指定城市的天气时非常有用。",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "description": "城市或县区，比如北京市、杭州市、余杭区等。"
+                    }
+                }
+            },
+            "required": [
+                "location"
+            ]
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "marshoai-basic__get_current_env",
+            "description": "获取当前的运行环境。",
+            "parameters": {
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "marshoai-basic__get_current_time",
+            "description": "获取现在的时间。",
+            "parameters": {
+            }
+        }
+    }
+]

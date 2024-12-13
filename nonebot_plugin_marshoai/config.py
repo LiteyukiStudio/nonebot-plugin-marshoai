@@ -48,6 +48,8 @@ class ConfigModel(BaseModel):
     marshoai_tencent_secretid: str | None = None
     marshoai_tencent_secretkey: str | None = None
 
+    marshoai_plugin_dirs: list[str] = []
+
 
 yaml = YAML()
 

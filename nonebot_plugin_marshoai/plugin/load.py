@@ -23,6 +23,26 @@ __all__ = [
 ]
 
 
+def get_plugin(name: str) -> Plugin | None:
+    """获取插件对象
+
+    Args:
+        name: 插件名称
+    Returns:
+        Optional[Plugin]: 插件对象
+    """
+    return _plugins.get(name)
+
+
+def get_plugins() -> dict[str, Plugin]:
+    """获取所有插件
+
+    Returns:
+        dict[str, Plugin]: 插件集合
+    """
+    return _plugins
+
+
 def load_plugin(module_path: str | Path) -> Optional[Plugin]:
     """加载单个插件，可以是本地插件或是通过 `pip` 安装的插件。
     该函数产生的副作用在于将插件加载到 `_plugins` 中。
@@ -45,20 +65,23 @@ def load_plugin(module_path: str | Path) -> Optional[Plugin]:
             module=module,
             module_name=module_path,
         )
+        _plugins[plugin.name] = plugin
 
         plugin.metadata = getattr(module, "__marsho_meta__", None)
 
-        _plugins[plugin.name] = plugin
+        if plugin.metadata is None:
+            logger.opt(colors=True).warning(
+                f"成功加载小棉插件 <y>{plugin.name}</y>, 但是没有定义元数据"
+            )
+        else:
+            logger.opt(colors=True).success(
+                f'成功加载小棉插件 <c>"{plugin.metadata.name}"</c>'
+            )
 
-        logger.opt(colors=True).success(
-            f'Succeeded to load liteyuki plugin "{plugin.name}"'
-        )
-        return _plugins[module.__name__]
+        return plugin
 
     except Exception as e:
-        logger.opt(colors=True).success(
-            f'Failed to load liteyuki plugin "<r>{module_path}</r>"'
-        )
+        logger.opt(colors=True).success(f'加载小棉插件失败 "<r>{module_path}</r>"')
         traceback.print_exc()
         return None
 
