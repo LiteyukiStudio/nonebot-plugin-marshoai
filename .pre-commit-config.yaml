@@ -1,5 +1,13 @@
 fail_fast: true
 repos:
+  - repo: local
+    hooks:
+      - id: check-filenames
+        name: Check Python Filenames
+        entry: python ./.pre-commit/check_filename.py
+        language: python
+        files: \.py$
+
   - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:
