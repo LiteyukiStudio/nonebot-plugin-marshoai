@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright (C) 2020-2024 LiteyukiStudio. All Rights Reserved 
+Copyright (C) 2020-2024 LiteyukiStudio. All Rights Reserved
 本模块为工具加载模块
 """
 import os
@@ -12,7 +12,6 @@ from typing import Optional
 from nonebot import logger
 
 from .models import Plugin, PluginMetadata
-
 from .utils import path_to_module_name
 
 _plugins: dict[str, Plugin] = {}
