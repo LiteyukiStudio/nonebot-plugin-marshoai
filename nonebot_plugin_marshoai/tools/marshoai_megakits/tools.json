@@ -2,21 +2,21 @@
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-megakits__twisuki",
+			"name" : "marshoai_megakits__twisuki",
 			"description" : "介绍插件作者Twisuki(苏阳)"
 		}
 	},
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-megakits__megakits",
+			"name" : "marshoai_megakits__megakits",
 			"description" : "介绍本插件MegaKits"
 		}
 	},
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-megakits__random_turntable",
+			"name" : "marshoai_megakits__random_turntable",
 			"description" : "随机转盘, 玩家输入上下限(均为整数), 返回一个随机整数",
 			"parameters" : {
 				"type" : "object",
@@ -39,7 +39,7 @@
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-megakits__number_calc",
+			"name" : "marshoai_megakits__number_calc",
 			"description" : "数字计算器, 可对整数 小数做加减乘除, 乘方 取余运算",
 			"parameters" : {
 				"type" : "object",
@@ -66,7 +66,7 @@
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-megakits__morse_encrypt",
+			"name" : "marshoai_megakits__morse_encrypt",
 			"description" : "摩尔斯电码加密, 输入一个字符串, 返回由.- 组成的摩尔斯电码",
 			"parameters" : {
 				"type" : "object",
@@ -85,7 +85,7 @@
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-megakits__morse_decrypt",
+			"name" : "marshoai_megakits__morse_decrypt",
 			"description" : "摩尔斯电码解码, 输入一个字符串(由.- 组成), 返回由解码",
 			"parameters" : {
 				"type" : "object",
@@ -104,7 +104,7 @@
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-megakits__nya_encode",
+			"name" : "marshoai_megakits__nya_encode",
 			"description" : "转换为猫猫语",
 			"parameters" : {
 				"type" : "object",
@@ -123,7 +123,7 @@
 	{
 		"type": "function",
 		"function": {
-			"name": "marshoai-megakits__nya_decode",
+			"name": "marshoai_megakits__nya_decode",
 			"description": "翻译猫语",
 			"parameters": {
 				"type": "object",
