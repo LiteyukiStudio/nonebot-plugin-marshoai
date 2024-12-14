@@ -204,7 +204,6 @@ class JRTChannel(ConvertChannel):
                             "outputScale": "{}%".format(dpi / 3 * 5),
                         },
                     )
-                    print(post_response)
                     if post_response.status_code == 200:
 
                         if not (json_response := post_response.json())["error"]:

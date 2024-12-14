@@ -32,3 +32,7 @@ def is_coroutine_callable(call: Callable[..., Any]) -> bool:
         return False
     func_ = getattr(call, "__call__", None)
     return inspect.iscoroutinefunction(func_)
+
+
+def parse_function_docsring():
+    pass

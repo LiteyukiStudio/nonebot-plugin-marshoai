@@ -49,6 +49,9 @@ class ConfigModel(BaseModel):
     marshoai_tencent_secretkey: str | None = None
 
     marshoai_plugin_dirs: list[str] = []
+    """插件目录(不是工具)"""
+    marshoai_devmode: bool = False
+    """开发者模式"""
 
 
 yaml = YAML()
