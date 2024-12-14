@@ -184,3 +184,4 @@ praises.json
 # vitepress and node.js
 node_modules/
 docs/.vitepress/cache
+docs/.vitepress/dist
