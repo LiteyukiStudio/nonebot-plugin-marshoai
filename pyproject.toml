@@ -20,7 +20,8 @@ dependencies = [
     "pyyaml>=6.0.2",
     "psutil>=6.1.0",
     "beautifulsoup4>=4.12.3",
-    "pydantic>=2.10.3"
+    "pydantic>=2.10.3",
+    "litedoc>=0.1.0.dev20241214103915"
 
 ]
 license = { text = "MIT, Mulan PSL v2" }
@@ -64,4 +65,7 @@ dev = [
     "mypy>=1.13.0",
     "black>=24.10.0",
     "litedoc>=0.1.0.dev20240906203154",
+]
+test = [
+    "nonebug>=0.4.3",
 ]

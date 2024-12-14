@@ -2,9 +2,10 @@
 """
 
 import inspect
-from typing import Any, Callable, Coroutine, TypeAlias
 
 from nonebot import logger
+
+from nonebot_plugin_marshoai.plugin.utils import is_coroutine_callable
 
 from .models import FunctionCall, FunctionCallArgument
 from .typing import (
@@ -12,7 +13,6 @@ from .typing import (
     FUNCTION_CALL_FUNC,
     SYNC_FUNCTION_CALL_FUNC,
 )
-from .utils import is_coroutine_callable
 
 _loaded_functions: dict[str, FUNCTION_CALL_FUNC] = {}
 
@@ -42,21 +42,21 @@ def function_call(*funcs: FUNCTION_CALL_FUNC) -> None:
     Returns:
         str: 函数定义信息
     """
-    for func in funcs:
-        function_call = get_function_info(func)
-        # TODO: 注册函数
+    # for func in funcs:
+    #     function_call = get_function_info(func)
+    #     # TODO: 注册函数
 
 
-def get_function_info(func: FUNCTION_CALL_FUNC):
-    """获取函数信息
+# def get_function_info(func: FUNCTION_CALL_FUNC) -> FunctionCall:
+#     """获取函数信息
 
-    Args:
-        func: 函数对象
+#     Args:
+#         func: 函数对象
 
-    Returns:
-        FunctionCall: 函数信息对象模型
-    """
-    name = func.__name__
-    description = func.__doc__
-    logger.info(f"注册函数: {name} {description}")
-    # TODO: 获取函数参数信息
+#     Returns:
+#         FunctionCall: 函数信息对象模型
+#     """
+#     description = func.__doc__
+#     # TODO: 获取函数参数信息
+#     parameters = {}
+#     pass

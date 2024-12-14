@@ -3,7 +3,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from .typing import ASYNC_FUNCTION_CALL_FUNC
+from .typing import ASYNC_FUNCTION_CALL_FUNC, FUNCTION_CALL_FUNC
 
 
 class PluginMetadata(BaseModel):
@@ -114,7 +114,7 @@ class FunctionCall(BaseModel):
     """函数描述 这个函数用于获取天气信息"""
     arguments: dict[str, FunctionCallArgument]
     """函数参数信息"""
-    function: ASYNC_FUNCTION_CALL_FUNC
+    function: FUNCTION_CALL_FUNC
     """函数对象"""
 
     class Config:
