@@ -173,10 +173,14 @@ bot.py
 pdm.lock
 praises.json
 *.bak
-config/
+./config/
 
 # dev
 .vscode/
 
 # macos finder
 .DS_Store
+
+# vitepress and node.js
+node_modules/
+docs/.vitepress/cache
