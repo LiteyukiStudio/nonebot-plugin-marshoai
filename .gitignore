@@ -185,6 +185,3 @@ praises.json
 node_modules/
 docs/.vitepress/cache
 docs/.vitepress/dist
-
-# litedoc
-docs/**/dev/**
