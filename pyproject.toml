@@ -63,4 +63,5 @@ dev = [
     "nonebot-adapter-onebot>=2.4.6",
     "mypy>=1.13.0",
     "black>=24.10.0",
+    "litedoc>=0.1.0.dev20240906203154",
 ]

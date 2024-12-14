@@ -9,10 +9,10 @@ hero:
   actions:
     - theme: brand
       text: 开始使用
-      link: /start
+      link: /start/
     - theme: alt
       text: 开发及扩展
-      link: /dev
+      link: /dev/
   image:
     light: ./marsho-full.svg
     dark: ./marsho-full.svg

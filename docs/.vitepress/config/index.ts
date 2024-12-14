@@ -1,7 +1,8 @@
 import { defineConfig } from 'vitepress'
-import {zh} from './zh'
-import {en} from './en'
-import { gitea } from './common'
+import { zh } from './zh'
+import { en } from './en'
+import { defaultLang, generateSidebarConfig, gitea } from './common'
+import { generateSidebar } from 'vitepress-sidebar'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -9,8 +10,9 @@ export default defineConfig({
         ['link', { rel: 'icon', type: 'image/x-icon', href: './favicon.ico' }],
     ],
     rewrites: {
-        [`zh/:rest*`]: ":rest*",
+        [`${defaultLang}/:rest*`]: ":rest*",
     },
+    cleanUrls: true,
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
         logo: {
@@ -19,9 +21,13 @@ export default defineConfig({
             alt: 'Marsho Logo'
         },
 
+        sidebar: generateSidebar(
+            [...generateSidebarConfig(),]
+        ),
+
         socialLinks: [
             { icon: 'github', link: 'https://github.com/LiteyukiStudio/nonebot-plugin-marshoai' },
-            { icon: gitea, link: 'https://git.liteyuki.icu/LiteyukiStudio/nonebot-plugin-marshoai'}
+            { icon: gitea, link: 'https://git.liteyuki.icu/LiteyukiStudio/nonebot-plugin-marshoai' }
         ]
     },
     locales: {
