@@ -40,8 +40,8 @@ jobs:
       - name: Setup API markdown
         run: |-
           python -m pip install litedoc
-          litedoc nonebot_plugin_marshoai -o docs/zh/dev/api -l zh-Hans    -cd class -fd func -md func -vd var -bu https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/tree/main/nonebot_plugin_marshoai/
-          litedoc nonebot_plugin_marshoai -o docs/en/dev/api -l en         -cd class -fd func -md func -vd var -bu https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/tree/main/nonebot_plugin_marshoai/
+          chmod +x build-docs.sh
+          ./build-docs.sh
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v2
