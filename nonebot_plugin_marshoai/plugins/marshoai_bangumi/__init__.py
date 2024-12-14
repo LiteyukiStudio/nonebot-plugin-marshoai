@@ -2,7 +2,13 @@ import traceback
 
 import httpx
 
-from nonebot_plugin_marshoai.plugin import PluginMetadata, function_call
+from nonebot_plugin_marshoai.plugin import (
+    Integer,
+    PluginMetadata,
+    String,
+    function_call,
+    on_function_call,
+)
 
 __marsho_meta__ = PluginMetadata(
     name="Bangumi 番剧信息",
@@ -13,7 +19,9 @@ __marsho_meta__ = PluginMetadata(
 )
 
 
+@function_call
 async def fetch_calendar():
+    """获取今天日期"""
     url = "https://api.bgm.tv/calendar"
     headers = {
         "User-Agent": "LiteyukiStudio/nonebot-plugin-marshoai (https://github.com/LiteyukiStudio/nonebot-plugin-marshoai)"
@@ -26,11 +34,7 @@ async def fetch_calendar():
 
 @function_call
 async def get_bangumi_news() -> str:
-    """获取今天的新番（动漫）列表，在调用之前，你需要知道今天星期几。
-
-    Returns:
-        _type_: _description_
-    """
+    """获取今天的新番（动漫）列表，在调用之前，你需要知道今天星期几。"""
     result = await fetch_calendar()
     info = ""
     try:
