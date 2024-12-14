@@ -1,8 +1,11 @@
-from typing import Generic
+from typing import Generic, TypeVar
+
+from nonebot import logger
 
 from ..typing import FUNCTION_CALL_FUNC
 from .params import P
-from .register import F
+
+F = TypeVar("F", bound=FUNCTION_CALL_FUNC)
 
 
 class Caller(Generic[P]):
@@ -60,6 +63,17 @@ class Caller(Generic[P]):
         return self
 
     def __call__(self, func: F) -> F:
+        """装饰函数，注册为一个可被AI调用的function call函数
+
+        Args:
+            func (F): 函数对象
+
+        Returns:
+            F: 函数对象
+        """
+        logger.opt(colors=True).info(
+            f"<y>加载函数 {func.__name__} {self._description}</y>"
+        )
         self.func = func
         return func
 
@@ -73,4 +87,5 @@ def on_function_call(name: str | None = None, description: str | None = None) ->
     Returns:
         Caller: Caller对象
     """
+
     return Caller(name=name, description=description)
