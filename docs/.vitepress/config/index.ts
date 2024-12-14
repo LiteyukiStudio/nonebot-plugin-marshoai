@@ -7,7 +7,7 @@ import { generateSidebar } from 'vitepress-sidebar'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
     head: [
-        ['link', { rel: 'icon', type: 'image/x-icon', href: './favicon.ico' }],
+        ['link', { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' }],
     ],
     rewrites: {
         [`${defaultLang}/:rest*`]: ":rest*",
@@ -16,8 +16,8 @@ export default defineConfig({
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
         logo: {
-            light: './marsho-full.svg',
-            dark: './marsho-full.svg',
+            light: 'marsho-full.svg',
+            dark: 'marsho-full.svg',
             alt: 'Marsho Logo'
         },
 

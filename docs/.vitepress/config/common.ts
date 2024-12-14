@@ -10,7 +10,7 @@ const commonSidebarOptions = {
     collapsed: true,
     convertSameNameSubFileToGroupIndexPage: true,
     useTitleFromFrontmatter: true,
-    useFolderTitleFromIndexFile: true,
+    useFolderTitleFromIndexFile: false,
     useFolderLinkFromIndexFile: true,
     includeFolderIndexFile: true,
     rootGroupText: 'MARSHOAI',
