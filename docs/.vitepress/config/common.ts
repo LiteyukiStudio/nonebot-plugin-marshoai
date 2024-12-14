@@ -6,18 +6,20 @@ export const gitea = {
 
 export const defaultLang = 'zh'
 
-const commonSidebarOptions = {
+const commonSidebarOptions: VitePressSidebarOptions = {
     collapsed: true,
     convertSameNameSubFileToGroupIndexPage: true,
     useTitleFromFrontmatter: true,
     useFolderTitleFromIndexFile: false,
     useFolderLinkFromIndexFile: true,
-    includeFolderIndexFile: true,
+    useTitleFromFileHeading: true,
     rootGroupText: 'MARSHOAI',
+    includeFolderIndexFile: true,
+    sortMenusByFrontmatterOrder: true,
 }
 
 export function generateSidebarConfig(): VitePressSidebarOptions[] {
-    let sections = ["dev"]
+    let sections = ["dev", "start"]
     let languages = ['zh', 'en']
     let ret: VitePressSidebarOptions[] = []
     for (let language of languages) {
