@@ -2,14 +2,14 @@
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-meogirl__meogirl",
+			"name" : "marshoai_meogirl__meogirl",
 			"description" : "介绍Meogirl"
 		}
 	},
 	{
 		"type": "function",
 		"function": {
-			"name": "marshoai-meogirl__search",
+			"name": "marshoai_meogirl__search",
 			"description": "查找/搜索 某角色/事物 (使用萌娘百科)",
 			"parameters": {
 				"type": "object",
@@ -32,7 +32,7 @@
 	{
 		"type" : "function",
 		"function" : {
-			"name" : "marshoai-meogirl__introduce",
+			"name" : "marshoai_meogirl__introduce",
 			"description" : "介绍/展示 某角色/事物 (使用萌娘百科)",
 			"parameters" : {
 				"type" : "object",
