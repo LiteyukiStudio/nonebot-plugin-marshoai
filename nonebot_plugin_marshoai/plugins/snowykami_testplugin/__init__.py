@@ -32,14 +32,14 @@ async def fortune_telling(age: int, name: str, gender: str) -> str:
 @on_function_call(description="获取一个地点未来一段时间的天气").params(
     location=String(description="地点名称，可以是城市名、地区名等"),
     days=Integer(description="天数", minimum=1, maximum=30),
-    unit=String(enum=["摄氏度", "华氏度"], description="温度单位"),
+    unit=String(enum=["摄氏度", "华氏度"], description="温度单位", default="摄氏度"),
 )
 async def get_weather(location: str, days: int, unit: str) -> str:
     """获取一个地点未来一段时间的天气"""
 
     # 进行一系列获取天气操作...
 
-    return f"{location}未来{days}天的天气信息..."
+    return f"{location}未来{days}天的天气很好，全都是晴天，温度是34"
 
 
 @on_function_call(description="获取设备物理地理位置")

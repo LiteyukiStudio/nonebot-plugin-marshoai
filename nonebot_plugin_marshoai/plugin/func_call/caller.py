@@ -131,6 +131,12 @@ class Caller:
                 param.annotation, Caller
             ):
                 kwargs[name] = self
+
+        # 检查形参是否有默认值或传入，若没有则用parameters中的默认值填充
+        for name, param in sig.parameters.items():
+            if name not in kwargs:
+                kwargs[name] = self._parameters.get(name, param.default)
+
         return await self.func(*args, **kwargs)
 
 
