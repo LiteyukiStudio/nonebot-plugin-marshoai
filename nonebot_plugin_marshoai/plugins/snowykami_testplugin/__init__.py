@@ -43,7 +43,7 @@ async def get_weather(location: str, days: int, unit: str) -> str:
 
 
 @on_function_call(description="获取设备物理地理位置")
-async def get_location() -> str:
+def get_location() -> str:
     """获取设备物理地理位置"""
 
     # 进行一系列获取地理位置操作...
@@ -51,6 +51,6 @@ async def get_location() -> str:
     return "日本 东京都 世田谷区"
 
 
-@on_function_call(description="获取聊天者个人信息")
+@on_function_call(description="获取聊天者个人信息及发送的消息和function call调用参数")
 async def get_user_info(e: MessageEvent, c: Caller) -> str:
-    return f"用户信息：{e.user_id} {e.sender.nickname}, {c._parameters}"
+    return f"用户ID: {e.user_id} 用户昵称: {e.sender.nickname} FC调用参数:{c._parameters} 消息内容: {e.raw_message}"
