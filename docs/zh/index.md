@@ -20,9 +20,9 @@ hero:
 
 features:
   - title: 强大驱动
-    details: 基于 无机器人二，可快速安装在现有的 无机器人二 或轻雪实例上
+    details: 基于 NoneBot2，可快速安装在现有的 NoneBot2 或 轻雪 实例上
   - title: 接口规范
-    details: 使用任何遵循 开放式人工智能 的接口均可与小棉智能进行交互
+    details: 使用任何遵循 OpenAI 的接口均可与小棉智能进行交互
   - title: 易于扩展
     details: 使用蟒蛇编写工具及插件，实现函数调用，可轻松扩展小棉智能的功能
 ---
