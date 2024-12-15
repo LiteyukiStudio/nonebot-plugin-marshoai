@@ -90,6 +90,7 @@ class MarshoTools:
                         with open(json_path, "r", encoding="utf-8") as json_file:
                             data = json.load(json_file)
                             for i in data:
+
                                 self.tools_list.append(i)
 
                             spec = importlib.util.spec_from_file_location(
@@ -135,6 +136,21 @@ class MarshoTools:
                 return errinfo
         else:
             logger.error(f"工具包 '{package_name}' 未导入")
+
+    def has_function(self, full_function_name: str) -> bool:
+        """
+        检查是否存在指定的函数
+        """
+        try:
+            for t in self.tools_list:
+                if t["function"]["name"].replace(
+                    "-", "_"
+                ) == full_function_name.replace("-", "_"):
+                    return True
+            return False
+        except Exception as e:
+            logger.error(f"检查函数 '{full_function_name}' 时发生错误:{e}")
+            return False
 
     def get_tools_list(self):
         if not self.tools_list or not config.marshoai_enable_tools:

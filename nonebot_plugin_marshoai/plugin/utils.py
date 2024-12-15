@@ -18,21 +18,5 @@ def path_to_module_name(path: Path) -> str:
         return ".".join(rel_path.parts[:-1] + (rel_path.stem,))
 
 
-def is_coroutine_callable(call: Callable[..., Any]) -> bool:
-    """
-    判断是否为async def 函数
-    Args:
-        call: 可调用对象
-    Returns:
-        bool: 是否为协程可调用对象
-    """
-    if inspect.isroutine(call):
-        return inspect.iscoroutinefunction(call)
-    if inspect.isclass(call):
-        return False
-    func_ = getattr(call, "__call__", None)
-    return inspect.iscoroutinefunction(func_)
-
-
 def parse_function_docsring():
     pass

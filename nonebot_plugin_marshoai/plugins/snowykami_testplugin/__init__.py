@@ -1,3 +1,5 @@
+from nonebot.adapters.onebot.v11 import MessageEvent
+
 from nonebot_plugin_marshoai.plugin import (
     Integer,
     Parameter,
@@ -5,6 +7,7 @@ from nonebot_plugin_marshoai.plugin import (
     String,
     on_function_call,
 )
+from nonebot_plugin_marshoai.plugin.func_call.caller import Caller
 
 __marsho_meta__ = PluginMetadata(
     name="SnowyKami 测试插件",
@@ -19,16 +22,7 @@ __marsho_meta__ = PluginMetadata(
     gender=String(enum=["男", "女"], description="性别"),
 )
 async def fortune_telling(age: int, name: str, gender: str) -> str:
-    """使用姓名，年龄，性别进行算命
-
-    Args:
-        age (int): _description_
-        name (str): _description_
-        gender (str): _description_
-
-    Returns:
-        str: _description_
-    """
+    """使用姓名，年龄，性别进行算命"""
 
     # 进行一系列算命操作...
 
@@ -41,17 +35,22 @@ async def fortune_telling(age: int, name: str, gender: str) -> str:
     unit=String(enum=["摄氏度", "华氏度"], description="温度单位"),
 )
 async def get_weather(location: str, days: int, unit: str) -> str:
-    """获取一个地点未来一段时间的天气
-
-    Args:
-        location (str): 地点名称，可以是城市名、地区名等
-        days (int): 天数
-        unit (str): 温度单位
-
-    Returns:
-        str: 天气信息
-    """
+    """获取一个地点未来一段时间的天气"""
 
     # 进行一系列获取天气操作...
 
     return f"{location}未来{days}天的天气信息..."
+
+
+@on_function_call(description="获取设备物理地理位置")
+async def get_location() -> str:
+    """获取设备物理地理位置"""
+
+    # 进行一系列获取地理位置操作...
+
+    return "日本 东京都 世田谷区"
+
+
+@on_function_call(description="获取聊天者个人信息")
+async def get_user_info(e: MessageEvent, c: Caller) -> str:
+    return f"用户信息：{e.user_id} {e.sender.nickname}, {c._parameters}"
