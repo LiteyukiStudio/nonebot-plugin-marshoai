@@ -1,4 +1,10 @@
+import os
+import platform
+
+import psutil
+from nonebot.adapters import Bot
 from nonebot.adapters.onebot.v11 import MessageEvent
+from nonebot.permission import SUPERUSER
 
 from nonebot_plugin_marshoai.plugin import (
     Integer,
@@ -53,4 +59,49 @@ def get_location() -> str:
 
 @on_function_call(description="获取聊天者个人信息及发送的消息和function call调用参数")
 async def get_user_info(e: MessageEvent, c: Caller) -> str:
-    return f"用户ID: {e.user_id} 用户昵称: {e.sender.nickname} FC调用参数:{c._parameters} 消息内容: {e.raw_message}"
+    return (
+        f"用户ID: {e.user_id} "
+        "用户昵称: {e.sender.nickname} "
+        "FC调用参数:{c._parameters} "
+        "消息内容: {e.raw_message}"
+    )
+
+
+@on_function_call(description="获取设备信息")
+def get_device_info() -> str:
+    """获取机器人所运行的设备信息"""
+
+    # 进行一系列获取设备信息操作...
+
+    data = {
+        "cpu 性能": f"{psutil.cpu_percent()}% {psutil.cpu_freq().current:.2f}MHz {psutil.cpu_count()}线程 {psutil.cpu_count(logical=False)}物理核",
+        "memory 内存": f"{psutil.virtual_memory().percent}% {psutil.virtual_memory().available / 1024 / 1024 / 1024:.2f}/{psutil.virtual_memory().total / 1024 / 1024 / 1024:.2f}GB",
+        "swap 交换分区": f"{psutil.swap_memory().percent}% {psutil.swap_memory().used / 1024 / 1024 / 1024:.2f}/{psutil.swap_memory().total / 1024 / 1024 / 1024:.2f}GB",
+        "cpu 信息": f"{psutil.cpu_stats()}",
+        "system 系统": f"system: {platform.system()}, version: {platform.version()}, arch: {platform.architecture()}, machine: {platform.machine()}",
+    }
+    return str(data)
+
+
+@on_function_call(description="在设备上运行Python代码,需要超级用户权限").params(
+    code=String(description="Python代码内容")
+).permission(SUPERUSER)
+async def run_python_code(code: str, b: Bot, e: MessageEvent) -> str:
+    """运行Python代码"""
+    try:
+        r = eval(code)
+    except Exception as e:
+        return "运行出错: " + str(e)
+    return "运行成功: " + str(r)
+
+
+@on_function_call(description="运行shell命令,需要超级用户权限").params(
+    command=String(description="shell命令内容")
+).permission(SUPERUSER)
+async def run_shell_command(command: str, b: Bot, e: MessageEvent) -> str:
+    """运行shell命令"""
+    try:
+        r = os.popen(command).read()
+    except Exception as e:
+        return "运行出错: " + str(e)
+    return "运行成功: " + str(r)

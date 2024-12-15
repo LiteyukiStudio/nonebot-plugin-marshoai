@@ -17,10 +17,11 @@ from azure.ai.inference.models import (
 )
 from azure.core.credentials import AzureKeyCredential
 from nonebot import get_driver, logger, on_command, on_message
-from nonebot.adapters import Event, Message
+from nonebot.adapters import Bot, Event, Message
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.rule import Rule, to_me
+from nonebot.typing import T_State
 from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
 
 from nonebot_plugin_marshoai.plugin.func_call.caller import get_function_calls
@@ -203,7 +204,13 @@ async def refresh_data():
 
 @marsho_at.handle()
 @marsho_cmd.handle()
-async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None):
+async def marsho(
+    target: MsgTarget,
+    event: Event,
+    bot: Bot,
+    state: T_State,
+    text: Optional[UniMsg] = None,
+):
     global target_list
     if event.get_message().extract_plain_text() and (
         not text
@@ -330,8 +337,13 @@ async def marsho(target: MsgTarget, event: Event, text: Optional[UniMsg] = None)
                                 tool_call.function.name
                             ):
                                 logger.debug(f"调用插件函数 {tool_call.function.name}")
+                                # 权限检查，规则检查 TODO
                                 # 实现依赖注入，检查函数参数及参数注解类型，对Event类型的参数进行注入
-                                caller.event = event
+                                caller.event, caller.bot, caller.state = (
+                                    event,
+                                    bot,
+                                    state,
+                                )
                                 func_return = await caller.call(**function_args)
                             else:
                                 logger.error(f"未找到函数 {tool_call.function.name}")

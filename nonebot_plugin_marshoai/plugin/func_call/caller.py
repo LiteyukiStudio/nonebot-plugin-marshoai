@@ -2,7 +2,10 @@ import inspect
 from typing import Any
 
 from nonebot import logger
-from nonebot.adapters import Event
+from nonebot.adapters import Bot, Event
+from nonebot.permission import Permission
+from nonebot.rule import Rule
+from nonebot.typing import T_State
 
 from ..typing import ASYNC_FUNCTION_CALL_FUNC, F
 from .utils import async_wrap, is_coroutine_callable
@@ -17,23 +20,36 @@ class Caller:
         self.func: ASYNC_FUNCTION_CALL_FUNC | None = None
         self._parameters: dict[str, Any] = {}
         """依赖注入的参数"""
+        self.bot: Bot | None = None
         self.event: Event | None = None
+        self.state: T_State | None = None
+
+        self._permission: Permission | None = None
+        self._rule: Rule | None = None
 
     def params(self, **kwargs: Any) -> "Caller":
         self._parameters.update(kwargs)
         return self
 
-    def param(self, name: str, param: Any) -> "Caller":
-        """设置一个函数参数
+    def permission(self, permission: Permission) -> "Caller":
+        self._permission = self._permission or permission
+        return self
 
-        Args:
-            name (str): 参数名
-            param (Any): 参数对象
+    async def pre_check(self) -> tuple[bool, str]:
+        if self.bot is None or self.event is None:
+            return False, "Context is None"
+        if self._permission and not await self._permission(self.bot, self.event):
+            return False, "Permission Denied 权限不足"
 
-        Returns:
-            Caller: Caller对象
-        """
-        self._parameters[name] = param
+        if self.state is None:
+            return False, "State is None"
+        if self._rule and not await self._rule(self.bot, self.event, self.state):
+            return False, "Rule Denied 规则不匹配"
+
+        return True, ""
+
+    def rule(self, rule: Rule) -> "Caller":
+        self._rule = self._rule and rule
         return self
 
     def name(self, name: str) -> "Caller":
@@ -113,12 +129,19 @@ class Caller:
     def set_event(self, event: Event):
         self.event = event
 
+    def set_bot(self, bot: Bot):
+        self.bot = bot
+
     async def call(self, *args: Any, **kwargs: Any) -> Any:
         """调用函数
 
         Returns:
             Any: 函数返回值
         """
+        y, r = await self.pre_check()
+        if not y:
+            return r
+
         if self.func is None:
             raise ValueError("未注册函数对象")
         sig = inspect.signature(self.func)
@@ -127,10 +150,17 @@ class Caller:
                 param.annotation, Event
             ):
                 kwargs[name] = self.event
+
             if issubclass(param.annotation, Caller) or isinstance(
                 param.annotation, Caller
             ):
                 kwargs[name] = self
+
+            if issubclass(param.annotation, Bot) or isinstance(param.annotation, Bot):
+                kwargs[name] = self.bot
+
+            if param.annotation == T_State:
+                kwargs[name] = self.state
 
         # 检查形参是否有默认值或传入，若没有则用parameters中的默认值填充
         for name, param in sig.parameters.items():
