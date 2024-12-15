@@ -14,3 +14,5 @@ driver.register_adapter(Adapter)
 
 if __name__ == "__main__":
     nonebot.run()
+
+# 这是猫娘写的代码
