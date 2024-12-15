@@ -97,4 +97,4 @@ async def get_bot_info(b: Bot) -> str:
 
 ## 更多内容
 
-- [插件 API 文档](api/plugin)
+- [插件 API 文档](./api/plugin/index)
