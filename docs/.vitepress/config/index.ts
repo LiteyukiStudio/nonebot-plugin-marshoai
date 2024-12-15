@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { zh } from './zh'
 import { en } from './en'
+import { ja } from './ja'
 import { defaultLang, generateSidebarConfig, gitea } from './common'
 import { generateSidebar } from 'vitepress-sidebar'
 
@@ -33,5 +34,6 @@ export default defineConfig({
     locales: {
         root: { label: "简体中文", ...zh },
         en: { label: "English", ...en },
+        ja: { label: "日本語", ...ja },
     },
 })

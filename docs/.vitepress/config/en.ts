@@ -9,6 +9,11 @@ export const en = defineConfig({
             prev: 'Prev',
             next: 'Next'
         },
+        nav: [
+            {text: 'Home', link: '/en'},
+            {text: 'Usage', link: '/en/start/install'},
+            {text: 'Develop', link: '/en/dev/extension'},
+        ],
         langMenuLabel: 'Language',
         returnToTopLabel: 'To top',
         sidebarMenuLabel: 'Option',

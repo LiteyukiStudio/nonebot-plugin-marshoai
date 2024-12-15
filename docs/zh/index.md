@@ -14,8 +14,8 @@ hero:
       text: 开发及扩展
       link: /dev/extension/
   image:
-    light: ./marsho-full.svg
-    dark: ./marsho-full.svg
+    light: /marsho-full.svg
+    dark: /marsho-full.svg
     alt: Marsho Logo
 
 features:

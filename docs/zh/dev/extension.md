@@ -83,7 +83,7 @@ def execute_command(command: str) -> str:
 
 ## 依赖注入
 
-function call支持NoneBot2原生的会话上下文依赖注入，例如Bot、Event等，只需要在函数的参数中声明即可，无需在装饰器中声明。
+function call支持NoneBot2原生的会话上下文依赖注入，例如Bot、Event等
 
 ```python
 @on_function_call(description="获取个人信息")

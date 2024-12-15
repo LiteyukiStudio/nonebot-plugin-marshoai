@@ -9,13 +9,13 @@ hero:
   actions:
     - theme: brand
       text: Start
-      link: /start
+      link: /en/start/install/
     - theme: alt
       text: Develop & Extened
-      link: /dev
+      link: /en/dev/extension/
   image:
-    light: ./marsho-full.svg
-    dark: ./marsho-full.svg
+    light: /marsho-full.svg
+    dark: /marsho-full.svg
     alt: Marsho Logo
 
 features:
