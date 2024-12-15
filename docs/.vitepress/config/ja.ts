@@ -20,5 +20,9 @@ export const ja = defineConfig({
         darkModeSwitchLabel: 'テーマ',
         lightModeSwitchTitle: 'ライト',
         darkModeSwitchTitle: 'ダーク',
+        footer: {
+            message: "ドキュメントは改善中です。ご意見をお待ちしております。",
+            copyright: '© 2024 <a href="https://liteyuki.icu" target="_blank">Liteyuki Studio</a>',
+        }
     },
 })
