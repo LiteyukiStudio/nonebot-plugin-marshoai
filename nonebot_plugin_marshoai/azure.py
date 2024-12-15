@@ -106,9 +106,13 @@ async def _preload_tools():
 @driver.on_startup
 async def _preload_plugins():
     """启动钩子加载插件"""
-    marshoai_plugin_dirs = config.marshoai_plugin_dirs  # 外部插件目录列表
-    marshoai_plugin_dirs.insert(0, Path(__file__).parent / "plugins")  # 预置插件目录
-    load_plugins(*marshoai_plugin_dirs)
+    if config.marshoai_enable_plugins:
+        marshoai_plugin_dirs = config.marshoai_plugin_dirs  # 外部插件目录列表
+        marshoai_plugin_dirs.insert(0, Path(__file__).parent / "plugins")  # 预置插件目录
+        load_plugins(*marshoai_plugin_dirs)
+        logger.info(
+            "如果启用小棉插件后使用的模型出现报错，请尝试将 MARSHOAI_ENABLE_PLUGINS 设为 false。"
+            )
 
 
 @add_usermsg_cmd.handle()

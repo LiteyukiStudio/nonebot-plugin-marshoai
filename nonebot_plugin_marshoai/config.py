@@ -36,7 +36,8 @@ class ConfigModel(BaseModel):
     marshoai_enable_support_image_tip: bool = True
     marshoai_enable_praises: bool = True
     marshoai_enable_time_prompt: bool = True
-    marshoai_enable_tools: bool = True
+    marshoai_enable_tools: bool = False
+    marshoai_enable_plugins: bool = True
     marshoai_load_builtin_tools: bool = True
     marshoai_toolset_dir: list = []
     marshoai_disabled_toolkits: list = []

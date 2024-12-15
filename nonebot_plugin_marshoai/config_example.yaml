@@ -34,13 +34,19 @@ marshoai_enable_support_image_tip: true # 是否启用支持图片提示。
 
 marshoai_enable_praises: true # 是否启用夸赞名单功能。
 
-marshoai_enable_tools: true # 是否启用工具支持。
+marshoai_enable_tools: false # 是否启用工具支持。
+
+marshoai_enable_plugins: true # 是否启用插件功能。
 
 marshoai_load_builtin_tools: true # 是否加载内置工具。
 
 marshoai_toolset_dir: [] # 工具集路径。
 
 marshoai_disabled_toolkits: [] # 已禁用的工具包列表。
+
+marshoai_plugin_dirs: [] # 插件路径。
+
+marshoai_devmode: false # 是否启用开发者模式。
 
 marshoai_azure_endpoint: "https://models.inference.ai.azure.com" # OpenAI 标准格式 API 的端点。
 
@@ -54,3 +60,4 @@ marshoai_additional_image_models: [] # 额外的图片模型列表，默认空�
 # 腾讯云的API密钥，未设置时为空。
 marshoai_tencent_secretid: null
 marshoai_tencent_secretkey: null
+
