@@ -95,6 +95,7 @@ async def get_bot_info(b: Bot) -> str:
     return f"机器人ID: {b.self_id}"
 ```
 
-## 更多内容
+## 其他
 
-- [插件 API 文档](./api/plugin/index)
+- function call支持同步和异步函数
+- 本文是一个引导，要查看具体功能请查阅[插件 API 文档](./api/plugin/index)
