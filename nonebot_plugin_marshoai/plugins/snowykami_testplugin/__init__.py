@@ -95,9 +95,11 @@ async def run_python_code(code: str, b: Bot, e: MessageEvent) -> str:
     return "运行成功: " + str(r)
 
 
-@on_function_call(description="运行shell命令,需要超级用户权限").params(
-    command=String(description="shell命令内容")
-).permission(SUPERUSER)
+@on_function_call(
+    description="在设备上运行shell命令, Run command on this device"
+).params(command=String(description="shell命令内容")).permission(SUPERUSER).name(
+    "run_shell_command"
+)
 async def run_shell_command(command: str, b: Bot, e: MessageEvent) -> str:
     """运行shell命令"""
     try:

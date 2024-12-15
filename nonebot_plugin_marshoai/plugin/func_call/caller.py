@@ -82,7 +82,7 @@ class Caller:
             if module := inspect.getmodule(func):
                 module_name = module.__name__.split(".")[-1]
             else:
-                module_name = "global"
+                module_name = ""
             self._name = f"{module_name}-{func.__name__}"
         _caller_data[self._name] = self
 
@@ -140,6 +140,7 @@ class Caller:
         """
         y, r = await self.pre_check()
         if not y:
+            logger.debug(f"Function {self._name} pre_check failed: {r}")
             return r
 
         if self.func is None:
