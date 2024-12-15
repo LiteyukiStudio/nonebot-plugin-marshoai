@@ -108,11 +108,13 @@ async def _preload_plugins():
     """启动钩子加载插件"""
     if config.marshoai_enable_plugins:
         marshoai_plugin_dirs = config.marshoai_plugin_dirs  # 外部插件目录列表
-        marshoai_plugin_dirs.insert(0, Path(__file__).parent / "plugins")  # 预置插件目录
+        marshoai_plugin_dirs.insert(
+            0, Path(__file__).parent / "plugins"
+        )  # 预置插件目录
         load_plugins(*marshoai_plugin_dirs)
         logger.info(
             "如果启用小棉插件后使用的模型出现报错，请尝试将 MARSHOAI_ENABLE_PLUGINS 设为 false。"
-            )
+        )
 
 
 @add_usermsg_cmd.handle()
@@ -274,14 +276,14 @@ async def marsho(
         if not is_reasoning_model:
             context_msg = [get_prompt()] + context_msg
             # o1等推理模型不支持系统提示词, 故不添加
+        tools_lists = tools.tools_list + list(
+            map(lambda v: v.data(), get_function_calls().values())
+        )
         response = await make_chat(
             client=client,
             model_name=model_name,
             msg=context_msg + [UserMessage(content=usermsg)],  # type: ignore
-            tools=tools.get_tools_list()
-            + list(
-                map(lambda v: v.data(), get_function_calls().values())
-            ),  # TODO 临时追加函数，后期优化
+            tools=tools_lists if tools_lists else None,  # TODO 临时追加函数，后期优化
         )
         # await UniMessage(str(response)).send()
         choice = response.choices[0]
