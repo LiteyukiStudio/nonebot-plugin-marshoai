@@ -1,1 +1,0 @@
-import{_ as t,c as a,o as e}from"./chunks/framework.p2VkXzrt.js";const d=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"start/install.md","filePath":"zh/start/install.md"}'),s={name:"start/install.md"};function r(n,o,c,l,i,p){return e(),a("div")}const m=t(s,[["render",r]]);export{d as __pageData,m as default};
