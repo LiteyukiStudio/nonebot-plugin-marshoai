@@ -61,7 +61,7 @@ title: 安装
 当 nonebot 连接到支持的 OneBot v11 实现端时，可以接收头像双击戳一戳消息并进行响应。详见`MARSHOAI_POKE_SUFFIX`配置项。
 
 ## 🛠️ 小棉工具
-小棉工具(MarshoTools)是`v0.5.0`版本的新增功能，支持加载外部函数库来为 Marsho 提供 Function Call 功能。[使用文档](./README_TOOLS.md)
+小棉工具(MarshoTools)是`v0.5.0`版本的新增功能，支持加载外部函数库来为 Marsho 提供 Function Call 功能。[使用文档]
 
 ## 👍 夸赞名单
 
@@ -133,25 +133,3 @@ title: 安装
 | MARSHOAI_DISABLED_TOOLKITS        | `list` | `[]`   |  禁用的工具包包名列表           |
 | MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` |   是否启用自动解析消息（若包含图片链接则发送图片、若包含LaTeX公式则发送公式图）           |
 | MARSHOAI_SINGLE_LATEX_PARSE    | `bool` | `false` |   单行公式是否渲染（当消息富文本解析启用时可用）（如果单行也渲……只能说不好看）           |
-
-## ❤ 鸣谢&版权说明
-
-本项目使用了以下项目的代码：
-
-- [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)
-
-"Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)
-绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。
-"nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。
-部分指定的代码基于 [Mulan PSL v2](./LICENSE-MULAN) 许可下提供。
-
-## 开发
-
-- 请阅读[开发规范](./README_DEV.md)
-
-## 🕊️ TODO
-
-- [x] [Melobot](https://github.com/Meloland/melobot) 实现
-- [x] 对聊天发起者的认知（认出是谁在问 Marsho）（初步实现）
-- [ ] 自定义 API 接入点的适配（不局限于GitHub Models）
-- [ ] 上下文通过数据库持久化存储
