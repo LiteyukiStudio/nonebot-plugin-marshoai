@@ -323,9 +323,12 @@ async def marsho(
                     if isinstance(
                         tool_call, ChatCompletionsToolCall
                     ):  # 循环调用工具直到不需要调用
-                        function_args = json.loads(
-                            tool_call.function.arguments.replace("'", '"')
-                        )
+                        try:
+                            function_args = json.loads(tool_call.function.arguments)
+                        except json.JSONDecodeError:
+                            function_args = json.loads(
+                                tool_call.function.arguments.replace("'", '"')
+                            )
                         logger.info(
                             f"调用函数 {tool_call.function.name} ,参数为 {function_args}"
                         )

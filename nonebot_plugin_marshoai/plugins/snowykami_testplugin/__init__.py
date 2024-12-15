@@ -97,9 +97,7 @@ async def run_python_code(code: str, b: Bot, e: MessageEvent) -> str:
 
 @on_function_call(
     description="在设备上运行shell命令, Run command on this device"
-).params(command=String(description="shell命令内容")).permission(SUPERUSER).name(
-    "run_shell_command"
-)
+).params(command=String(description="shell命令内容")).permission(SUPERUSER)
 async def run_shell_command(command: str, b: Bot, e: MessageEvent) -> str:
     """运行shell命令"""
     try:
