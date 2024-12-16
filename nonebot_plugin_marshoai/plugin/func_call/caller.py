@@ -39,12 +39,12 @@ class Caller:
         if self.bot is None or self.event is None:
             return False, "Context is None"
         if self._permission and not await self._permission(self.bot, self.event):
-            return False, "Permission Denied 权限不足"
+            return False, "告诉用户 Permission Denied 权限不足"
 
         if self.state is None:
             return False, "State is None"
         if self._rule and not await self._rule(self.bot, self.event, self.state):
-            return False, "Rule Denied 规则不匹配"
+            return False, "告诉用户 Rule Denied 规则不匹配"
 
         return True, ""
 
@@ -92,10 +92,10 @@ class Caller:
             self.func = async_wrap(func)  # type: ignore
 
         if module := inspect.getmodule(func):
-            module_name = module.__name__ + "."
+            module_name = module.__name__.split(".")[-1] + "."
         else:
             module_name = ""
-        logger.opt(colors=True).info(
+        logger.opt(colors=True).debug(
             f"<y>加载函数 {module_name}{func.__name__}: {self._description}</y>"
         )
 
