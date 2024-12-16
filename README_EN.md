@@ -10,8 +10,9 @@
 
 _✨ A chat bot plugin which use OpenAI standard API ✨_
 
-<a href="./LICENSE">
-    <img src="https://img.shields.io/github/license/LiteyukiStudio/nonebot-plugin-marshoai.svg" alt="license">
+[![NoneBot Registry](https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin%2Fnonebot-plugin-marshoai)](https://registry.nonebot.dev/plugin/nonebot-plugin-marshoai:nonebot_plugin_marshoai)
+<a href="https://registry.nonebot.dev/plugin/nonebot-plugin-marshoai:nonebot_plugin_marshoai">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin-adapters%2Fnonebot-plugin-marshoai" alt="Supported Adapters">
 </a>
 <a href="https://pypi.python.org/pypi/nonebot-plugin-marshoai">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-marshoai.svg" alt="pypi">
