@@ -36,4 +36,5 @@ export default defineConfig({
         en: { label: "English", ...en },
         ja: { label: "日本語", ...ja },
     },
+    lastUpdated: true,
 })

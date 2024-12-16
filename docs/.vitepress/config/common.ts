@@ -43,3 +43,39 @@ export function generateSidebarConfig(): VitePressSidebarOptions[] {
     }
     return ret
 }
+
+export const ThemeConfig = {
+    getEditLink: (editPageText: string): { pattern: (params: { filePath: string; }) => string; text: string; } => {
+        return {
+            pattern: ({filePath}: { filePath: string; }): string => {
+                if (!filePath) {
+                    throw new Error("filePath is undefined");
+                }
+                const regex = /^(dev\/api|[^\/]+\/dev\/api)/;
+                if (regex.test(filePath)) {
+                    filePath = filePath.replace(regex, '')
+                        .replace('index.md', '__init__.py')
+                        .replace('.md', '.py');
+                    const fileName = filePath.split('/').pop();
+                    const parentFolder = filePath.split('/').slice(-2, -1)[0];
+                    if (fileName && parentFolder && fileName.split('.')[0] === parentFolder) {
+                        filePath = filePath.split('/').slice(0, -1).join('/') + '/__init__.py';
+                    }
+                    return `https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/tree/main/nonebot_plugin_marshoai/${filePath}`;
+                } else {
+                    return `https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/tree/main/docs/${filePath}`;
+                }
+            },
+            text: editPageText
+        };
+    },
+
+    getOutLine: (label: string): { label: string; level: [number, number]; } => {
+        return {
+            label: label,
+            level: [2, 6]
+        };
+    },
+
+    copyright: 'Copyright (C) 2020-2024 LiteyukiStudio. All Rights Reserved'
+}

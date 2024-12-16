@@ -1,4 +1,5 @@
 import {defineConfig} from 'vitepress'
+import { ThemeConfig } from './common'
 
 export const zh = defineConfig({
     lang: "zh-Hans",
@@ -14,6 +15,7 @@ export const zh = defineConfig({
             {text: '使用', link: '/start/install'},
             {text: '开发', link: '/dev/extension'},
         ],
+        editLink: ThemeConfig.getEditLink('编辑此页面'),
         langMenuLabel: '语言',
         returnToTopLabel: '返回顶部',
         sidebarMenuLabel: '菜单',
