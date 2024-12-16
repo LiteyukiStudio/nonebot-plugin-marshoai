@@ -99,3 +99,9 @@ async def get_bot_info(b: Bot) -> str:
 
 - function call支持同步和异步函数
 - 本文是一个引导，要查看具体功能请查阅[插件 API 文档](./api/plugin/index)
+
+## AIGC 自举
+:::warning
+该功能为实验性功能，请注意甄别AI的行为，不要让AI执行危险的操作。
+:::
+function call为AI赋能，实现了文件io操作，AI可以调用function call来读取文档然后给自己编写代码，实现自举。

@@ -25,5 +25,7 @@ features:
     details: 使用任何遵循 OpenAI 的接口均可与小棉智能进行交互
   - title: 易于扩展
     details: 使用蟒蛇编写工具及插件，实现函数调用，可轻松扩展小棉智能的功能
+  - title: 自举
+    details: 使用AI为机器人自动编写代码，实现自我学习及自我优化
 ---
 

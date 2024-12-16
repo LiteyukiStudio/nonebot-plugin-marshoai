@@ -25,5 +25,7 @@ features:
     details: Any interface that follows the OpenAI standard can interact with MarshoAI
   - title: Easy to Extend
     details: Use Python writing tools and plugins to achieve function calls, and easily extend the functionality of MarshoAI
+  - title: Self-Bootstrapping
+    details: Use AI to automatically write code for the robot, achieve self-learning and self-optimization
 ---
 
