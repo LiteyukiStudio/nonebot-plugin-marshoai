@@ -2,6 +2,7 @@ from nonebot_plugin_marshoai.plugin import PluginMetadata
 
 from .chat import *
 from .file_io import *
+from .liteyuki import *
 from .manager import *
 from .network import *
 
