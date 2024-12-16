@@ -64,6 +64,13 @@ marsho_cmd = on_alconna(
     priority=10,
     block=True,
 )
+marsho_help_cmd = on_alconna(
+    Alconna(
+        config.marshoai_default_name + ".help",
+    ),
+    priority=10,
+    block=True,
+)
 marsho_at = on_message(rule=to_me() & at_enable, priority=11)
 nickname_cmd = on_alconna(
     Alconna(
@@ -208,6 +215,11 @@ async def refresh_data():
     await refresh_data_cmd.finish("已刷新数据")
 
 
+@marsho_help_cmd.handle()
+async def marsho_help():
+    await marsho_help_cmd.finish(metadata.usage)
+
+
 @marsho_at.handle()
 @marsho_cmd.handle()
 async def marsho(
@@ -225,8 +237,8 @@ async def marsho(
         text = event.get_message()  # type: ignore
     if not text:
         # 发送说明
-        await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
-        await marsho_cmd.finish(INTRODUCTION)
+        # await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
+        await marsho_cmd.finish(INTRODUCTION + "\n当前使用的模型:" + model_name)
     try:
         user_id = event.get_user_id()
         nicknames = await get_nicknames()
