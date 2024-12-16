@@ -27,7 +27,7 @@ dependencies = [
 license = { text = "MIT, Mulan PSL v2" }
 
 [project.urls]
-Homepage = "https://github.com/LiteyukiStudio/nonebot-plugin-marshoai"
+Homepage = "https://marsho.liteyuki.icu/"
 
 
 [tool.nonebot]
