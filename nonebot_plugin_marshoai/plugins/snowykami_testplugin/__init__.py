@@ -2,8 +2,9 @@ import os
 import platform
 
 import psutil
-from nonebot.adapters import Bot
-from nonebot.adapters.onebot.v11 import MessageEvent
+from nonebot.adapters import Bot, Event
+
+# from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.permission import SUPERUSER
 
 from nonebot_plugin_marshoai.plugin import (
@@ -58,7 +59,7 @@ def get_location() -> str:
 
 
 @on_function_call(description="获取聊天者个人信息及发送的消息和function call调用参数")
-async def get_user_info(e: MessageEvent, c: Caller) -> str:
+async def get_user_info(e: Event, c: Caller) -> str:
     return (
         f"用户ID: {e.user_id} "
         "用户昵称: {e.sender.nickname} "
@@ -86,7 +87,7 @@ def get_device_info() -> str:
 @on_function_call(description="在设备上运行Python代码,需要超级用户权限").params(
     code=String(description="Python代码内容")
 ).permission(SUPERUSER)
-async def run_python_code(code: str, b: Bot, e: MessageEvent) -> str:
+async def run_python_code(code: str, b: Bot, e: Event) -> str:
     """运行Python代码"""
     try:
         r = eval(code)
@@ -98,7 +99,7 @@ async def run_python_code(code: str, b: Bot, e: MessageEvent) -> str:
 @on_function_call(
     description="在设备上运行shell命令, Run command on this device"
 ).params(command=String(description="shell命令内容")).permission(SUPERUSER)
-async def run_shell_command(command: str, b: Bot, e: MessageEvent) -> str:
+async def run_shell_command(command: str, b: Bot, e: Event) -> str:
     """运行shell命令"""
     try:
         r = os.popen(command).read()
