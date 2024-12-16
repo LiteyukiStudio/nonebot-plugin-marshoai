@@ -101,6 +101,7 @@ async def get_bot_info(b: Bot) -> str:
 - 本文是一个引导，要查看具体功能请查阅[插件 API 文档](./api/plugin/index)
 
 ## AIGC 自举
+
 :::warning
 该功能为实验性功能，请注意甄别AI的行为，不要让AI执行危险的操作。
 :::

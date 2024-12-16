@@ -20,11 +20,18 @@ hero:
 
 features:
   - title: 強力なドライバー
+    icon: lightning
     details: NoneBot2に基づいており、既存のNoneBot2またはLiteyukiインスタンスに迅速にインストールできます
+
   - title: インターフェース規格
+    icon: code  
     details: どんなオープンAI標準に従うインターフェースでも小綿智能と対話できます
+
   - title: 簡単に拡張
+    icon: puzzle
     details: Pythonでツールやプラグインを作成し、関数呼び出しを実現し、小綿智能の機能を簡単に拡張できます
+
   - title: 自己起動
+    icon: robot
     details: AIを使用してロボットのためのコードを自動的に書き、自己学習と自己最適化を実現します
 ---
