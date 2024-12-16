@@ -21,3 +21,24 @@ async def read_file(fp: str) -> str:
             return await f.read()
     except Exception as e:
         return "读取出错: " + str(e)
+
+
+@on_function_call(description="写入内容到设备上本地文件").params(
+    fp=String(description="文件路径"), content=String(description="写入内容")
+).permission(SUPERUSER)
+async def write_file(fp: str, content: str) -> str:
+    """写入内容到设备上本地文件
+
+    Args:
+        fp (str): 文件路径
+        content (str): 写入内容
+
+    Returns:
+        str: 写入结果
+    """
+    try:
+        async with aiofiles.open(fp, "w", encoding="utf-8") as f:
+            await f.write(content)
+        return "写入成功"
+    except Exception as e:
+        return "写入出错: " + str(e)
