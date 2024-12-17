@@ -20,7 +20,7 @@ __marsho_meta__ = PluginMetadata(
 )
 async def morse_encrypt(msg: str) -> str:
     """摩尔斯电码加密"""
-    return str(mk_morse_code.morse_encrypt(msg))
+    return str(await mk_morse_code.morse_encrypt(msg))
 
 
 @on_function_call(description="摩尔斯电码解密").params(
@@ -28,13 +28,13 @@ async def morse_encrypt(msg: str) -> str:
 )
 async def morse_decrypt(msg: str) -> str:
     """摩尔斯电码解密"""
-    return str(mk_morse_code.morse_decrypt(msg))
+    return str(await mk_morse_code.morse_decrypt(msg))
 
 
 @on_function_call(description="转换为猫语").params(msg=String(description="被转换语句"))
 async def nya_encrypt(msg: str) -> str:
     """转换为猫语"""
-    return str(mk_nya_code.nya_encrypt(msg))
+    return str(await mk_nya_code.nya_encrypt(msg))
 
 
 @on_function_call(description="将猫语翻译回人类语言").params(
@@ -42,4 +42,4 @@ async def nya_encrypt(msg: str) -> str:
 )
 async def nya_decrypt(msg: str) -> str:
     """将猫语翻译回人类语言"""
-    return str(mk_nya_code.nya_decrypt(msg))
+    return str(await mk_nya_code.nya_decrypt(msg))
