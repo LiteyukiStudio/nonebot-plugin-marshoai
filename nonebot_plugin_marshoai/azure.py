@@ -350,10 +350,12 @@ async def marsho(
                                 tool_call.function.arguments.replace("'", '"')
                             )
                         logger.info(
-                            f"调用函数 {tool_call.function.name} ,参数为 {function_args}"
+                            f"调用函数 {tool_call.function.name.replace("-", ".")}\n参数:"
+                            + "\n".join([f"{k}={v}" for k, v in function_args.items()])
                         )
                         await UniMessage(
-                            f"调用函数 {tool_call.function.name} ,参数为 {function_args}"
+                            f"调用函数 {tool_call.function.name.replace("-", ".")}\n参数:"
+                            + "\n".join([f"{k}={v}" for k, v in function_args.items()])
                         ).send()
                         # TODO 临时追加插件函数，若工具中没有则调用插件函数
                         if tools.has_function(tool_call.function.name):

@@ -24,7 +24,8 @@ dependencies = [
     "litedoc>=0.1.0.dev20241214103915",
     "newspaper3k>=0.2.8",
     "lxml[html_clean]>=5.3.0",
-    "aiofiles>=24.1.0"
+    "aiofiles>=24.1.0",
+    "sumy>=0.11.0"
 
 ]
 license = { text = "MIT, Mulan PSL v2" }
