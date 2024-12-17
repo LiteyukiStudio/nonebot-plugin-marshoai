@@ -61,9 +61,11 @@ title: 安装
 当 nonebot 连接到支持的 OneBot v11 实现端时，可以接收头像双击戳一戳消息并进行响应。详见`MARSHOAI_POKE_SUFFIX`配置项。
 
 ## 🛠️ ~~小棉工具~~（已弃用）
+
 小棉工具(MarshoTools)是`v0.5.0`版本的新增功能，支持加载外部函数库来为 Marsho 提供 Function Call 功能。
 
 ## 🧩 小棉插件
+
 小棉插件是`v1.0.0`的新增功能，替代旧的小棉工具功能。[使用文档](https://marsho.liteyuki.icu/dev/extension)
 
 ## 👍 夸赞名单
@@ -132,10 +134,17 @@ title: 安装
 | MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | 启用后用户未设置昵称时提示用户设置          |
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | 是否启用夸赞名单功能                 |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `false` | 是否启用小棉工具                   |
-| MARSHOAI_ENABLE_PLUGINS             | `bool` | `true` | 是否启用小棉插件    |          
+| MARSHOAI_ENABLE_PLUGINS             | `bool` | `true` | 是否启用小棉插件    |
+| MARSHOAI_PLUGINS                | `list[str]` | `[]`   | 要从`sys.path`加载的插件的名称，例如从pypi安装的包      |
 | MARSHOAI_PLUGIN_DIRS             | `list[str]` | `[]` |  插件目录路径列表       |
 | MARSHOAI_LOAD_BUILTIN_TOOLS       | `bool` | `true` | 是否加载内置工具包                  |
 | MARSHOAI_TOOLSET_DIR              | `list` | `[]`   |   外部工具集路径列表            |
 | MARSHOAI_DISABLED_TOOLKITS        | `list` | `[]`   |  禁用的工具包包名列表           |
 | MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` |   是否启用自动解析消息（若包含图片链接则发送图片、若包含LaTeX公式则发送公式图）           |
 | MARSHOAI_SINGLE_LATEX_PARSE    | `bool` | `false` |   单行公式是否渲染（当消息富文本解析启用时可用）（如果单行也渲……只能说不好看）           |
+
+#### 开发及调试选项
+
+| 配置项                      | 类型     | 默认值     | 说明               |
+| ------------------------ | ------ | ------- | ---------------- |
+| MARSHOAI_DEVMODE    | `bool` | `false` | 是否启用开发者模式  |
