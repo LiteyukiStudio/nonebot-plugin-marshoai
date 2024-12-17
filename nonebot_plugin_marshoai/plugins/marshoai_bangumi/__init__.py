@@ -1,8 +1,10 @@
 import traceback
 
 import httpx
+from zhDateTime import DateTime
 
 from nonebot_plugin_marshoai.plugin import PluginMetadata, on_function_call
+from nonebot_plugin_marshoai.plugin.func_call.params import String
 
 # 定义插件元数据
 __marsho_meta__ = PluginMetadata(
@@ -27,6 +29,18 @@ async def get_bangumi_news() -> str:
     try:
         result = await fetch_calendar()
         info = ""
+        current_weekday = DateTime.now().weekday()
+        weekdays = [
+            "星期一",
+            "星期二",
+            "星期三",
+            "星期四",
+            "星期五",
+            "星期六",
+            "星期日",
+        ]
+        current_weekday_name = weekdays[current_weekday]
+        info += f"今天{current_weekday_name}。\n"
         for i in result:
             weekday = i["weekday"]["cn"]
             # print(weekday)

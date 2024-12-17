@@ -2,8 +2,7 @@ import re
 
 from .config import config
 
-USAGE: str = f"""MarshoAI-NoneBot Beta by Asankilp
-用法：
+USAGE: str = f"""用法：
   {config.marshoai_default_name} <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
   nickname [昵称] : 为自己设定昵称，设置昵称后，Marsho 会根据你的昵称进行回答。使用'nickname reset'命令可清除自己设定的昵称。
   reset : 重置当前会话的上下文。 ※需要加上命令前缀使用(默认为'/')。
@@ -26,14 +25,12 @@ SUPPORT_IMAGE_MODELS: list = [
     "llama-3.2-11b-vision-instruct",
 ]
 REASONING_MODELS: list = ["o1-preview", "o1-mini"]
-INTRODUCTION: str = """你好喵~我是一只可爱的猫娘AI，名叫小棉~🐾！
-我的代码在这里哦~↓↓↓
-https://github.com/LiteyukiStudio/nonebot-plugin-marshoai
+INTRODUCTION: str = f"""MarshoAI-NoneBot by LiteyukiStudio
+你好喵~我是一只可爱的猫娘AI，名叫小棉~🐾！
+我的主页在这里哦~↓↓↓
+https://marsho.liteyuki.icu
 
-也可以关注一下还在成长中的 Melobot 酱喵~↓↓↓
-https://github.com/Meloland/melobot
-我与 Melobot 酱贴贴的代码在这里喵~↓↓↓
-https://github.com/LiteyukiStudio/marshoai-melo"""
+※ 使用「{config.marshoai_default_name}.help」命令获取使用说明。"""
 
 
 # 正则匹配代码块

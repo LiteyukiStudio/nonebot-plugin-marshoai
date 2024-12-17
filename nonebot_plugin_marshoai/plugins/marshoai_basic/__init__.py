@@ -2,17 +2,12 @@ import os
 
 from zhDateTime import DateTime
 
-
-async def get_weather(location: str):
-    return f"{location}的温度是114514℃。"
+from nonebot_plugin_marshoai.plugin import String, on_function_call
 
 
-async def get_current_env():
-    ver = os.popen("uname -a").read()
-    return str(ver)
-
-
-async def get_current_time():
+@on_function_call(description="获取当前时间，日期和星期")
+async def get_current_time() -> str:
+    """获取当前的时间和日期"""
     current_time = DateTime.now().strftime("%Y.%m.%d %H:%M:%S")
     current_weekday = DateTime.now().weekday()
 
@@ -20,5 +15,5 @@ async def get_current_time():
     current_weekday_name = weekdays[current_weekday]
 
     current_lunar_date = DateTime.now().to_lunar().date_hanzify()[5:]
-    time_prompt = f"现在的时间是{current_time}，{current_weekday_name}，农历{current_lunar_date}。"
+    time_prompt = f"现在的时间是 {current_time}，{current_weekday_name}，农历 {current_lunar_date}。"
     return time_prompt

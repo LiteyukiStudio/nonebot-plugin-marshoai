@@ -1,4 +1,5 @@
 import {defineConfig} from 'vitepress'
+import { ThemeConfig } from './common'
 
 export const en = defineConfig({
     lang: "en-US",
@@ -14,6 +15,7 @@ export const en = defineConfig({
             {text: 'Usage', link: '/en/start/install'},
             {text: 'Develop', link: '/en/dev/extension'},
         ],
+        editLink: ThemeConfig.getEditLink('Edit this page'),
         langMenuLabel: 'Language',
         returnToTopLabel: 'To top',
         sidebarMenuLabel: 'Option',
