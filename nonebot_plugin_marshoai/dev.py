@@ -42,7 +42,7 @@ function_call = on_alconna(
 async def list_functions():
     reply = "共有如下可调用函数:\n"
     for function in get_function_calls().values():
-        reply += f"- {function.name}({function.description}))\n"
+        reply += f"- {function.short_info}\n"
     await UniMessage(reply).send()
 
 

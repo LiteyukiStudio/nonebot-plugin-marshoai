@@ -240,6 +240,10 @@ class Caller:
         """完整名"""
         return self.module_name + self._name
 
+    @property
+    def short_info(self) -> str:
+        return f"{self.full_name}({self._description})"
+
 
 def on_function_call(name: str = "", description: str | None = None) -> Caller:
     """返回一个Caller类，可用于装饰一个函数，使其注册为一个可被AI调用的function call函数
