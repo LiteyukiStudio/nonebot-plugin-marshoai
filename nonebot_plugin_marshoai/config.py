@@ -53,6 +53,8 @@ class ConfigModel(BaseModel):
     """插件目录(不是工具)"""
     marshoai_devmode: bool = False
     """开发者模式"""
+    marshoai_plugins: list[str] = []
+    """marsho插件的名称列表，从pip安装的使用包名，从本地导入的使用路径"""
 
 
 yaml = YAML()
