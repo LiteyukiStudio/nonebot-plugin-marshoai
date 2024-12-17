@@ -1,8 +1,11 @@
 from pathlib import Path
+
 from nonebot import require
+
 require("nonebot_plugin_localstore")
-from nonebot_plugin_localstore import get_plugin_data_file
 import json
+
+from nonebot_plugin_localstore import get_plugin_data_file
 
 from nonebot_plugin_marshoai.plugin import PluginMetadata, on_function_call
 from nonebot_plugin_marshoai.plugin.func_call.params import String
@@ -18,6 +21,7 @@ if not Path(memory_path).exists():
     with open(memory_path, "w", encoding="utf-8") as f:
         json.dump({}, f, ensure_ascii=False, indent=4)
 print(memory_path)
+#
 
 
 @on_function_call(description="存储记忆内容").params(
