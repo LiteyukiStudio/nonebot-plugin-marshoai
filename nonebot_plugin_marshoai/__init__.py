@@ -6,9 +6,11 @@ require("nonebot_plugin_localstore")
 import nonebot_plugin_localstore as store  # type: ignore
 from nonebot import get_driver, logger  # type: ignore
 
-# from .hunyuan import *
 from .azure import *
 from .config import config
+
+# from .hunyuan import *
+from .dev import *
 from .metadata import metadata
 
 __author__ = "Asankilp"

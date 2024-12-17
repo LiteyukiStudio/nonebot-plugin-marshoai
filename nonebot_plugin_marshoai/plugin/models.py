@@ -58,6 +58,8 @@ class Plugin(BaseModel):
     """插件模块对象"""
     module_name: str
     """点分割模块路径 例如a.b.c"""
+    module_path: str | None
+    """实际路径，单文件为.py的路径，包为__init__.py路径"""
     metadata: PluginMetadata | None = None
     """元"""
 
@@ -69,3 +71,6 @@ class Plugin(BaseModel):
 
     def __eq__(self, other: Any) -> bool:
         return self.name == other.name
+
+    def __str__(self) -> str:
+        return f"Plugin({self.name}({self.module_path}))"

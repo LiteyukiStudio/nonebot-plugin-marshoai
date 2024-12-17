@@ -350,11 +350,11 @@ async def marsho(
                                 tool_call.function.arguments.replace("'", '"')
                             )
                         logger.info(
-                            f"调用函数 {tool_call.function.name.replace("-", ".")}\n参数:"
+                            f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
                             + "\n".join([f"{k}={v}" for k, v in function_args.items()])
                         )
                         await UniMessage(
-                            f"调用函数 {tool_call.function.name.replace("-", ".")}\n参数:"
+                            f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
                             + "\n".join([f"{k}={v}" for k, v in function_args.items()])
                         ).send()
                         # TODO 临时追加插件函数，若工具中没有则调用插件函数
@@ -365,9 +365,9 @@ async def marsho(
                             )  # 获取返回值
                         else:
                             if caller := get_function_calls().get(
-                                tool_call.function.name
+                                tool_call.function.name.replace("-", ".")
                             ):
-                                logger.debug(f"调用插件函数 {tool_call.function.name}")
+                                logger.debug(f"调用插件函数 {caller.full_name}")
                                 # 权限检查，规则检查 TODO
                                 # 实现依赖注入，检查函数参数及参数注解类型，对Event类型的参数进行注入
                                 func_return = await caller.with_ctx(
@@ -379,8 +379,10 @@ async def marsho(
                                     )
                                 ).call(**function_args)
                             else:
-                                logger.error(f"未找到函数 {tool_call.function.name}")
-                                func_return = f"未找到函数 {tool_call.function.name}"
+                                logger.error(
+                                    f"未找到函数 {tool_call.function.name.replace('-', '.')}"
+                                )
+                                func_return = f"未找到函数 {tool_call.function.name.replace('-', '.')}"
                         tool_msg.append(
                             ToolMessage(tool_call_id=tool_call.id, content=func_return)  # type: ignore
                         )

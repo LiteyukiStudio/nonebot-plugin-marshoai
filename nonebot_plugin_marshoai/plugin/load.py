@@ -66,6 +66,7 @@ def load_plugin(module_path: str | Path) -> Optional[Plugin]:
             name=module.__name__,
             module=module,
             module_name=module_path,
+            module_path=module.__file__,
         )
         _plugins[plugin.name] = plugin
 
