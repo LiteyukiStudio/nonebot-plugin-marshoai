@@ -1,15 +1,10 @@
 {
-  "type": "module",
-  "devDependencies": {
-    "vitepress": "^1.5.0",
-    "vitepress-sidebar": "^1.30.2"
-  },
-  "scripts": {
-    "docs:dev": "vitepress dev docs --host",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
-  },
-  "dependencies": {
-    "vue": "^3.5.13"
-  }
+    "type": "module",
+    "devDependencies": {"vitepress": "^1.5.0", "vitepress-sidebar": "^1.30.2"},
+    "scripts": {
+        "docs:dev": "vitepress dev docs --host",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs",
+    },
+    "dependencies": {"vue": "^3.5.13"},
 }

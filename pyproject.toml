@@ -9,7 +9,7 @@ authors = [
     { name="LiteyukiStudio", email = "support@liteyuki.icu"}
 ]
 dependencies = [
-    "nonebot2>=2.2.0",
+    "nonebot2>=2.4.0",
     "nonebot-plugin-alconna>=0.48.0",
     "nonebot-plugin-localstore>=0.7.1",
     "zhDatetime>=1.1.1",
@@ -76,3 +76,6 @@ dev = [
 test = [
     "nonebug>=0.4.3",
 ]
+
+[tool.ruff.lint]
+ignore = ["E402"]
