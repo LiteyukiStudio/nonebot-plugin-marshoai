@@ -16,3 +16,8 @@ async def generate_random_numbers(count: int) -> str:
 
 
 # 该插件由MarshoAI自举编写
+
+
+@on_function_call(description="重载测试")
+def test_reload():
+    return 1

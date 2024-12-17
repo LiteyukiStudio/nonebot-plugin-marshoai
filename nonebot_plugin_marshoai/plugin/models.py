@@ -57,7 +57,7 @@ class Plugin(BaseModel):
     module: ModuleType
     """插件模块对象"""
     module_name: str
-    """点分割模块路径 例如a.b.c"""
+    """点分或/割模块路径 例如a.b.c"""
     module_path: str | None
     """实际路径，单文件为.py的路径，包为__init__.py路径"""
     metadata: PluginMetadata | None = None

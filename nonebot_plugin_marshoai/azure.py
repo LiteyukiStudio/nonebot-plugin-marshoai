@@ -112,7 +112,7 @@ async def _preload_tools():
 
 
 @driver.on_startup
-async def _preload_plugins():
+async def _():
     """启动钩子加载插件"""
     if config.marshoai_enable_plugins:
         marshoai_plugin_dirs = config.marshoai_plugin_dirs  # 外部插件目录列表

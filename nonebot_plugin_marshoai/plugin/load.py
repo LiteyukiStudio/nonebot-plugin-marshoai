@@ -45,7 +45,9 @@ def get_plugins() -> dict[str, Plugin]:
     return _plugins
 
 
-def load_plugin(module_path: str | Path) -> Optional[Plugin]:
+def load_plugin(
+    module_path: str | Path, allow_reload: bool = False
+) -> Optional[Plugin]:
     """加载单个插件，可以是本地插件或是通过 `pip` 安装的插件。
     该函数产生的副作用在于将插件加载到 `_plugins` 中。
 
@@ -63,12 +65,15 @@ def load_plugin(module_path: str | Path) -> Optional[Plugin]:
     try:
         module = import_module(module_path)  # 导入模块对象
         plugin = Plugin(
-            name=module.__name__,
+            name=module.__name__.split(".")[-1],
             module=module,
             module_name=module_path,
             module_path=module.__file__,
         )
-        _plugins[plugin.name] = plugin
+        if plugin.name in _plugins and not allow_reload:
+            raise ValueError(f"插件名称重复: {plugin.name}")
+        else:
+            _plugins[plugin.name] = plugin
 
         plugin.metadata = getattr(module, "__marsho_meta__", None)
 
@@ -118,3 +123,33 @@ def load_plugins(*plugin_dirs: str) -> set[Plugin]:
             if module_name and (plugin := load_plugin(module_name)):
                 plugins.add(plugin)
     return plugins
+
+
+def reload_plugin(plugin: Plugin) -> Optional[Plugin]:
+    """开发模式下的重新加载插件
+    该方法无法保证没有副作用，因为插件可能会有自己的初始化方法
+    如果出现异常请重启即可
+    Args:
+        plugin: 插件对象
+    Returns:
+        Optional[Plugin]: 插件对象
+    """
+    try:
+        if plugin.module_path:
+            if new_plugin := load_plugin(plugin.module_name, True):
+                logger.opt(colors=True).debug(
+                    f'重新加载插件 "<y>{new_plugin.name}</y>" 成功, 若出现异常或副作用请重启'
+                )
+                return new_plugin
+            else:
+                logger.opt(colors=True).error(
+                    f'重新加载插件失败 "<r>{plugin.name}</r>"'
+                )
+                return None
+        else:
+            logger.opt(colors=True).error(f'插件不支持重载 "<r>{plugin.name}</r>"')
+            return None
+    except Exception as e:
+        logger.opt(colors=True).error(f'重新加载插件失败 "<r>{plugin.name}</r>"')
+        traceback.print_exc()
+        return None

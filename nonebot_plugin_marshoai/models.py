@@ -47,6 +47,13 @@ class MarshoContext:
         if target_id in target_dict:
             target_dict[target_id].clear()
 
+    def reset_all(self):
+        """
+        重置所有上下文
+        """
+        self.contents["private"].clear()
+        self.contents["non-private"].clear()
+
     def build(self, target_id: str, is_private: bool) -> list:
         """
         构建返回的上下文，不包括系统消息

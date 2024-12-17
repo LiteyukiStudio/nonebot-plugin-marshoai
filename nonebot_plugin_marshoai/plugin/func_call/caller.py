@@ -27,7 +27,7 @@ class Caller:
         self.func: ASYNC_FUNCTION_CALL_FUNC | None = None
         """函数对象"""
         self.module_name: str = ""
-        """模块名"""
+        """模块名，仅为父级模块名，不一定是插件顶级模块名"""
         self._parameters: dict[str, Any] = {}
         """声明参数"""
 
@@ -137,14 +137,14 @@ class Caller:
             self.func = async_wrap(func)  # type: ignore
 
         if module := inspect.getmodule(func):
-            module_name = module.__name__.split(".")[-1] + "."
+            module_name = module.__name__.split(".")[-1]
         else:
             module_name = ""
 
         self.module_name = module_name
         _caller_data[self.full_name] = self
         logger.opt(colors=True).debug(
-            f"<y>加载函数 {module_name}{func.__name__}: {self._description}</y>"
+            f"<y>加载函数 {self.full_name}: {self._description}</y>"
         )
 
         return func
@@ -238,7 +238,7 @@ class Caller:
     @property
     def full_name(self) -> str:
         """完整名"""
-        return self.module_name + self._name
+        return self.module_name + "." + self._name
 
     @property
     def short_info(self) -> str:
