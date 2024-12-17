@@ -233,7 +233,7 @@ class Caller:
     @property
     def aifc_name(self) -> str:
         """AI调用名，没有点"""
-        return self.full_name.replace(".", "_")
+        return self.full_name.replace(".", "-")
 
     @property
     def full_name(self) -> str:

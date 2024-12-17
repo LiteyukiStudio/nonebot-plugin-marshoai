@@ -46,6 +46,8 @@ marshoai_disabled_toolkits: [] # 已禁用的工具包列表。
 
 marshoai_plugin_dirs: [] # 插件路径。
 
+marshoai_plugins: [] # 导入的插件名，可以为pip包或本地导入的使用路径。
+
 marshoai_devmode: false # 是否启用开发者模式。
 
 marshoai_azure_endpoint: "https://models.inference.ai.azure.com" # OpenAI 标准格式 API 的端点。
