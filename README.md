@@ -1,6 +1,6 @@
 <!--suppress LongLine -->
 <div align="center">
-  <a href="https://v2.nonebot.dev/store"><img src="https://raw.githubusercontent.com/LiteyukiStudio/nonebot-plugin-marshoai/refs/heads/main/resources/marsho-new.svg" width="800" height="430" alt="NoneBotPluginLogo"></a>
+  <a href="https://marsho.liteyuki.icu"><img src="https://marsho.liteyuki.icu/marsho-full.svg" width="800" height="430" alt="MarshoLogo"></a>
   <br>
 </div>
 
@@ -17,7 +17,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 <a href="https://pypi.python.org/pypi/nonebot-plugin-marshoai">
     <img src="https://img.shields.io/pypi/v/nonebot-plugin-marshoai.svg" alt="pypi">
 </a>
-<img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="python">
+<img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="python">
 
 </div>
 
