@@ -16,7 +16,6 @@ headers = {
     description="使用网页链接(url)获取网页内容摘要,可以让AI上网查询资料"
 ).params(
     url=String(description="网页链接"),
-    typ=String(description="获取类型，摘要还是内容"),
 )
 async def get_web_content(url: str) -> str:
     """使用网页链接获取网页内容摘要

@@ -12,7 +12,6 @@ dependencies = [
     "nonebot2>=2.2.0",
     "nonebot-plugin-alconna>=0.48.0",
     "nonebot-plugin-localstore>=0.7.1",
-    "azure-ai-inference>=1.0.0b4",
     "zhDatetime>=1.1.1",
     "aiohttp>=3.9",
     "httpx>=0.27.0",
@@ -25,7 +24,8 @@ dependencies = [
     "newspaper3k>=0.2.8",
     "lxml[html_clean]>=5.3.0",
     "aiofiles>=24.1.0",
-    "sumy>=0.11.0"
+    "sumy>=0.11.0",
+    "azure-ai-inference>=1.0.0b6"
 
 ]
 license = { text = "MIT, Mulan PSL v2" }
@@ -51,7 +51,7 @@ profile = "black"
 [tool.pdm.version]
 source = "scm"
 tag_filter = "v*"
-tag_regex = '^v(?:\D*)?(?P<version>([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))*((a|b|c|rc)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))?(\.dev(0|[1-9][0-9]*))?$)$'
+tag_regex = '^v(?:\D*)?(?P<version>([1-9][0-9]*!)?(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*))*((a|b|c|rc|dev)(0|[1-9][0-9]*))?(\.post(0|[1-9][0-9]*))?)$'
 
 [tool.pdm.build]
 includes = []
