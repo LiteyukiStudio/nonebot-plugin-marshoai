@@ -8,6 +8,7 @@ from nonebot.permission import Permission
 from nonebot.rule import Rule
 from nonebot.typing import T_State
 
+from ..models import Plugin
 from ..typing import ASYNC_FUNCTION_CALL_FUNC, F
 from .models import SessionContext, SessionContextDepends
 from .utils import async_wrap, is_coroutine_callable
@@ -16,10 +17,17 @@ _caller_data: dict[str, "Caller"] = {}
 
 
 class Caller:
-    def __init__(self, name: str | None = None, description: str | None = None):
-        self._name = name
+    def __init__(self, name: str = "", description: str | None = None):
+        self._name: str = name
+        """函数名称"""
         self._description = description
+        """函数描述"""
+        self._plugin: Plugin | None = None
+        """所属插件对象，装饰时声明"""
         self.func: ASYNC_FUNCTION_CALL_FUNC | None = None
+        """函数对象"""
+        self.module_name: str = ""
+        """模块名，仅为父级模块名，不一定是插件顶级模块名"""
         self._parameters: dict[str, Any] = {}
         """声明参数"""
 
@@ -91,13 +99,8 @@ class Caller:
             F: 函数对象
         """
         global _caller_data
-        if self._name is None:
-            if module := inspect.getmodule(func):
-                module_name = module.__name__.split(".")[-1]
-            else:
-                module_name = ""
-            self._name = f"{module_name}-{func.__name__}"
-        _caller_data[self._name] = self
+        if not self._name:
+            self._name = func.__name__
 
         # 检查函数签名，确定依赖注入参数
         sig = inspect.signature(func)
@@ -134,11 +137,14 @@ class Caller:
             self.func = async_wrap(func)  # type: ignore
 
         if module := inspect.getmodule(func):
-            module_name = module.__name__.split(".")[-1] + "."
+            module_name = module.__name__.split(".")[-1]
         else:
             module_name = ""
+
+        self.module_name = module_name
+        _caller_data[self.full_name] = self
         logger.opt(colors=True).debug(
-            f"<y>加载函数 {module_name}{func.__name__}: {self._description}</y>"
+            f"<y>加载函数 {self.full_name}: {self._description}</y>"
         )
 
         return func
@@ -152,7 +158,7 @@ class Caller:
         return {
             "type": "function",
             "function": {
-                "name": self._name,
+                "name": self.aifc_name,
                 "description": self._description,
                 "parameters": {
                     "type": "object",
@@ -193,6 +199,11 @@ class Caller:
         self.set_ctx(ctx)
         return self
 
+    def __str__(self) -> str:
+        return f"{self._name}({self._description})\n" + "\n".join(
+            f"  - {key}: {value}" for key, value in self._parameters.items()
+        )
+
     async def call(self, *args: Any, **kwargs: Any) -> Any:
         """调用函数
 
@@ -214,8 +225,27 @@ class Caller:
 
         return await self.func(*args, **kwargs)
 
+    @property
+    def short_name(self) -> str:
+        """函数本名"""
+        return self._name.split(".")[-1]
 
-def on_function_call(name: str | None = None, description: str | None = None) -> Caller:
+    @property
+    def aifc_name(self) -> str:
+        """AI调用名，没有点"""
+        return self.full_name.replace(".", "-")
+
+    @property
+    def full_name(self) -> str:
+        """完整名"""
+        return self.module_name + "." + self._name
+
+    @property
+    def short_info(self) -> str:
+        return f"{self.full_name}({self._description})"
+
+
+def on_function_call(name: str = "", description: str | None = None) -> Caller:
     """返回一个Caller类，可用于装饰一个函数，使其注册为一个可被AI调用的function call函数
 
     Args:
