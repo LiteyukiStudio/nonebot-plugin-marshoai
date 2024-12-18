@@ -284,7 +284,17 @@ async def dict_to_bit(data: dict) -> List[bool]:
 
 # 总编码
 async def pc_encode(data: dict) -> str:
-    return ""
+    # 对象编码
+    bit_112 = await dict_to_bit(data)
+    # 汉明码编码
+    if len(bit_112) != 112:
+        raise
+    bit_120 = await hamming_encode(bit_112)
+    # 转换为20B644字符串
+    if len(bit_120) != 120:
+        raise
+    sp = await bit_to_b64(bit_112)
+    return sp
 
 
 # 总解码
