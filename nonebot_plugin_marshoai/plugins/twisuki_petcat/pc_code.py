@@ -133,11 +133,11 @@ async def hamming_decode(bit_data: List[bool]) -> List[bool]:
 
 # 112位Bit数据解密
 async def bit_to_dict(bit_data: List[bool]) -> dict:
-    zero_count = 0
+    one_count = 0
     for i in range(112):
         if bit_data[i]:
-            zero_count += 1
-    if zero_count % 2 != 0:
+            one_count += 1
+    if one_count % 2 != 0:
         raise
 
     name_length_bit = bit_data[0:3]
@@ -219,7 +219,67 @@ async def bit_to_dict(bit_data: List[bool]) -> dict:
 
 # 112位Bit数据编码
 async def dict_to_bit(data: dict) -> List[bool]:
-    return []
+    bit_data = [False * 112]
+
+    # 名字
+    name = data["name"]
+    name_length = len(name)
+    name_length_bit = await dec_to_bin(name_length)
+    name_byte = name.encode("ASCII")
+    name_bit = []
+    for byte in name_byte:
+        for i in range(8):
+            name_bit.append(bool(byte & (1 << i)))
+
+    # 通用
+    age = data["age"]
+    ctype = [i for i in range(0, 8) if TYPE_LIST[i] == data["type"]][0]
+    health = data["health"]
+    satiety = data["satiety"]
+    energy = data["energy"]
+
+    # 技能
+    skill: List[bool] = []
+    for i in range(0, 8):
+        skill[i] = bool(SKILL_LIST[i] in data["skill"])
+
+    # 时间
+    now = datetime.now()
+    year = now.year
+    time_y = year % 2
+
+    # 月/日 - 季度 - u(2d)
+    month = now.month
+    day = now.day
+    reason_start_months = [1, 4, 7, 10]
+    reason_index = (month - 1) // 3
+    reason_start_month = reason_start_months[reason_index]
+    reason_start_date = datetime(year, reason_start_month, 1)
+    days_since_reason_start = (now - reason_start_date).days + 1
+    ult = days_since_reason_start // 2
+
+    time_r = await dec_to_bin(reason_index)
+    time_u = await dec_to_bin(ult)
+
+    bit_data[0:3] = [*name_length_bit]
+    bit_data[3:67] = [*name_bit]
+    bit_data[67:71] = [*await dec_to_bin(age)]
+    bit_data[71:74] = [*await dec_to_bin(ctype)]
+    bit_data[74:81] = [*await dec_to_bin(health)]
+    bit_data[81:88] = [*await dec_to_bin(satiety)]
+    bit_data[88:95] = [*await dec_to_bin(energy)]
+    bit_data[95:103] = [*skill]
+    bit_data[103:104] = [bool(time_y)]
+    bit_data[104:106] = [*time_r]
+    bit_data[106:111] = [*time_u]
+
+    one_count = 0
+    for i in range(111):
+        if bit_data[i]:
+            one_count += 1
+    bit_data[111:112] = [not (one_count % 2)]
+
+    return [bool(*bit_data)]
 
 
 # 总编码
