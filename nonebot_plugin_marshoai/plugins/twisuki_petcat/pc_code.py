@@ -18,9 +18,12 @@
 """
 
 import base64
-from calendar import month
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List
+
+# 公用列表
+TYPE_LIST = ["猫1", "猫2", "猫3", "猫4", "猫5", "猫6", "猫7", "猫8"]
+SKILL_LIST = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]
 
 
 # 20位Base64字符串转换为120位Bit数据
@@ -149,7 +152,7 @@ async def bit_to_dict(bit_data: List[bool]) -> dict:
     name_length_bit = bit_data[0:3]
     name_bit = bit_data[3:67]
     age_bit = bit_data[67:71]
-    type_bit = bit_data[71:74]
+    ctype_bit = bit_data[71:74]
     health_bit = bit_data[74:81]
     satiety_bit = bit_data[81:88]
     energy_bit = bit_data[88:95]
@@ -158,6 +161,7 @@ async def bit_to_dict(bit_data: List[bool]) -> dict:
     time_r_bit = bit_data[104:106]
     time_u_bit = bit_data[106:111]
 
+    # 名字
     name_length = await bin_to_dec(name_length_bit)
     name_byte = bytearray()
     for i in range(0, 8 * name_length, 8):
@@ -166,17 +170,23 @@ async def bit_to_dict(bit_data: List[bool]) -> dict:
             if name_bit[i + j]:
                 byte_value |= 1 << j
         name_byte.append(byte_value)
-
     name = name_byte.decode("ASCII")
+
+    # 通用
     age = await bin_to_dec(age_bit)
-    type = await bin_to_dec(type_bit)
+    ctype = await bin_to_dec(ctype_bit)
     health = await bin_to_dec(health_bit)
     satiety = await bin_to_dec(satiety_bit)
     energy = await bin_to_dec(energy_bit)
-    skill = await bin_to_dec(skill_bit)
 
+    # 技能
+    skill = []
+    for i in range(0, 8):
+        if skill_bit[i]:
+            skill.append(SKILL_LIST[i])
+
+    # 时间
     now = datetime.now()
-
     year = now.year
     time_y = year
     # 奇偶年不同, 证明超一年
@@ -202,7 +212,16 @@ async def bit_to_dict(bit_data: List[bool]) -> dict:
     current_month -= 1
     day = delta_day - (cumulative_days - month_days[current_month - 1])
 
-    data = {"name": name}
+    data = {
+        "name": name,
+        "age": age,
+        "type": TYPE_LIST[ctype],
+        "health": health,
+        "satiety": satiety,
+        "energy": energy,
+        "skill": skill,
+        "date": [time_y, current_month, day],
+    }
 
     return data
 
