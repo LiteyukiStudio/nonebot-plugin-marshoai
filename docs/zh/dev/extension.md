@@ -22,7 +22,6 @@ order: 2
 - 元数据：包含插件的信息，如名称、版本、作者等
 - function call：供AI调用的函数
 
-
 :::tip
 如果你编写过NoneBot插件，那么你会发现插件的编写方式和NoneBot插件的编写方式几乎一样。
 :::
@@ -76,14 +75,19 @@ def fortune_telling(name: str, age: int) -> str:
 ```python
 @on_function_call(description="在设备上执行命令").params(
     command=String(description="命令内容")
-).permission(SUPERUSER).rule(RegexRule("查询(.*)的天气"))
+).permission(SUPERUSER)
 def execute_command(command: str) -> str:
     return eval(command)
 ```
 
 ## 依赖注入
 
-function call支持NoneBot2原生的会话上下文依赖注入，例如Bot、Event等
+function call支持NoneBot2原生的会话上下文依赖注入
+
+- Event 及其子类实例
+- Bot   及其子类实例
+- Matcher   及其子类实例
+- T_State
 
 ```python
 @on_function_call(description="获取个人信息")
@@ -95,10 +99,30 @@ async def get_bot_info(b: Bot) -> str:
     return f"机器人ID: {b.self_id}"
 ```
 
-## 其他
+## 兼容性
 
-- function call支持同步和异步函数
-- 本文是一个引导，要查看具体功能请查阅[插件 API 文档](./api/plugin/index)
+插件可以编写NoneBot或者轻雪插件的内容，可作为NoneBot插件或者轻雪插件单独发布
+
+不过，所编写功能仅会在对应的实例上加载对应的功能，如果通过marshoai加载混合插件，那么插件中NoneBot的功能将会依附于marshoai插件，
+若通过NoneBot加载包含marshoai功能的NoneBot插件，那么marshoai功能将会依附于NoneBot插件。
+
+**我们建议**：若插件中包含了NoneBot功能，仍然使用marshoai进行加载，这样更符合逻辑。若你想发布为NoneBot插件，请注意`require("nonebot_plugin_marshoai")`，这是老生常谈了。
+
+:::tip
+本质上都是动态导入和注册声明加载，运行时把这些东西塞到一起
+:::
+
+## 插件热重载
+
+插件热重载是一个实验性功能，可以在不重启机器人的情况下更新插件
+
+:::warning
+框架无法完全消除之前插件带来的副作用，当开发测试中效果不符合预期时请重启机器人实例
+
+为了更好地让热重载功能正常工作，尽可能使用函数式的编程风格，以减少副作用的影响
+:::
+
+将`MARSHOAI_DEVMODE`环境变量设置为`true`，然后在配置的插件目录`MARSHOAI_PLUGIN_DIRS`下开发插件，当插件发生变化时，机器人会自动变动的插件。
 
 ## AIGC 自举
 
@@ -106,3 +130,8 @@ async def get_bot_info(b: Bot) -> str:
 该功能为实验性功能，请注意甄别AI的行为，不要让AI执行危险的操作。
 :::
 function call为AI赋能，实现了文件io操作，AI可以调用function call来读取文档然后给自己编写代码，实现自举。
+
+## 其他
+
+- function call支持同步和异步函数
+- 本文是一个引导，要查看具体功能请查阅[插件 API 文档](./api/plugin/index)
