@@ -18,6 +18,8 @@
 """
 
 import base64
+from calendar import month
+from datetime import datetime, timedelta
 from typing import List
 
 
@@ -110,19 +112,106 @@ async def hamming_decode(bit_data: List[bool]) -> List[bool]:
     return original_data
 
 
-# 120位Bit数据解密
+# 二进制 - 十进制转换
+async def bin_to_dec(bin_data: List[bool]) -> int:
+    result = 0
+    for index, bit in enumerate(bin_data):
+        if bit:
+            result ^= 1 << index
+    return result
+
+
+# 十进制 - 二进制转换
+async def dec_to_bin(num: int) -> List[bool]:
+    if num == 0:
+        return [False]
+
+    result = []
+    while num > 0:
+        result.append(bool(num % 2))
+        num //= 2
+
+    return result[::-1]
+
+
+# 112位Bit数据解密
 async def bit_to_dict(bit_data: List[bool]) -> dict:
-    if len(bit_data) != 120:
+    if len(bit_data) != 112:
         raise
 
-    # name_length_bit = bit_data[0:3]
-    # name_bit = bit_data[3:67]
-    # age_bit = bit_data[67:71]
-    # type_bit = bit_data[71:74]
-    # height_bit = bit_data[74:81]
-    # satiety_bit = bit_data[81:88]
-    # energy_bit = bit_data[88:95]
-    # skill_bit = bit_data[95:103]
-    # time_bit = bit_data[103:111]
+    zero_count = 0
+    for i in range(112):
+        if bit_data[i]:
+            zero_count += 1
+    if zero_count % 2 != 0:
+        raise
 
-    return dict()
+    name_length_bit = bit_data[0:3]
+    name_bit = bit_data[3:67]
+    age_bit = bit_data[67:71]
+    type_bit = bit_data[71:74]
+    health_bit = bit_data[74:81]
+    satiety_bit = bit_data[81:88]
+    energy_bit = bit_data[88:95]
+    skill_bit = bit_data[95:103]
+    time_y_bit = bit_data[103:104]
+    time_r_bit = bit_data[104:106]
+    time_u_bit = bit_data[106:111]
+
+    name_length = await bin_to_dec(name_length_bit)
+    name_byte = bytearray()
+    for i in range(0, 8 * name_length, 8):
+        byte_value = 0
+        for j in range(8):
+            if name_bit[i + j]:
+                byte_value |= 1 << j
+        name_byte.append(byte_value)
+
+    name = name_byte.decode("ASCII")
+    age = await bin_to_dec(age_bit)
+    type = await bin_to_dec(type_bit)
+    health = await bin_to_dec(health_bit)
+    satiety = await bin_to_dec(satiety_bit)
+    energy = await bin_to_dec(energy_bit)
+    skill = await bin_to_dec(skill_bit)
+
+    now = datetime.now()
+
+    year = now.year
+    time_y = year
+    # 奇偶年不同, 证明超一年
+    if (year % 2 != 0) != time_y_bit:
+        time_y -= 1
+
+    # 季度 - u(2d) - 月/日
+    reason = await bin_to_dec(time_r_bit)
+    ult = await bin_to_dec(time_u_bit)
+    delta_day = 2 * ult
+
+    month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    reason_to_months = {1: (1, 4), 2: (4, 7), 3: (7, 10), 4: (10, 13)}
+
+    start_month, end_month = reason_to_months[reason]
+    cumulative_days = 0
+    current_month = start_month
+
+    while cumulative_days + month_days[current_month - 1] <= delta_day:
+        cumulative_days += month_days[current_month - 1]
+        current_month += 1
+
+    current_month -= 1
+    day = delta_day - (cumulative_days - month_days[current_month - 1])
+
+    data = {"name": name}
+
+    return data
+
+
+# 总编码
+async def pc_encode(data: dict) -> str:
+    return ""
+
+
+# 总解码
+async def pc_decode(sp: str) -> dict:
+    return {"a": 0}
