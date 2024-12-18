@@ -26,12 +26,31 @@ TYPE_LIST = ["猫1", "猫2", "猫3", "猫4", "猫5", "猫6", "猫7", "猫8"]
 SKILL_LIST = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]
 
 
+# 二进制 - 十进制转换
+async def bin_to_dec(bin_data: List[bool]) -> int:
+    result = 0
+    for index, bit in enumerate(bin_data):
+        if bit:
+            result ^= 1 << index
+    return result
+
+
+# 十进制 - 二进制转换
+async def dec_to_bin(num: int) -> List[bool]:
+    if num == 0:
+        return [False]
+
+    result = []
+    while num > 0:
+        result.append(bool(num % 2))
+        num //= 2
+
+    return result[::-1]
+
+
 # 20位Base64字符串转换为120位Bit数据
 async def b64_to_bit(str_data: str) -> list[bool]:
     str_data = str_data.replace("=", "")
-    if len(str_data) != 20:
-        raise
-
     byte_data = base64.b64decode(str_data.encode())
     bool_array = []
     for byte in byte_data:
@@ -43,9 +62,6 @@ async def b64_to_bit(str_data: str) -> list[bool]:
 
 # 120位Bit数据转换为20位Base64字符
 async def bit_to_b64(bit_data: List[bool]) -> str:
-    if len(bit_data) != 120:
-        raise
-
     byte_date = bytearray()
     for i in range(0, len(bit_data), 8):
         byte_value = 0
@@ -115,33 +131,8 @@ async def hamming_decode(bit_data: List[bool]) -> List[bool]:
     return original_data
 
 
-# 二进制 - 十进制转换
-async def bin_to_dec(bin_data: List[bool]) -> int:
-    result = 0
-    for index, bit in enumerate(bin_data):
-        if bit:
-            result ^= 1 << index
-    return result
-
-
-# 十进制 - 二进制转换
-async def dec_to_bin(num: int) -> List[bool]:
-    if num == 0:
-        return [False]
-
-    result = []
-    while num > 0:
-        result.append(bool(num % 2))
-        num //= 2
-
-    return result[::-1]
-
-
 # 112位Bit数据解密
 async def bit_to_dict(bit_data: List[bool]) -> dict:
-    if len(bit_data) != 112:
-        raise
-
     zero_count = 0
     for i in range(112):
         if bit_data[i]:
@@ -224,6 +215,11 @@ async def bit_to_dict(bit_data: List[bool]) -> dict:
     }
 
     return data
+
+
+# 112位Bit数据编码
+async def dict_to_bit(data: dict) -> List[bool]:
+    return []
 
 
 # 总编码
