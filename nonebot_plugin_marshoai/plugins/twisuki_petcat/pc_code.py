@@ -233,4 +233,16 @@ async def pc_encode(data: dict) -> str:
 
 # 总解码
 async def pc_decode(sp: str) -> dict:
-    return {"a": 0}
+    # 转换为120位Bit数据
+    if len(sp) != 20:
+        raise
+    bit_120 = await b64_to_bit(sp)
+    # 汉明码解码
+    if len(bit_120) != 120:
+        raise
+    bit_112 = await hamming_decode(bit_120)
+    # 对象解码
+    if len(bit_112) != 112:
+        raise
+    data = await bit_to_dict(bit_112)
+    return data
