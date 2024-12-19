@@ -30,6 +30,7 @@ INTRODUCTION: str = f"""MarshoAI-NoneBot by LiteyukiStudio
 我的主页在这里哦~↓↓↓
 https://marsho.liteyuki.icu
 
+※ 使用 「{config.marshoai_default_name}.status」命令获取状态信息。
 ※ 使用「{config.marshoai_default_name}.help」命令获取使用说明。"""
 
 

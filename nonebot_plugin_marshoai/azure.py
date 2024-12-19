@@ -72,6 +72,14 @@ marsho_help_cmd = on_alconna(
     priority=10,
     block=True,
 )
+marsho_status_cmd = on_alconna(
+    Alconna(
+        config.marshoai_default_name + ".status",
+    ),
+    priority=10,
+    block=True,
+)
+
 marsho_at = on_message(rule=to_me() & at_enable, priority=11)
 nickname_cmd = on_alconna(
     Alconna(
@@ -226,6 +234,16 @@ async def marsho_help():
     await marsho_help_cmd.finish(metadata.usage)
 
 
+@marsho_status_cmd.handle()
+async def marsho_status():
+    await marsho_status_cmd.finish(
+        f"当前使用的模型：{model_name}\n"
+        # f"当前会话数量：{len(target_list)}\n"
+        # f"当前上下文数量：{len(context.contexts)}"
+        f"当前支持图片的模型：{str(SUPPORT_IMAGE_MODELS + config.marshoai_additional_image_models)}"
+    )
+
+
 @marsho_at.handle()
 @marsho_cmd.handle()
 async def marsho(
@@ -246,7 +264,7 @@ async def marsho(
     if not text:
         # 发送说明
         # await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
-        await marsho_cmd.finish(INTRODUCTION + "\n当前使用的模型:" + model_name)
+        await marsho_cmd.finish(INTRODUCTION)
     try:
         user_id = event.get_user_id()
         nicknames = await get_nicknames()
@@ -287,7 +305,9 @@ async def marsho(
                         )  # type: ignore
                     )  # type: ignore
                 elif config.marshoai_enable_support_image_tip:
-                    await UniMessage("*此模型不支持图片处理。").send()
+                    await UniMessage(
+                        "*此模型不支持图片处理或管理员未启用此模型的图片支持。图片将被忽略。"
+                    ).send()
         backup_context = await get_backup_context(target.id, target.private)
         if backup_context:
             context.set_context(
