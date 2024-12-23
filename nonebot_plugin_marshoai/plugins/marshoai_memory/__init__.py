@@ -1,9 +1,9 @@
+import json
 from pathlib import Path
 
 from nonebot import require
 
 require("nonebot_plugin_localstore")
-import json
 
 from nonebot_plugin_localstore import get_plugin_data_file
 
@@ -23,7 +23,9 @@ if not Path(memory_path).exists():
 # print(memory_path)
 
 
-@on_function_call(description="存储记忆内容").params(
+@on_function_call(
+    description="当你发现与你对话的用户的一些信息值得你记忆，或者用户让你记忆等时，调用此函数存储记忆内容"
+).params(
     memory=String(description="你想记住的内容，概括并保留关键内容"),
     user_id=String(description="你想记住的人的id"),
 )
