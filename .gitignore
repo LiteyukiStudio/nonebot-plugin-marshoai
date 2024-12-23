@@ -190,3 +190,4 @@ docs/.vitepress/dist
 result.json
 
 data/*
+marshoplugins/*

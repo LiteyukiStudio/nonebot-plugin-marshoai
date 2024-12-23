@@ -117,6 +117,9 @@ async def _preload_tools():
         logger.info(
             "如果启用小棉工具后使用的模型出现报错，请尝试将 MARSHOAI_ENABLE_TOOLS 设为 false。"
         )
+        logger.opt(colors=True).warning(
+            "<y>小棉工具已被弃用，可能会在未来版本中移除。</y>"
+        )
 
 
 @driver.on_startup

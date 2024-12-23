@@ -2,9 +2,6 @@ import json
 from pathlib import Path
 
 from nonebot import require
-
-require("nonebot_plugin_localstore")
-
 from nonebot_plugin_localstore import get_plugin_data_file  # type: ignore
 
 from nonebot_plugin_marshoai.plugin import (  # type: ignore
