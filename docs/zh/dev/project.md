@@ -39,3 +39,11 @@ pre-commit install  # 安装 pre-commit 钩子
 - [`Google Docstring`](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html) 文档规范
 
 可以在编辑器中安装相应的插件进行辅助
+
+## 其他
+
+感谢以下的贡献者们：
+
+<ContributorsBar />
+
+<script setup> import ContributorsBar from '../../components/ContributorsBar.vue' </script>
