@@ -1,9 +1,11 @@
 from pathlib import Path
+
 from nonebot import require
 
 require("nonebot_plugin_localstore")
-from nonebot_plugin_localstore import get_data_file
 import json
+
+from nonebot_plugin_localstore import get_data_file
 
 memory_path = get_data_file("marshoai", "memory.json")
 if not Path(memory_path).exists():
