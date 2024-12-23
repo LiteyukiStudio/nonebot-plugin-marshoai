@@ -142,7 +142,7 @@ class Caller:
             module_name = ""
 
         self.module_name = module_name
-        _caller_data[self.full_name] = self
+        _caller_data[self.aifc_name] = self
         logger.opt(colors=True).debug(
             f"<y>加载函数 {self.full_name}: {self._description}</y>"
         )
