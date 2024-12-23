@@ -278,9 +278,14 @@ async def marsho(
             # 用户名无法获取，暂时注释
             # user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
             # nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
+            if config.marshoai_enforce_nickname:
+                await UniMessage(
+                    "※你未设置自己的昵称。你**必须**使用「nickname [昵称]」命令设置昵称后才能进行对话。"
+                ).send()
+                return
             if config.marshoai_enable_nickname_tip:
                 await UniMessage(
-                    "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
+                    "※你未设置自己的昵称。推荐使用「nickname [昵称]」命令设置昵称来获得个性化(可能）回答。"
                 ).send()
 
         is_support_image_model = (

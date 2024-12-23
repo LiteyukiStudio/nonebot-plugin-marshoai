@@ -119,6 +119,7 @@ title: 安装
 | MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | Marsho 默认调用的模型                                                                                |
 | MARSHOAI_PROMPT                  | `str`   | 猫娘 Marsho 人设提示词                         | Marsho 的基本系统提示词 **※部分模型(o1等)不支持系统提示词。**                                                       |
 | MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho 的扩展系统提示词                                                                               |
+| MARSHOAI_ENFORCE_NICKNAME        | `bool`  | `true`                                  | 是否强制用户设置昵称                                                                                 |
 | MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳。` |
 | MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI 标准格式 API 端点                                                                            |
 | MARSHOAI_TEMPERATURE             | `float` | `null`                                  | 推理生成多样性（温度）参数                                                                                 |

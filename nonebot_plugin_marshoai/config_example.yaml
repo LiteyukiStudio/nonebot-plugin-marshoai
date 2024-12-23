@@ -32,6 +32,8 @@ marshoai_enable_nickname_tip: true # 是否启用昵称提示。
 
 marshoai_enable_support_image_tip: true # 是否启用支持图片提示。
 
+marshoai_enforce_nickname: true # 是否强制要求设定昵称。
+
 marshoai_enable_praises: true # 是否启用夸赞名单功能。
 
 marshoai_enable_tools: false # 是否启用工具支持。

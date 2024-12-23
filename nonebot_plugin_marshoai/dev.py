@@ -32,7 +32,7 @@ driver = get_driver()
 
 function_call = on_alconna(
     command=Alconna(
-        "marsho-function-call",
+        f"{config.marshoai_default_name}.funccall",
         Subcommand(
             "call",
             Args["function_name", str]["kwargs", MultiVar(str), []],
