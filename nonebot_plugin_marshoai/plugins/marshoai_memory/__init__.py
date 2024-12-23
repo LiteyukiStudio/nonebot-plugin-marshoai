@@ -5,10 +5,13 @@ from nonebot import require
 
 require("nonebot_plugin_localstore")
 
-from nonebot_plugin_localstore import get_plugin_data_file
+from nonebot_plugin_localstore import get_plugin_data_file  # type: ignore
 
-from nonebot_plugin_marshoai.plugin import PluginMetadata, on_function_call
-from nonebot_plugin_marshoai.plugin.func_call.params import String
+from nonebot_plugin_marshoai.plugin import (  # type: ignore
+    PluginMetadata,
+    on_function_call,
+)
+from nonebot_plugin_marshoai.plugin.func_call.params import String  # type: ignore
 
 __marsho_meta__ = PluginMetadata(
     name="记忆保存",
