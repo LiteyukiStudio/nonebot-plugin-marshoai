@@ -337,6 +337,10 @@ async def marsho(
         )
         # await UniMessage(str(response)).send()
         choice = response.choices[0]
+        # Sprint(choice)
+        # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
+        if choice.message.tool_calls != None:
+            choice["finish_reason"] = CompletionsFinishReason.TOOL_CALLS
         if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
             # 当对话成功时，将dict的上下文添加到上下文类中
             context.append(
@@ -379,6 +383,9 @@ async def marsho(
                             function_args = json.loads(
                                 tool_call.function.arguments.replace("'", '"')
                             )
+                        # 删除args的placeholder参数
+                        if "placeholder" in function_args:
+                            del function_args["placeholder"]
                         logger.info(
                             f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
                             + "\n".join([f"{k}={v}" for k, v in function_args.items()])
@@ -414,15 +421,21 @@ async def marsho(
                                 )
                                 func_return = f"未找到函数 {tool_call.function.name.replace('-', '.')}"
                         tool_msg.append(
-                            ToolMessage(tool_call_id=tool_call.id, content=func_return)  # type: ignore
+                            ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
                         )
+                request_msg = context_msg + [UserMessage(content=usermsg).as_dict()] + tool_msg  # type: ignore
                 response = await make_chat(
                     client=client,
                     model_name=model_name,
-                    msg=context_msg + [UserMessage(content=usermsg)] + tool_msg,  # type: ignore
-                    tools=tools.get_tools_list(),
+                    msg=request_msg,  # type: ignore
+                    tools=(
+                        tools_lists if tools_lists else None
+                    ),  # TODO 临时追加函数，后期优化
                 )
                 choice = response.choices[0]
+                # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
+                if choice.message.tool_calls != None:
+                    choice["finish_reason"] = CompletionsFinishReason.TOOL_CALLS
             if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
 
                 # 对话成功 添加上下文
