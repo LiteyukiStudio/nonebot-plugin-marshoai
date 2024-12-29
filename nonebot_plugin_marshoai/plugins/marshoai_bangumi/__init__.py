@@ -1,7 +1,7 @@
 import traceback
 
 import httpx
-from zhDateTime import DateTime
+from zhDateTime import DateTime  # type: ignore
 
 from nonebot_plugin_marshoai.plugin import PluginMetadata, on_function_call
 from nonebot_plugin_marshoai.plugin.func_call.params import String
