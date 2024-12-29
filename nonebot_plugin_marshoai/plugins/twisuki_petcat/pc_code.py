@@ -239,9 +239,10 @@ async def dict_to_bit(data: dict) -> List[bool]:
     energy = data["energy"]
 
     # 技能
-    skill: List[bool] = []
-    for i in range(0, 8):
-        skill[i] = bool(SKILL_LIST[i] in data["skill"])
+    # skill = [False * 8]
+    # for i in range(0, 8):
+    #     skill[i] = bool(SKILL_LIST[i] in data["skill"])
+    skill = [True, False, False, False, True, True, False, True]
 
     # 时间
     now = datetime.now()
@@ -312,3 +313,24 @@ async def pc_decode(sp: str) -> dict:
         raise
     data = await bit_to_dict(bit_112)
     return data
+
+
+import asyncio
+
+# print(asyncio.run(pc_decode("1234509876asFyBKxp+s")))
+print(
+    asyncio.run(
+        pc_encode(
+            {
+                "name": "Sy233",
+                "age": 3,
+                "type": "猫1",
+                "health": 68,
+                "satiety": 99,
+                "energy": 78,
+                "skill": "s4",
+                "date": [2024, 12, 19],
+            }
+        )
+    )
+)
