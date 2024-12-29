@@ -9,7 +9,9 @@ order: 2
 扩展分为两类，一类为插件，一类为工具。
 
 - 插件
-- 工具(由于开发的不便利性，已经停止维护，未来可能会放弃支持，如有需求请看README中的内容，我们不推荐再使用此功能)
+- 工具(由于开发的不便利性，已经停止维护，未来可能会放弃支持，如有需求请看README中的内容，我们不推荐再使用此功能)  
+
+**`v1.0.0`之前的版本不支持小棉插件。**
 
 ## 插件
 
@@ -57,7 +59,11 @@ async def weather(location: str) -> str:
 
 ## 函数调用参数
 
-`on_function_call`装饰器用于标记一个函数为function call，`description`参数用于描述这个函数的作用，`params`方法用于定义函数的参数，`String`、`Integer`等是OpenAI API接受的参数的类型，`description`是参数的描述。这些都是给AI看的，AI会根据这些信息来调用函数。
+`on_function_call`装饰器用于标记一个函数为function call，`description`参数用于描述这个函数的作用，`params`方法用于定义函数的参数，`String`、`Integer`等是OpenAI API接受的参数的类型，`description`是参数的描述。这些都是给AI看的，AI会根据这些信息来调用函数。  
+
+:::warning
+参数名不得为`placeholder`。此参数名是Marsho内部保留的用于保证兼容性的占位参数。
+:::
 
 ```python
 @on_function_call(description="可以用于算命").params(
