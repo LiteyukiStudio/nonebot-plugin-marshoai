@@ -128,12 +128,13 @@ async def _():
     if config.marshoai_enable_plugins:
         marshoai_plugin_dirs = config.marshoai_plugin_dirs  # 外部插件目录列表
         """加载内置插件"""
-        marshoai_plugin_dirs.insert(
-            0, Path(__file__).parent / "plugins"
-        )  # 预置插件目录
+        for p in os.listdir(Path(__file__).parent / "plugins"):
+            load_plugin(f"{__package__}.plugins.{p}")
+
         """加载指定目录插件"""
         load_plugins(*marshoai_plugin_dirs)
-        """加载sys.path下的包"""
+
+        """加载sys.path下的包, 包括从pip安装的包"""
         for package_name in config.marshoai_plugins:
             load_plugin(package_name)
         logger.info(
