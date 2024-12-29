@@ -46,6 +46,7 @@ class ConfigModel(BaseModel):
     marshoai_temperature: float | None = None
     marshoai_max_tokens: int | None = None
     marshoai_top_p: float | None = None
+    marshoai_nickname_limit: int = 16
     marshoai_additional_image_models: list = []
     marshoai_tencent_secretid: str | None = None
     marshoai_tencent_secretkey: str | None = None

@@ -222,6 +222,10 @@ async def nickname(event: Event, name=None):
         await set_nickname(user_id, "")
         await nickname_cmd.finish("已重置昵称")
     else:
+        if len(name) > config.marshoai_nickname_limit:
+            await nickname_cmd.finish(
+                "昵称超出长度限制：" + str(config.marshoai_nickname_limit)
+            )
         await set_nickname(user_id, name)
         await nickname_cmd.finish("已设置昵称为：" + name)
 

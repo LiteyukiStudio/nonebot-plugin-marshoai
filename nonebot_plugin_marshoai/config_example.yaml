@@ -42,6 +42,8 @@ marshoai_enable_plugins: true # 是否启用插件功能。
 
 marshoai_load_builtin_tools: true # 是否加载内置工具。
 
+marshoai_nickname_limit: 16 # 昵称长度限制。
+
 marshoai_toolset_dir: [] # 工具集路径。
 
 marshoai_disabled_toolkits: [] # 已禁用的工具包列表。
