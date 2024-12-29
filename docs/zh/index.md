@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 开始使用
-      link: /start/install-old/
+      link: /start/install/
     - theme: alt
       text: 开发及扩展
       link: /dev/extension/

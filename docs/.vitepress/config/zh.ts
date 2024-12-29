@@ -12,7 +12,7 @@ export const zh = defineConfig({
         },
         nav: [
             {text: '家', link: '/'},
-            {text: '使用', link: '/start/install-old'},
+            {text: '使用', link: '/start/install'},
             {text: '开发', link: '/dev/extension'},
         ],
         editLink: ThemeConfig.getEditLink('编辑此页面'),
