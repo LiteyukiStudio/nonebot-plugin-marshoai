@@ -124,6 +124,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_TOP_P                   | `float` | `null`                                  | Nucleus Sampling parameter                                                                       |
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | Max token number                                                                                |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | External image-support model list, such as `hunyuan-vision`                                                 |
+| MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | Limit for nickname length |
 
 #### Feature Switches
 
