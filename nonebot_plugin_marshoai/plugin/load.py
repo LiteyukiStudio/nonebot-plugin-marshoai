@@ -107,9 +107,7 @@ def load_plugins(*plugin_dirs: str) -> set[Plugin]:
     for plugin_dir in plugin_dirs:
         for f in os.listdir(plugin_dir):
             path = Path(os.path.join(plugin_dir, f))
-
             module_name = None
-
             if os.path.isfile(path) and f.endswith(".py"):
                 """单文件加载"""
                 module_name = f"{path_to_module_name(Path(plugin_dir))}.{f[:-3]}"
