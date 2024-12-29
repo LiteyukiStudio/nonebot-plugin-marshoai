@@ -95,7 +95,6 @@ async def make_chat(
         messages=msg,
         model=model_name,
         tools=tools,
-        tool_choice="auto",
         temperature=config.marshoai_temperature,
         max_tokens=config.marshoai_max_tokens,
         top_p=config.marshoai_top_p,
