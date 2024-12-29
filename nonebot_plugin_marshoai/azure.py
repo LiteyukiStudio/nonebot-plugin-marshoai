@@ -72,6 +72,14 @@ marsho_help_cmd = on_alconna(
     priority=10,
     block=True,
 )
+marsho_status_cmd = on_alconna(
+    Alconna(
+        config.marshoai_default_name + ".status",
+    ),
+    priority=10,
+    block=True,
+)
+
 marsho_at = on_message(rule=to_me() & at_enable, priority=11)
 nickname_cmd = on_alconna(
     Alconna(
@@ -109,6 +117,9 @@ async def _preload_tools():
         logger.info(
             "如果启用小棉工具后使用的模型出现报错，请尝试将 MARSHOAI_ENABLE_TOOLS 设为 false。"
         )
+        logger.opt(colors=True).warning(
+            "<y>小棉工具已被弃用，可能会在未来版本中移除。</y>"
+        )
 
 
 @driver.on_startup
@@ -117,12 +128,13 @@ async def _():
     if config.marshoai_enable_plugins:
         marshoai_plugin_dirs = config.marshoai_plugin_dirs  # 外部插件目录列表
         """加载内置插件"""
-        marshoai_plugin_dirs.insert(
-            0, Path(__file__).parent / "plugins"
-        )  # 预置插件目录
+        for p in os.listdir(Path(__file__).parent / "plugins"):
+            load_plugin(f"{__package__}.plugins.{p}")
+
         """加载指定目录插件"""
         load_plugins(*marshoai_plugin_dirs)
-        """加载sys.path下的包"""
+
+        """加载sys.path下的包, 包括从pip安装的包"""
         for package_name in config.marshoai_plugins:
             load_plugin(package_name)
         logger.info(
@@ -210,6 +222,10 @@ async def nickname(event: Event, name=None):
         await set_nickname(user_id, "")
         await nickname_cmd.finish("已重置昵称")
     else:
+        if len(name) > config.marshoai_nickname_limit:
+            await nickname_cmd.finish(
+                "昵称超出长度限制：" + str(config.marshoai_nickname_limit)
+            )
         await set_nickname(user_id, name)
         await nickname_cmd.finish("已设置昵称为：" + name)
 
@@ -224,6 +240,16 @@ async def refresh_data():
 @marsho_help_cmd.handle()
 async def marsho_help():
     await marsho_help_cmd.finish(metadata.usage)
+
+
+@marsho_status_cmd.handle()
+async def marsho_status():
+    await marsho_status_cmd.finish(
+        f"当前使用的模型：{model_name}\n"
+        # f"当前会话数量：{len(target_list)}\n"
+        # f"当前上下文数量：{len(context.contexts)}"
+        f"当前支持图片的模型：{str(SUPPORT_IMAGE_MODELS + config.marshoai_additional_image_models)}"
+    )
 
 
 @marsho_at.handle()
@@ -246,7 +272,7 @@ async def marsho(
     if not text:
         # 发送说明
         # await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
-        await marsho_cmd.finish(INTRODUCTION + "\n当前使用的模型:" + model_name)
+        await marsho_cmd.finish(INTRODUCTION)
     try:
         user_id = event.get_user_id()
         nicknames = await get_nicknames()
@@ -260,9 +286,14 @@ async def marsho(
             # 用户名无法获取，暂时注释
             # user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
             # nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
+            if config.marshoai_enforce_nickname:
+                await UniMessage(
+                    "※你未设置自己的昵称。你**必须**使用「nickname [昵称]」命令设置昵称后才能进行对话。"
+                ).send()
+                return
             if config.marshoai_enable_nickname_tip:
                 await UniMessage(
-                    "*你未设置自己的昵称。推荐使用'nickname [昵称]'命令设置昵称来获得个性化(可能）回答。"
+                    "※你未设置自己的昵称。推荐使用「nickname [昵称]」命令设置昵称来获得个性化(可能）回答。"
                 ).send()
 
         is_support_image_model = (
@@ -287,7 +318,9 @@ async def marsho(
                         )  # type: ignore
                     )  # type: ignore
                 elif config.marshoai_enable_support_image_tip:
-                    await UniMessage("*此模型不支持图片处理。").send()
+                    await UniMessage(
+                        "*此模型不支持图片处理或管理员未启用此模型的图片支持。图片将被忽略。"
+                    ).send()
         backup_context = await get_backup_context(target.id, target.private)
         if backup_context:
             context.set_context(
@@ -309,6 +342,10 @@ async def marsho(
         )
         # await UniMessage(str(response)).send()
         choice = response.choices[0]
+        # Sprint(choice)
+        # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
+        if choice.message.tool_calls != None:
+            choice["finish_reason"] = CompletionsFinishReason.TOOL_CALLS
         if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
             # 当对话成功时，将dict的上下文添加到上下文类中
             context.append(
@@ -351,6 +388,9 @@ async def marsho(
                             function_args = json.loads(
                                 tool_call.function.arguments.replace("'", '"')
                             )
+                        # 删除args的placeholder参数
+                        if "placeholder" in function_args:
+                            del function_args["placeholder"]
                         logger.info(
                             f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
                             + "\n".join([f"{k}={v}" for k, v in function_args.items()])
@@ -386,15 +426,21 @@ async def marsho(
                                 )
                                 func_return = f"未找到函数 {tool_call.function.name.replace('-', '.')}"
                         tool_msg.append(
-                            ToolMessage(tool_call_id=tool_call.id, content=func_return)  # type: ignore
+                            ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
                         )
+                request_msg = context_msg + [UserMessage(content=usermsg).as_dict()] + tool_msg  # type: ignore
                 response = await make_chat(
                     client=client,
                     model_name=model_name,
-                    msg=context_msg + [UserMessage(content=usermsg)] + tool_msg,  # type: ignore
-                    tools=tools.get_tools_list(),
+                    msg=request_msg,  # type: ignore
+                    tools=(
+                        tools_lists if tools_lists else None
+                    ),  # TODO 临时追加函数，后期优化
                 )
                 choice = response.choices[0]
+                # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
+                if choice.message.tool_calls != None:
+                    choice["finish_reason"] = CompletionsFinishReason.TOOL_CALLS
             if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
 
                 # 对话成功 添加上下文

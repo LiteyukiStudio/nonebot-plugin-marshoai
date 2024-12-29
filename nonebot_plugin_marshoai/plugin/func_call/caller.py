@@ -163,7 +163,13 @@ class Caller:
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        key: value.data() for key, value in self._parameters.items()
+                        **{
+                            key: value.data() for key, value in self._parameters.items()
+                        },
+                        "placeholder": {
+                            "type": "string",
+                            "description": "占位符，用于显示在对话框中",  # 为保证兼容性而设置的无用参数
+                        },
                     },
                 },
                 "required": [
