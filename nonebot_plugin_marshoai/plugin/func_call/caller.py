@@ -155,6 +155,12 @@ class Caller:
         Returns:
             dict[str, Any]: 函数的json数据
         """
+        properties = {key: value.data() for key, value in self._parameters.items()}
+        if not properties:
+            properties["placeholder"] = {
+                "type": "string",
+                "description": "占位符，用于显示在对话框中",  # 为保证兼容性而设置的无用参数
+            }
         return {
             "type": "function",
             "function": {
@@ -162,15 +168,7 @@ class Caller:
                 "description": self._description,
                 "parameters": {
                     "type": "object",
-                    "properties": {
-                        **{
-                            key: value.data() for key, value in self._parameters.items()
-                        },
-                        "placeholder": {
-                            "type": "string",
-                            "description": "占位符，用于显示在对话框中",  # 为保证兼容性而设置的无用参数
-                        },
-                    },
+                    "properties": properties,
                 },
                 "required": [
                     key
