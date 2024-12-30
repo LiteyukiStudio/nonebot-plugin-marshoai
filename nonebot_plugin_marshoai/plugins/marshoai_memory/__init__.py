@@ -1,21 +1,17 @@
 import json
 from pathlib import Path
-from azure.ai.inference.models import (
-    UserMessage,
-)
 
-from nonebot import require,get_driver, logger
+from azure.ai.inference.models import UserMessage
+from nonebot import get_driver, logger, require
 from nonebot_plugin_localstore import get_plugin_data_file
 
 require("nonebot_plugin_apscheduler")
 require("nonebot_plugin_marshoai")
 from nonebot_plugin_apscheduler import scheduler
-from nonebot_plugin_marshoai.plugin import (
-    PluginMetadata,
-    on_function_call,
-)
-from nonebot_plugin_marshoai.plugin.func_call.params import String
+
 from nonebot_plugin_marshoai.azure import client
+from nonebot_plugin_marshoai.plugin import PluginMetadata, on_function_call
+from nonebot_plugin_marshoai.plugin.func_call.params import String
 
 from .config import plugin_config
 
@@ -31,6 +27,7 @@ if not Path(memory_path).exists():
         json.dump({}, f, ensure_ascii=False, indent=4)
 # print(memory_path)
 driver = get_driver()
+
 
 @on_function_call(
     description="当你发现与你对话的用户的一些信息值得你记忆，或者用户让你记忆等时，调用此函数存储记忆内容"
@@ -71,10 +68,10 @@ async def organize_memories():
         memory_data = json.load(f)
     for i in memory_data:
         memory_data_ = "\n".join(memory_data[i])
-        msg= f"这是一些大模型记忆信息，请你保留重要内容，尽量减少无用的记忆后重新输出记忆内容，浓缩为一行：\n{memory_data_}"
+        msg = f"这是一些大模型记忆信息，请你保留重要内容，尽量减少无用的记忆后重新输出记忆内容，浓缩为一行：\n{memory_data_}"
         res = await client.complete(UserMessage(content=msg))
         try:
-            memory = res.choices[0].message.content
+            memory = res.choices[0].message.content  # type: ignore
             memory_data[i] = memory
         except AttributeError:
             logger.error(f"整理关于{i}的记忆时出错：{res}")
@@ -82,7 +79,9 @@ async def organize_memories():
     with open(memory_path, "w", encoding="utf-8") as f:
         json.dump(memory_data, f, ensure_ascii=False, indent=4)
 
+
 if plugin_config.marshoai_plugin_memory_scheduler:
+
     @driver.on_startup
     async def _():
         logger.info("小绵定时记忆整理已启动！")
@@ -93,5 +92,5 @@ if plugin_config.marshoai_plugin_memory_scheduler:
             minute="0",
             second="0",
             day="*",
-            id="organize_memories"
+            id="organize_memories",
         )
