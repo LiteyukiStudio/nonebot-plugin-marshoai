@@ -27,6 +27,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
 *谁不喜欢回复消息快又可爱的猫娘呢？*  
 **对 OneBot 以外的适配器与非 GitHub Models API的支持未经过完全验证。**  
+**MarshoAI v1.0.0 预计在春节前后发布。（重写好累啊QwQ）**  
 [Melobot 实现](https://github.com/LiteyukiStudio/marshoai-melo)  
 
 ## 🐱 设定
@@ -56,6 +57,14 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 "Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
 "nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。  
 部分指定的代码基于 [Mulan PSL v2](./LICENSE-MULAN) 许可下提供。  
+
+<div>
+  <a href="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=LiteyukiStudio/nonebot-plugin-marshoai" alt="Contributors">
+  </a>
+</div>
+
+感谢所有的贡献者！
 
 ## 开发
 

@@ -117,12 +117,14 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | The default model of Marsho                                                                        |
 | MARSHOAI_PROMPT                  | `str`   | Catgirl Marsho's character prompt                    | Marsho's basic system prompt **※Some models(o1 and so on) don't support it**                                                       |
 | MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho's external system prompt                                                                              |
+| MARSHOAI_ENFORCE_NICKNAME        | `bool`  | `true`                                  | Enforce user to set nickname or not                                                               |
 | MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | When double click Marsho who connected to OneBot adapter, the chat content. When it's empty string, double click function is off. Such as, the default content is `*[昵称]揉了揉你的猫耳。` |
 | MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI standard API                                                                            |
 | MARSHOAI_TEMPERATURE             | `float` | `null`                                  | temperature parameter                                                                         |
 | MARSHOAI_TOP_P                   | `float` | `null`                                  | Nucleus Sampling parameter                                                                       |
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | Max token number                                                                                |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | External image-support model list, such as `hunyuan-vision`                                                 |
+| MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | Limit for nickname length |
 
 #### Feature Switches
 

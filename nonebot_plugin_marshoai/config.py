@@ -34,8 +34,9 @@ class ConfigModel(BaseModel):
     marshoai_single_latex_parse: bool = False
     marshoai_enable_nickname_tip: bool = True
     marshoai_enable_support_image_tip: bool = True
+    marshoai_enforce_nickname: bool = True
     marshoai_enable_praises: bool = True
-    marshoai_enable_time_prompt: bool = True
+    # marshoai_enable_time_prompt: bool = True
     marshoai_enable_tools: bool = False
     marshoai_enable_plugins: bool = True
     marshoai_load_builtin_tools: bool = True
@@ -45,6 +46,7 @@ class ConfigModel(BaseModel):
     marshoai_temperature: float | None = None
     marshoai_max_tokens: int | None = None
     marshoai_top_p: float | None = None
+    marshoai_nickname_limit: int = 16
     marshoai_additional_image_models: list = []
     marshoai_tencent_secretid: str | None = None
     marshoai_tencent_secretkey: str | None = None
