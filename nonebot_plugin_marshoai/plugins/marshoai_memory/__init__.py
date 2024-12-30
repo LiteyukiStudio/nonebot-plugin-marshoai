@@ -9,7 +9,7 @@ require("nonebot_plugin_apscheduler")
 require("nonebot_plugin_marshoai")
 from nonebot_plugin_apscheduler import scheduler
 
-from nonebot_plugin_marshoai.azure import client
+from nonebot_plugin_marshoai.instances import client
 from nonebot_plugin_marshoai.plugin import PluginMetadata, on_function_call
 from nonebot_plugin_marshoai.plugin.func_call.params import String
 
@@ -84,7 +84,7 @@ if plugin_config.marshoai_plugin_memory_scheduler:
 
     @driver.on_startup
     async def _():
-        logger.info("小绵定时记忆整理已启动！")
+        logger.info("小棉定时记忆整理已启动！")
         scheduler.add_job(
             organize_memories,
             "cron",
