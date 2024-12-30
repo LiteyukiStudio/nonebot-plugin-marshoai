@@ -126,6 +126,7 @@ title: 安装
 | MARSHOAI_TOP_P                   | `float` | `null`                                  | 推理核采样参数                                                                                       |
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | 最大生成 token 数                                                                                  |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | 额外添加的支持图片的模型列表，例如`hunyuan-vision`                                                             |
+| MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | 昵称长度限制 |
 
 #### 功能开关
 

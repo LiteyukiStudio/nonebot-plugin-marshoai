@@ -58,6 +58,14 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 "nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。  
 部分指定的代码基于 [Mulan PSL v2](./LICENSE-MULAN) 许可下提供。  
 
+<div>
+  <a href="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=LiteyukiStudio/nonebot-plugin-marshoai" alt="Contributors">
+  </a>
+</div>
+
+感谢所有的贡献者！
+
 ## 开发
 
 - 请阅读[开发规范](./README_DEV.md)
