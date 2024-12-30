@@ -407,7 +407,7 @@ async def marsho(
                             )  # 获取返回值
                         else:
                             if caller := get_function_calls().get(
-                                tool_call.function.name.replace("-", ".")
+                                tool_call.function.name
                             ):
                                 logger.debug(f"调用插件函数 {caller.full_name}")
                                 # 权限检查，规则检查 TODO
