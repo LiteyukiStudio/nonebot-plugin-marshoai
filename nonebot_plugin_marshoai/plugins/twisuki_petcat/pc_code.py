@@ -15,6 +15,7 @@
 总计120b数据, 15字节, 每3字节(utf-8一个字符)转换为4个Base64字符
 总计20个Base64字符的字符串
 """
+from numpy import character
 
 """定义变量
 存储字符串: Token: str
@@ -90,17 +91,35 @@ def token_to_dict(token: str) -> dict:
     }
 
     # 转换token
-    code = base64.b64decode(token.encode())
+    token_byte = base64.b64decode(token.encode())
+    code = byte_to_bool(token_byte)
 
-    return {}
+    # 拆分code
+    name_length = bool_to_int(code[0:3])
+    name_code = code[3:67]
+    age = bool_to_int(code[67:71])
+    type = bool_to_int(code[71:74])
+    health = bool_to_int(code[74:81])
+    saturation = bool_to_int(code[81:88])
+    energy = bool_to_int(code[88:95])
+    skill = code[95:103]
+    date = bool_to_int(code[103:120])
+
+    # 解析code
+    name = ""
+    for i in range(name_length):
+        character_code = bool_to_byte(name_code[8 * i : 8 * i + 8])
+        name += character_code.decode("ASCII")
+    data["name"] = name
+    data["age"] = age
+    data["type"] = type
+    data["health"] = health
+    data["saturation"] = saturation
+    data["energy"] = energy
+    data["skill"] = skill
+    data["date"] = date
+
+    return data
 
 
-# t = "1234567890QWERTyuiop"
-# print(len(t))
-# b = base64.b64decode(t.encode())
-# print(b)
-# li = byte_to_bool(b)
-# print(li)
-# print(len(li))
-# nb = bool_to_byte(li)
-# print(nb)
+print(token_to_dict("003400098Jmn00cx00eT"))
