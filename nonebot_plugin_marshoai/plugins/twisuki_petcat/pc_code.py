@@ -15,7 +15,6 @@
 总计120b数据, 15字节, 每3字节(utf-8一个字符)转换为4个Base64字符
 总计20个Base64字符的字符串
 """
-from numpy import character
 
 """定义变量
 存储字符串: Token: str
@@ -122,4 +121,57 @@ def token_to_dict(token: str) -> dict:
     return data
 
 
-print(token_to_dict("003400098Jmn00cx00eT"))
+# 数据编码
+def dict_to_token(data: dict) -> str:
+    code = [False] * 120
+
+    # 拆分data
+    name_length = len(data["name"])
+    name = data["name"]
+    age = data["age"]
+    type = data["type"]
+    health = data["health"]
+    saturation = data["saturation"]
+    energy = data["energy"]
+    skill = data["skill"]
+    date = (datetime(2025, 1, 1) - datetime.now()).days.__abs__()
+
+    # 填入code
+    code[0:3] = int_to_bool(name_length)
+    name_code = [False] * 64
+    for i in range(name_length):
+        character_code = byte_to_bool(name[i].encode("ASCII"))
+        name_code[8 * i : 8 * i] = character_code
+    code[3:67] = name_code
+    code[67:71] = int_to_bool(age)
+    code[71:74] = int_to_bool(type)
+    code[74:81] = int_to_bool(health)
+    code[81:88] = int_to_bool(saturation)
+    code[88:95] = int_to_bool(energy)
+    code[95:103] = skill
+    code[103:120] = int_to_bool(5647)
+
+    # 转换token
+    token_byte = bool_to_byte(code)
+    # print(byte_to_bool(token_byte))
+    # print(len(byte_to_bool(token_byte)))
+    token = base64.b64encode(token_byte).decode()
+    return token
+
+
+# print(token_to_dict("003400098Jmn00cx00eT"))
+# print((today() - datetime(2025, 1, 1)).days.__abs__())
+t = dict_to_token(
+    {
+        "name": "Dif01a",
+        "age": 0,
+        "type": 2,
+        "health": 96,
+        "saturation": 13,
+        "energy": 7,
+        "skill": [True, False, False, True, False, False, False, True],
+        "date": 184,
+    }
+)
+print(t)
+print(token_to_dict(t))
