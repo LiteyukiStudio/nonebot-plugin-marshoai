@@ -149,18 +149,14 @@ def dict_to_token(data: dict) -> str:
     code[81:88] = int_to_bool(saturation)
     code[88:95] = int_to_bool(energy)
     code[95:103] = skill
-    code[103:120] = int_to_bool(5647)
+    code[103:120] = int_to_bool(date)
 
     # 转换token
     token_byte = bool_to_byte(code)
-    # print(byte_to_bool(token_byte))
-    # print(len(byte_to_bool(token_byte)))
     token = base64.b64encode(token_byte).decode()
     return token
 
 
-# print(token_to_dict("003400098Jmn00cx00eT"))
-# print((today() - datetime(2025, 1, 1)).days.__abs__())
 t = dict_to_token(
     {
         "name": "Dif01a",
