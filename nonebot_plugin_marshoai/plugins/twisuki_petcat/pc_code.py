@@ -138,18 +138,28 @@ def dict_to_token(data: dict) -> str:
 
     # 填入code
     code[0:3] = int_to_bool(name_length)
+    print(f"{len(code)} : {code}")
     name_code = [False] * 64
     for i in range(name_length):
         character_code = byte_to_bool(name[i].encode("ASCII"))
-        name_code[8 * i : 8 * i] = character_code
+        name_code[8 * i : 8 * i + 8] = character_code
     code[3:67] = name_code
+    print(f"{len(code)} : {code}")
+    # 未占位, 修复int_to_bool(int, len = 0)
     code[67:71] = int_to_bool(age)
+    print(f"{len(code)} : {code}")
     code[71:74] = int_to_bool(type)
+    print(f"{len(code)} : {code}")
     code[74:81] = int_to_bool(health)
+    print(f"{len(code)} : {code}")
     code[81:88] = int_to_bool(saturation)
+    print(f"{len(code)} : {code}")
     code[88:95] = int_to_bool(energy)
+    print(f"{len(code)} : {code}")
     code[95:103] = skill
+    print(f"{len(code)} : {code}")
     code[103:120] = int_to_bool(date)
+    print(f"{len(code)} : {code}")
 
     # 转换token
     token_byte = bool_to_byte(code)
