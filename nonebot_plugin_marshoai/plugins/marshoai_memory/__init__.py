@@ -13,6 +13,7 @@ from nonebot_plugin_marshoai.instances import client
 from nonebot_plugin_marshoai.plugin import PluginMetadata, on_function_call
 from nonebot_plugin_marshoai.plugin.func_call.params import String
 
+from .command import *
 from .config import plugin_config
 
 __marsho_meta__ = PluginMetadata(

@@ -1,6 +1,6 @@
 import os
 
-from zhDateTime import DateTime
+from zhDateTime import DateTime  # type: ignore
 
 from nonebot_plugin_marshoai.plugin import PluginMetadata, String, on_function_call
 
