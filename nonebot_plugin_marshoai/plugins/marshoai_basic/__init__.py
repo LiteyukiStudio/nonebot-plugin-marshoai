@@ -2,7 +2,14 @@ import os
 
 from zhDateTime import DateTime
 
-from nonebot_plugin_marshoai.plugin import String, on_function_call
+from nonebot_plugin_marshoai.plugin import PluginMetadata, String, on_function_call
+
+# 定义插件元数据
+__marsho_meta__ = PluginMetadata(
+    name="基本功能",
+    author="MarshoAI",
+    description="这个插件提供基本的功能，比如获取当前时间和日期。",
+)
 
 
 @on_function_call(description="获取当前时间，日期和星期")

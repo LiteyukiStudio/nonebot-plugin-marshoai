@@ -49,7 +49,7 @@ async def get_bangumi_news() -> str:
             for item in items:
                 name = item["name_cn"]
                 info += f"《{name}》"
-            info += ""
+            info += "\n"
         return info
     except Exception as e:
         traceback.print_exc()
