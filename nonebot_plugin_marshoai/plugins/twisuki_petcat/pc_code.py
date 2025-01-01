@@ -39,6 +39,19 @@ from nonebot.log import logger
 TYPE_LIST = ["猫1", "猫2", "猫3", "猫4", "猫5", "猫6", "猫7", "猫8"]
 SKILL_LIST = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]
 
+# 私用列表
+ERROR_DICT = {
+    "name": "ERROR!",
+    "age": 0,
+    "type": 0,
+    "health": 0,
+    "saturation": 0,
+    "energy": 0,
+    "skill": [False, False, False, False, False, False, False, False],
+    "date": 0,
+}
+ERROR_TOKEN = "yKpKSepEIAAAAAAAAAAA"
+
 
 # bool数组/int数据转换
 def bool_to_int(bool_array: List[bool]) -> int:
@@ -103,16 +116,7 @@ def token_to_dict(token: str) -> dict:
         code = byte_to_bool(token_byte)
     except ValueError:
         logger.error("token b64解码错误!")
-        return {
-            "name": "ERROR!",
-            "age": 0,
-            "type": 0,
-            "health": 0,
-            "saturation": 0,
-            "energy": 0,
-            "skill": [False, False, False, False, False, False, False, False],
-            "date": 0,
-        }
+        return ERROR_DICT
 
     # 拆分code
     name_length = bool_to_int(code[0:3])
@@ -133,16 +137,8 @@ def token_to_dict(token: str) -> dict:
             name += character_code.decode("ASCII")
     except UnicodeDecodeError:
         logger.error("token ASCII解析错误!")
-        return {
-            "name": "ERROR!",
-            "age": 0,
-            "type": 0,
-            "health": 0,
-            "saturation": 0,
-            "energy": 0,
-            "skill": [False, False, False, False, False, False, False, False],
-            "date": 0,
-        }
+        return ERROR_DICT
+
     data["name"] = name
     data["age"] = age
     data["type"] = type
@@ -180,7 +176,7 @@ def dict_to_token(data: dict) -> str:
     except UnicodeEncodeError:
         # "name": "ERROR!"
         logger.error("name内含有非法字符!")
-        return "yKpKSepEIAAAAAAAAAAA"
+        return ERROR_TOKEN
 
     code[3:67] = name_code
     code[67:71] = int_to_bool(age, 4)
