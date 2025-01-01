@@ -15,6 +15,7 @@
 总计120b数据, 15字节, 每3字节(utf-8一个字符)转换为4个Base64字符
 总计20个Base64字符的字符串
 """
+from numpy import number
 
 """定义变量
 存储字符串: Token: str
@@ -47,13 +48,16 @@ def bool_to_int(bool_array: List[bool]) -> int:
     return result
 
 
-def int_to_bool(integer: int) -> List[bool]:
+def int_to_bool(integer: int, length: int = 0) -> List[bool]:
     bit_length = integer.bit_length()
     bool_array = [False] * bit_length
     for i in range(bit_length):
         if integer & (1 << i):
             bool_array[bit_length - 1 - i] = True
-    return bool_array
+    if len(bool_array) >= length:
+        return bool_array
+    else:
+        return [*([False] * (length - len(bool_array))), *bool_array]
 
 
 # bool数组/byte数据转换
@@ -68,12 +72,15 @@ def bool_to_byte(bool_array: List[bool]) -> bytes:
     return bytes(byte_data)
 
 
-def byte_to_bool(byte_data: bytes) -> List[bool]:
+def byte_to_bool(byte_data: bytes, length: int = 0) -> List[bool]:
     bool_array = []
     for byte in byte_data:
         for bit in format(byte, "08b"):
             bool_array.append(bit == "1")
-    return bool_array
+    if len(bool_array) >= length:
+        return bool_array
+    else:
+        return [*([False] * (length - len(bool_array))), *bool_array]
 
 
 # 数据解码
@@ -137,29 +144,19 @@ def dict_to_token(data: dict) -> str:
     date = (datetime(2025, 1, 1) - datetime.now()).days.__abs__()
 
     # 填入code
-    code[0:3] = int_to_bool(name_length)
-    print(f"{len(code)} : {code}")
+    code[0:3] = int_to_bool(name_length, 3)
     name_code = [False] * 64
     for i in range(name_length):
-        character_code = byte_to_bool(name[i].encode("ASCII"))
+        character_code = byte_to_bool(name[i].encode("ASCII"), 8)
         name_code[8 * i : 8 * i + 8] = character_code
     code[3:67] = name_code
-    print(f"{len(code)} : {code}")
-    # 未占位, 修复int_to_bool(int, len = 0)
-    code[67:71] = int_to_bool(age)
-    print(f"{len(code)} : {code}")
-    code[71:74] = int_to_bool(type)
-    print(f"{len(code)} : {code}")
-    code[74:81] = int_to_bool(health)
-    print(f"{len(code)} : {code}")
-    code[81:88] = int_to_bool(saturation)
-    print(f"{len(code)} : {code}")
-    code[88:95] = int_to_bool(energy)
-    print(f"{len(code)} : {code}")
+    code[67:71] = int_to_bool(age, 4)
+    code[71:74] = int_to_bool(type, 3)
+    code[74:81] = int_to_bool(health, 7)
+    code[81:88] = int_to_bool(saturation, 7)
+    code[88:95] = int_to_bool(energy, 7)
     code[95:103] = skill
-    print(f"{len(code)} : {code}")
-    code[103:120] = int_to_bool(date)
-    print(f"{len(code)} : {code}")
+    code[103:120] = int_to_bool(date, 17)
 
     # 转换token
     token_byte = bool_to_byte(code)
