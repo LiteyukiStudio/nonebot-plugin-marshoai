@@ -15,7 +15,6 @@
 总计120b数据, 15字节, 每3字节(utf-8一个字符)转换为4个Base64字符
 总计20个Base64字符的字符串
 """
-from numpy import number
 
 """定义变量
 存储字符串: Token: str
@@ -33,6 +32,8 @@ from numpy import number
 import base64
 from datetime import datetime
 from typing import List
+
+from nonebot.log import logger
 
 # 公用列表
 TYPE_LIST = ["猫1", "猫2", "猫3", "猫4", "猫5", "猫6", "猫7", "猫8"]
@@ -97,8 +98,21 @@ def token_to_dict(token: str) -> dict:
     }
 
     # 转换token
-    token_byte = base64.b64decode(token.encode())
-    code = byte_to_bool(token_byte)
+    try:
+        token_byte = base64.b64decode(token.encode())
+        code = byte_to_bool(token_byte)
+    except ValueError:
+        logger.error("token b64解码错误!")
+        return {
+            "name": "ERROR!",
+            "age": 0,
+            "type": 0,
+            "health": 0,
+            "saturation": 0,
+            "energy": 0,
+            "skill": [False, False, False, False, False, False, False, False],
+            "date": 0,
+        }
 
     # 拆分code
     name_length = bool_to_int(code[0:3])
@@ -113,9 +127,22 @@ def token_to_dict(token: str) -> dict:
 
     # 解析code
     name = ""
-    for i in range(name_length):
-        character_code = bool_to_byte(name_code[8 * i : 8 * i + 8])
-        name += character_code.decode("ASCII")
+    try:
+        for i in range(name_length):
+            character_code = bool_to_byte(name_code[8 * i : 8 * i + 8])
+            name += character_code.decode("ASCII")
+    except UnicodeDecodeError:
+        logger.error("token ASCII解析错误!")
+        return {
+            "name": "ERROR!",
+            "age": 0,
+            "type": 0,
+            "health": 0,
+            "saturation": 0,
+            "energy": 0,
+            "skill": [False, False, False, False, False, False, False, False],
+            "date": 0,
+        }
     data["name"] = name
     data["age"] = age
     data["type"] = type
@@ -141,14 +168,20 @@ def dict_to_token(data: dict) -> str:
     saturation = data["saturation"]
     energy = data["energy"]
     skill = data["skill"]
-    date = (datetime(2025, 1, 1) - datetime.now()).days.__abs__()
+    date = (datetime(2025, 1, 1) - datetime.now()).days
 
     # 填入code
     code[0:3] = int_to_bool(name_length, 3)
     name_code = [False] * 64
-    for i in range(name_length):
-        character_code = byte_to_bool(name[i].encode("ASCII"), 8)
-        name_code[8 * i : 8 * i + 8] = character_code
+    try:
+        for i in range(name_length):
+            character_code = byte_to_bool(name[i].encode("ASCII"), 8)
+            name_code[8 * i : 8 * i + 8] = character_code
+    except UnicodeEncodeError:
+        # "name": "ERROR!"
+        logger.error("name内含有非法字符!")
+        return "yKpKSepEIAAAAAAAAAAA"
+
     code[3:67] = name_code
     code[67:71] = int_to_bool(age, 4)
     code[71:74] = int_to_bool(type, 3)
@@ -166,15 +199,19 @@ def dict_to_token(data: dict) -> str:
 
 t = dict_to_token(
     {
-        "name": "Dif01a",
+        "name": "ERROR!",
         "age": 0,
-        "type": 2,
-        "health": 96,
-        "saturation": 13,
-        "energy": 7,
-        "skill": [True, False, False, True, False, False, False, True],
-        "date": 184,
+        "type": 0,
+        "health": 0,
+        "saturation": 0,
+        "energy": 0,
+        "skill": [False, False, False, False, False, False, False, False],
+        "date": 0,
     }
 )
-print(t)
-print(token_to_dict(t))
+# print(t)
+# print(token_to_dict(t))
+
+a = "yKpKSepEIAAAAAAAAAAB"
+# print(token_to_dict("yKpKSepEIAAAAAAAAAAA"))
+print(token_to_dict("yKpKSe9b6AAAAAAAAAA4"))
