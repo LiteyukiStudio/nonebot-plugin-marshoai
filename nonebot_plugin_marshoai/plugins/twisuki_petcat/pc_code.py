@@ -191,23 +191,3 @@ def dict_to_token(data: dict) -> str:
     token_byte = bool_to_byte(code)
     token = base64.b64encode(token_byte).decode()
     return token
-
-
-t = dict_to_token(
-    {
-        "name": "ERROR!",
-        "age": 0,
-        "type": 0,
-        "health": 0,
-        "saturation": 0,
-        "energy": 0,
-        "skill": [False, False, False, False, False, False, False, False],
-        "date": 0,
-    }
-)
-# print(t)
-# print(token_to_dict(t))
-
-a = "yKpKSepEIAAAAAAAAAAB"
-# print(token_to_dict("yKpKSepEIAAAAAAAAAAA"))
-print(token_to_dict("yKpKSe9b6AAAAAAAAAA4"))
