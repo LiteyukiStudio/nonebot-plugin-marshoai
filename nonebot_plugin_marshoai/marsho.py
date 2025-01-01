@@ -190,8 +190,9 @@ async def marsho_help():
 
 
 @marsho_status_cmd.handle()
-async def marsho_status():
+async def marsho_status(bot: Bot):
     await marsho_status_cmd.finish(
+        f"当前适配器：{bot.adapter.get_name()}\n"
         f"当前使用的模型：{model_name}\n"
         # f"当前会话数量：{len(target_list)}\n"
         # f"当前上下文数量：{len(context.contexts)}"
