@@ -119,7 +119,7 @@ def token_to_dict(token: str) -> dict:
         return ERROR_DICT
 
     # 拆分code
-    name_length = bool_to_int(code[0:3])
+    name_length = bool_to_int(code[0:3]) + 1
     name_code = code[3:67]
     age = bool_to_int(code[67:71])
     type = bool_to_int(code[71:74])
@@ -130,7 +130,7 @@ def token_to_dict(token: str) -> dict:
     date = bool_to_int(code[103:120])
 
     # 解析code
-    name = ""
+    name: str = ""
     try:
         for i in range(name_length):
             character_code = bool_to_byte(name_code[8 * i : 8 * i + 8])
@@ -157,6 +157,10 @@ def dict_to_token(data: dict) -> str:
 
     # 拆分data
     name_length = len(data["name"])
+    if name_length > 8:
+        logger.error("name过长")
+        return ERROR_TOKEN
+
     name = data["name"]
     age = data["age"]
     type = data["type"]
@@ -167,7 +171,7 @@ def dict_to_token(data: dict) -> str:
     date = (datetime(2025, 1, 1) - datetime.now()).days
 
     # 填入code
-    code[0:3] = int_to_bool(name_length, 3)
+    code[0:3] = int_to_bool(name_length - 1, 3)
     name_code = [False] * 64
     try:
         for i in range(name_length):
