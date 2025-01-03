@@ -18,3 +18,22 @@ ERROR_DICT = {
     "date": 0,
 }
 ERROR_TOKEN = "yKpKSepEIAAAAAAAAAAA"
+
+
+# 提示词打印
+# 打印种类列表
+def print_type_list():
+    result = ""
+    for type in TYPE_LIST:
+        result += f'"{type}", '
+    result = result[:-2]
+    return f"({result})"
+
+
+# 打印技能列表
+def print_skill_list():
+    result = ""
+    for skill in SKILL_LIST:
+        result += f'"{skill}", '
+    result = result[:-2]
+    return f"({result})"
