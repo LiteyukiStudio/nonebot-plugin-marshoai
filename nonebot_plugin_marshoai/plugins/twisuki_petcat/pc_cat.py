@@ -2,10 +2,10 @@
 from typing import List
 
 from nonebot.log import logger
-from pc_info import SKILL_LIST, TYPE_LIST
-from pc_token import dict_to_token, token_to_dict
 
-from . import pc_info
+from . import pc_info, pc_token
+from .pc_info import SKILL_LIST, TYPE_LIST
+from .pc_token import dict_to_token, token_to_dict
 
 # 私用列表
 DEFAULT_DICT = {

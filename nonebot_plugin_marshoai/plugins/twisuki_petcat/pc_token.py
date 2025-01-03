@@ -34,7 +34,8 @@ from datetime import datetime
 from typing import List
 
 from nonebot.log import logger
-from pc_info import ERROR_DICT, ERROR_TOKEN, SKILL_LIST, TYPE_LIST
+
+from .pc_info import ERROR_DICT, ERROR_TOKEN, SKILL_LIST, TYPE_LIST
 
 
 # bool数组/int数据转换
