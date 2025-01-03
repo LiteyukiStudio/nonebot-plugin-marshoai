@@ -34,23 +34,7 @@ from datetime import datetime
 from typing import List
 
 from nonebot.log import logger
-
-# 公用列表
-TYPE_LIST = ["猫1", "猫2", "猫3", "猫4", "猫5", "猫6", "猫7", "猫8"]
-SKILL_LIST = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]
-
-# 私用列表
-ERROR_DICT = {
-    "name": "ERROR!",
-    "age": 0,
-    "type": 0,
-    "health": 0,
-    "saturation": 0,
-    "energy": 0,
-    "skill": [False, False, False, False, False, False, False, False],
-    "date": 0,
-}
-ERROR_TOKEN = "yKpKSepEIAAAAAAAAAAA"
+from pc_info import ERROR_DICT, ERROR_TOKEN, SKILL_LIST, TYPE_LIST
 
 
 # bool数组/int数据转换
