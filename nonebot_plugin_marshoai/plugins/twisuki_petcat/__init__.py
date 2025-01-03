@@ -15,6 +15,7 @@ __marsho_meta__ = PluginMetadata(
 )
 
 
+# 交互
 @on_function_call(description="传入猫猫种类, 新建一只猫猫").params(
     type=String(description='猫猫种类, 默认"猫1", 可留空')
 )
@@ -31,3 +32,22 @@ async def cat_new(type: str) -> str:
 )
 async def cat_init(token: str, name: str, skill: str) -> str:
     return pc_cat.cat_init(token, name, skill)
+
+
+# 帮助
+@on_function_call(description="帮助文档/如何创建一只猫猫").params()
+async def help_cat_new():
+    return pc_info.help_cat_new()
+
+
+@on_function_call(description="可选种类").params()
+async def help_cat_type():
+    return pc_info.print_type_list()
+
+
+@on_function_call(description="可选技能").params()
+async def help_cat_skill():
+    return pc_info.print_skill_list()
+
+
+# 商店

@@ -35,7 +35,20 @@ from typing import List
 
 from nonebot.log import logger
 
-from .pc_info import ERROR_DICT, ERROR_TOKEN, SKILL_LIST, TYPE_LIST
+from .pc_info import SKILL_LIST, TYPE_LIST
+
+# 私用列表
+ERROR_DICT = {
+    "name": "ERROR!",
+    "age": 0,
+    "type": 0,
+    "health": 0,
+    "saturation": 0,
+    "energy": 0,
+    "skill": [False, False, False, False, False, False, False, False],
+    "date": 0,
+}
+ERROR_TOKEN = "yKpKSepEIAAAAAAAAAAA"
 
 
 # bool数组/int数据转换
