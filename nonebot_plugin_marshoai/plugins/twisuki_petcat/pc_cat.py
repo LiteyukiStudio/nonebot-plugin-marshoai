@@ -62,7 +62,7 @@ def cat_init(token: str, name: str, skill: str) -> str:
     token = dict_to_token(data)
     return (
         f'初始化完成, 名字 : "{data["name"]}", 种类 : "{data["type"]}", 技能 : "{skill}"'
-        f'\ntoken : "{token}"'
+        f'\n新token : "{token}"'
         f"\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
 
@@ -79,7 +79,7 @@ def cat_show(token: str) -> str:
     if data["saturation"] / 1.27 < 40:
         result += "\n猫猫很饿, 请投喂食物"
     if data["energy"] / 1.27 < 20:
-        result += "\n猫猫很累, 请让其休息, 不要投喂食物或陪它玩耍"
+        result += "\n猫猫很累, 请抱猫睡觉, 不要投喂食物或陪它玩耍"
     return result
 
 
@@ -102,7 +102,7 @@ def cat_play(token: str) -> str:
     token = dict_to_token(data)
     return (
         f"你陪猫猫玩耍了一个小时, 猫猫的生命值上涨到了{int(data["health"]/1.27)}"
-        f'\ntoken : "{token}"'
+        f'\n新token : "{token}"'
         "\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
 
@@ -117,13 +117,36 @@ def cat_feed(token: str) -> str:
         return "猫猫并不饿, 不需要喂食"
 
     if data["energy"] / 1.27 < 40:
-        return "猫猫很累, 请让其休息, 不要投喂食物或陪它玩耍"
+        return "猫猫很累, 请抱猫睡觉, 不要投喂食物或陪它玩耍"
 
     data["saturation"] = min(data["saturation"] + 32, 127)
 
     token = dict_to_token(data)
     return (
         f"你投喂了2单位标准猫粮, 猫猫的饱食度提升到了{int(data["saturation"]/1.27)}"
-        f'\ntoken : "{token}"'
+        f'\n新token : "{token}"'
+        "\n请妥善保存token, 这是猫猫的唯一标识符!"
+    )
+
+
+# 睡觉
+def cat_sleep(token: str) -> str:
+    data = token_to_dict(token)
+    if data["health"] / 1.27 < 20:
+        return "猫猫健康状况非常差! 甚至濒临死亡!! 请立即前往医院救治!!"
+
+    if data["saturation"] / 1.27 < 40:
+        return "猫猫很饿, 请喂食."
+
+    if data["energy"] / 1.27 > 80:
+        return "猫猫很精神, 不需要睡觉"
+
+    data["health"] = min(data["health"] + 8, 127)
+    data["energy"] = min(data["energy"] + 16, 0)
+
+    token = dict_to_token(data)
+    return (
+        f"你抱猫休息了一阵子, 猫猫的活力值提升到了{int(data["energy"]/1.27)}"
+        f'\n新token : "{token}"'
         "\n请妥善保存token, 这是猫猫的唯一标识符!"
     )

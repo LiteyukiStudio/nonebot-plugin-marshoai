@@ -20,6 +20,7 @@ __marsho_meta__ = PluginMetadata(
     type=String(description='猫猫种类, 默认"猫1", 可留空')
 )
 async def cat_new(type: str) -> str:
+    """新建猫猫"""
     return pc_cat.cat_new(type)
 
 
@@ -31,6 +32,7 @@ async def cat_new(type: str) -> str:
     skill=String(description="技能"),
 )
 async def cat_init(token: str, name: str, skill: str) -> str:
+    """初始化猫猫"""
     return pc_cat.cat_init(token, name, skill)
 
 
@@ -38,7 +40,24 @@ async def cat_init(token: str, name: str, skill: str) -> str:
     token=String(description="token(一串长20的b64字符串)"),
 )
 async def cat_show(token: str) -> str:
+    """查询信息"""
     return pc_cat.cat_show(token)
+
+
+@on_function_call(description="传入token, 玩猫").params(
+    token=String(description="token(一串长20的b64字符串)"),
+)
+async def cat_play(token: str) -> str:
+    """玩猫"""
+    return pc_cat.cat_play(token)
+
+
+@on_function_call(description="传入token, 投喂猫猫").params(
+    token=String(description="token(一串长20的b64字符串)"),
+)
+async def cat_feed(token: str) -> str:
+    """喂猫"""
+    return pc_cat.cat_feed(token)
 
 
 # 帮助

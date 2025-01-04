@@ -95,6 +95,8 @@ def byte_to_bool(byte_data: bytes, length: int = 0) -> List[bool]:
 
 # 数据解码
 def token_to_dict(token: str) -> dict:
+    logger.info(f"开始解码...\n{token}")
+
     data = {
         "name": "Default0",
         "age": 0,
@@ -144,11 +146,14 @@ def token_to_dict(token: str) -> dict:
     data["skill"] = skill
     data["date"] = date
 
+    logger.success(f"解码完成, 数据为\n{data}")
     return data
 
 
 # 数据编码
 def dict_to_token(data: dict) -> str:
+    logger.info(f"开始编码...\n{data}")
+
     code = [False] * 120
 
     # 拆分data
@@ -190,4 +195,6 @@ def dict_to_token(data: dict) -> str:
     # 转换token
     token_byte = bool_to_byte(code)
     token = base64.b64encode(token_byte).decode()
+
+    logger.success(f"编码完成, token为\n{token}")
     return token
