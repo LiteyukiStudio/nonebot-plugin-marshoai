@@ -76,8 +76,54 @@ def cat_show(token: str) -> str:
 
     if data["health"] / 1.27 < 60:
         result += "\n猫猫健康状况较差, 请投喂食物或陪猫猫玩耍"
-    if data["saturation"] / 1.27 < 60:
+    if data["saturation"] / 1.27 < 40:
         result += "\n猫猫很饿, 请投喂食物"
-    if data["energy"] / 1.27 < 60:
+    if data["energy"] / 1.27 < 20:
         result += "\n猫猫很累, 请让其休息, 不要投喂食物或陪它玩耍"
     return result
+
+
+# 陪猫猫玩耍
+def cat_play(token: str) -> str:
+    data = token_to_dict(token)
+    if data["health"] / 1.27 < 20:
+        return "猫猫健康状况非常差! 甚至濒临死亡!! 请立即前往医院救治!!"
+
+    if data["saturation"] / 1.27 < 40:
+        return "猫猫很饿, 拒接玩耍请求."
+
+    if data["energy"] / 1.27 < 20:
+        return "猫猫很累, 拒接玩耍请求"
+
+    data["health"] = min(data["health"] + 16, 127)
+    data["saturation"] = max(data["saturation"] - 16, 0)
+    data["energy"] = max(data["energy"] - 8, 0)
+
+    token = dict_to_token(data)
+    return (
+        f"你陪猫猫玩耍了一个小时, 猫猫的生命值上涨到了{int(data["health"]/1.27)}"
+        f'\ntoken : "{token}"'
+        "\n请妥善保存token, 这是猫猫的唯一标识符!"
+    )
+
+
+# 喂食
+def cat_feed(token: str) -> str:
+    data = token_to_dict(token)
+    if data["health"] / 1.27 < 20:
+        return "猫猫健康状况非常差! 甚至濒临死亡!! 请立即前往医院救治!!"
+
+    if data["saturation"] / 1.27 > 80:
+        return "猫猫并不饿, 不需要喂食"
+
+    if data["energy"] / 1.27 < 40:
+        return "猫猫很累, 请让其休息, 不要投喂食物或陪它玩耍"
+
+    data["saturation"] = min(data["saturation"] + 32, 127)
+
+    token = dict_to_token(data)
+    return (
+        f"你投喂了2单位标准猫粮, 猫猫的饱食度提升到了{int(data["saturation"]/1.27)}"
+        f'\ntoken : "{token}"'
+        "\n请妥善保存token, 这是猫猫的唯一标识符!"
+    )
