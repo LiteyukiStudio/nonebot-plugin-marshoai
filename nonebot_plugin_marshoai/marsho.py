@@ -248,7 +248,7 @@ async def marsho(
             model_name.lower()
             in SUPPORT_IMAGE_MODELS + config.marshoai_additional_image_models
         )
-        is_reasoning_model = model_name.lower() in REASONING_MODELS
+        is_reasoning_model = model_name.lower() in NO_SYSPROMPT_MODELS
         usermsg = [] if is_support_image_model else ""
         for i in text:  # type: ignore
             if i.type == "text":

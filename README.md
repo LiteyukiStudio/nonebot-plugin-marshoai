@@ -23,7 +23,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 ## 📖 介绍
 
-通过调用 OpenAI 标准格式 API(例如由 Azure OpenAI 驱动，GitHub Models 提供访问的生成式 AI 推理 API) 来实现聊天的插件。  
+通过调用 OpenAI 标准格式 API(例如 GitHub Models API) 来实现聊天的插件。  
 插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
 *谁不喜欢回复消息快又可爱的猫娘呢？*  
 **对 OneBot 以外的适配器与非 GitHub Models API的支持未经过完全验证。**  
