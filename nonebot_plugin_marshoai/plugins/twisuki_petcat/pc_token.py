@@ -35,8 +35,6 @@ from typing import List
 
 from nonebot.log import logger
 
-from .pc_info import SKILL_LIST, TYPE_LIST
-
 # 私用列表
 ERROR_DICT = {
     "name": "ERROR!",

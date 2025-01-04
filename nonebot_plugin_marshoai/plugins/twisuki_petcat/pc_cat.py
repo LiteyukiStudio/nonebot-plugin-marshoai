@@ -15,7 +15,7 @@ DEFAULT_DICT = {
     "health": 0,
     "saturation": 0,
     "energy": 0,
-    "skill": [False, False, False, False, False, False, False, False],
+    "skill": [False] * 8,
     "date": 0,
 }
 DEFAULT_TOKEN = "6IyszC6tjoYAAAAAAAAC"
@@ -56,9 +56,28 @@ def cat_init(token: str, name: str, skill: str) -> str:
 
     data["name"] = name
     data["skill"][SKILL_LIST.index(skill)] = True
+    data["health"] = 127
+    data["saturation"] = 127
+    data["energy"] = 127
     token = dict_to_token(data)
     return (
         f'初始化完成, 名字 : "{data["name"]}", 种类 : "{data["type"]}", 技能 : "{skill}"'
         f'\ntoken : "{token}"'
-        f"请妥善保存token, 这是猫猫的唯一标识符!"
+        f"\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
+
+
+# 查看信息
+def cat_show(token: str) -> str:
+    result = pc_info.print_info(token)
+    data = token_to_dict(token)
+    if data["health"] / 1.27 < 20:
+        return result + "\n猫猫健康状况非常差! 甚至濒临死亡!! 请立即前往医院救治!!"
+
+    if data["health"] / 1.27 < 60:
+        result += "\n猫猫健康状况较差, 请投喂食物或陪猫猫玩耍"
+    if data["saturation"] / 1.27 < 60:
+        result += "\n猫猫很饿, 请投喂食物"
+    if data["energy"] / 1.27 < 60:
+        result += "\n猫猫很累, 请让其休息, 不要投喂食物或陪它玩耍"
+    return result

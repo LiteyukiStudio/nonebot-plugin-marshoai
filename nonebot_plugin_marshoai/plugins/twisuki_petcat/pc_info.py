@@ -3,6 +3,10 @@
 # 公用列表数据转到这里存储
 
 
+from nonebot.log import logger
+
+from .pc_token import dict_to_token, token_to_dict
+
 # 公用列表
 TYPE_LIST = ["猫1", "猫2", "猫3", "猫4", "猫5", "猫6", "猫7", "猫8"]
 SKILL_LIST = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]
@@ -25,6 +29,33 @@ def print_skill_list() -> str:
         result += f'"{skill}", '
     result = result[:-2]
     return f"({result})"
+
+
+# 打印状态
+def print_info(token: str) -> str:
+    data = token_to_dict(token)
+    return (
+        "状态信息: "
+        f"\n\t名字 : {data["name"]}"
+        f"\n\t种类 : {TYPE_LIST[data['type']]}"
+        f"\n\t生命值 : {int(data["health"] / 1.27)}"
+        f"\n\t饱食度 : {int(data["saturation"] / 1.27)}"
+        f"\n\t活力值 : {int(data['energy'] / 1.27)}"
+        f"\n\t技能 : {print_skill(token)}"
+        f"\ntoken : {token}"
+        f"\n请妥善保存token, 这是猫猫的唯一标识符!"
+    )
+
+
+# 打印已有技能
+def print_skill(token: str) -> str:
+    result = ""
+    data = token_to_dict(token)
+    for index in range(0, len(SKILL_LIST) - 1):
+        if data["skill"][index]:
+            result += f"{SKILL_LIST[index]}, "
+    logger.info(data["skill"])
+    return result[:-2]
 
 
 # 帮助

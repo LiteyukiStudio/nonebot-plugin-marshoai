@@ -34,19 +34,26 @@ async def cat_init(token: str, name: str, skill: str) -> str:
     return pc_cat.cat_init(token, name, skill)
 
 
+@on_function_call(description="传入token, 查看猫猫信息").params(
+    token=String(description="猫猫token(一串长20的b64字符串)"),
+)
+async def cat_show(token: str) -> str:
+    return pc_cat.cat_show(token)
+
+
 # 帮助
 @on_function_call(description="帮助文档/如何创建一只猫猫").params()
-async def help_cat_new():
+async def help_cat_new() -> str:
     return pc_info.help_cat_new()
 
 
 @on_function_call(description="可选种类").params()
-async def help_cat_type():
+async def help_cat_type() -> str:
     return pc_info.print_type_list()
 
 
 @on_function_call(description="可选技能").params()
-async def help_cat_skill():
+async def help_cat_skill() -> str:
     return pc_info.print_skill_list()
 
 
