@@ -31,6 +31,12 @@ def print_skill_list() -> str:
     return f"({result})"
 
 
+# 127位值 - 100%快速转换
+def vo(num: int) -> str:
+    value = int(num / 1.27)
+    return str(value)
+
+
 # 打印状态
 def print_info(token: str) -> str:
     data = token_to_dict(token)
@@ -38,9 +44,9 @@ def print_info(token: str) -> str:
         "状态信息: "
         f"\n\t名字 : {data["name"]}"
         f"\n\t种类 : {TYPE_LIST[data['type']]}"
-        f"\n\t生命值 : {int(data["health"] / 1.27)}"
-        f"\n\t饱食度 : {int(data["saturation"] / 1.27)}"
-        f"\n\t活力值 : {int(data['energy'] / 1.27)}"
+        f"\n\t生命值 : {vo(data["health"])}"
+        f"\n\t饱食度 : {vo(data["saturation"])}"
+        f"\n\t活力值 : {vo(data['energy'])}"
         f"\n\t技能 : {print_skill(token)}"
         f"\ntoken : {token}"
         f"\n请妥善保存token, 这是猫猫的唯一标识符!"

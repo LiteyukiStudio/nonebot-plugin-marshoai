@@ -4,7 +4,7 @@ from typing import List
 from nonebot.log import logger
 
 from . import pc_info, pc_token
-from .pc_info import SKILL_LIST, TYPE_LIST
+from .pc_info import SKILL_LIST, TYPE_LIST, vo
 from .pc_token import dict_to_token, token_to_dict
 
 # 私用列表
@@ -101,7 +101,7 @@ def cat_play(token: str) -> str:
 
     token = dict_to_token(data)
     return (
-        f"你陪猫猫玩耍了一个小时, 猫猫的生命值上涨到了{int(data["health"]/1.27)}"
+        f"你陪猫猫玩耍了一个小时, 猫猫的生命值上涨到了{vo(data["health"])}"
         f'\n新token : "{token}"'
         "\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
@@ -123,7 +123,7 @@ def cat_feed(token: str) -> str:
 
     token = dict_to_token(data)
     return (
-        f"你投喂了2单位标准猫粮, 猫猫的饱食度提升到了{int(data["saturation"]/1.27)}"
+        f"你投喂了2单位标准猫粮, 猫猫的饱食度提升到了{vo(data["saturation"])}"
         f'\n新token : "{token}"'
         "\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
@@ -146,7 +146,7 @@ def cat_sleep(token: str) -> str:
 
     token = dict_to_token(data)
     return (
-        f"你抱猫休息了一阵子, 猫猫的活力值提升到了{int(data["energy"]/1.27)}"
+        f"你抱猫休息了一阵子, 猫猫的活力值提升到了{vo(data["energy"])}"
         f'\n新token : "{token}"'
         "\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
