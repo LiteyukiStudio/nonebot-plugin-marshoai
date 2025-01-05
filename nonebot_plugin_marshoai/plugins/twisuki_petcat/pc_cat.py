@@ -152,6 +152,11 @@ def cat_sleep(token: str) -> str:
     )
 
 
+# 交互前数据更新
+def cat_update(token: str) -> str:
+    return ""
+
+
 """饼
     1. 交互前状态更新
     2. 交互后状态更新

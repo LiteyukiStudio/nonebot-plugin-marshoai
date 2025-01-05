@@ -42,10 +42,10 @@ def print_info(token: str) -> str:
     data = token_to_dict(token)
     return (
         "状态信息: "
-        f"\n\t名字 : {data["name"]}"
-        f"\n\t种类 : {TYPE_LIST[data['type']]}"
-        f"\n\t生命值 : {value_output(data["health"])}"
-        f"\n\t饱食度 : {value_output(data["saturation"])}"
+        f'\n\t名字 : {data["name"]}'
+        f'\n\t种类 : {TYPE_LIST[data["type"]]}'
+        f'\n\t生命值 : {value_output(data["health"])}'
+        f'\n\t饱食度 : {value_output(data["saturation"])}'
         f"\n\t活力值 : {value_output(data['energy'])}"
         f"\n\t技能 : {print_skill(token)}"
         f"\ntoken : {token}"
