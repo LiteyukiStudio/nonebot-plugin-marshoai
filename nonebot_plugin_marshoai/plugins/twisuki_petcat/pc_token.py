@@ -35,10 +35,6 @@ from typing import List
 
 from nonebot.log import logger
 
-# 公用列表
-TYPE_LIST = ["猫1", "猫2", "猫3", "猫4", "猫5", "猫6", "猫7", "猫8"]
-SKILL_LIST = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"]
-
 # 私用列表
 ERROR_DICT = {
     "name": "ERROR!",
@@ -99,6 +95,8 @@ def byte_to_bool(byte_data: bytes, length: int = 0) -> List[bool]:
 
 # 数据解码
 def token_to_dict(token: str) -> dict:
+    logger.info(f"开始解码...\n{token}")
+
     data = {
         "name": "Default0",
         "age": 0,
@@ -119,7 +117,7 @@ def token_to_dict(token: str) -> dict:
         return ERROR_DICT
 
     # 拆分code
-    name_length = bool_to_int(code[0:3])
+    name_length = bool_to_int(code[0:3]) + 1
     name_code = code[3:67]
     age = bool_to_int(code[67:71])
     type = bool_to_int(code[71:74])
@@ -130,7 +128,7 @@ def token_to_dict(token: str) -> dict:
     date = bool_to_int(code[103:120])
 
     # 解析code
-    name = ""
+    name: str = ""
     try:
         for i in range(name_length):
             character_code = bool_to_byte(name_code[8 * i : 8 * i + 8])
@@ -148,15 +146,22 @@ def token_to_dict(token: str) -> dict:
     data["skill"] = skill
     data["date"] = date
 
+    logger.success(f"解码完成, 数据为\n{data}")
     return data
 
 
 # 数据编码
 def dict_to_token(data: dict) -> str:
+    logger.info(f"开始编码...\n{data}")
+
     code = [False] * 120
 
     # 拆分data
     name_length = len(data["name"])
+    if name_length > 8:
+        logger.error("name过长")
+        return ERROR_TOKEN
+
     name = data["name"]
     age = data["age"]
     type = data["type"]
@@ -164,10 +169,10 @@ def dict_to_token(data: dict) -> str:
     saturation = data["saturation"]
     energy = data["energy"]
     skill = data["skill"]
-    date = (datetime(2025, 1, 1) - datetime.now()).days
+    date = data["date"]
 
     # 填入code
-    code[0:3] = int_to_bool(name_length, 3)
+    code[0:3] = int_to_bool(name_length - 1, 3)
     name_code = [False] * 64
     try:
         for i in range(name_length):
@@ -190,4 +195,6 @@ def dict_to_token(data: dict) -> str:
     # 转换token
     token_byte = bool_to_byte(code)
     token = base64.b64encode(token_byte).decode()
+
+    logger.success(f"编码完成, token为\n{token}")
     return token
