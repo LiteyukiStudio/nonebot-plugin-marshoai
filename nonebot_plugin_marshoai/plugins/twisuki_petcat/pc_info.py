@@ -48,8 +48,8 @@ def print_info(token: str) -> str:
         f'\n\t饱食度 : {value_output(data["saturation"])}'
         f"\n\t活力值 : {value_output(data['energy'])}"
         f"\n\t技能 : {print_skill(token)}"
-        f"\ntoken : {token}"
-        f"\n请妥善保存token, 这是猫猫的唯一标识符!"
+        f"\n新token : {token}"
+        f"\ntoken已更新, 请妥善保存token, 这是猫猫的唯一标识符!"
     )
 
 
