@@ -101,7 +101,7 @@ def cat_play(token: str) -> str:
 
     token = dict_to_token(data)
     return (
-        f"你陪猫猫玩耍了一个小时, 猫猫的生命值上涨到了{vo(data["health"])}"
+        f'你陪猫猫玩耍了一个小时, 猫猫的生命值上涨到了{vo(data["health"])}'
         f'\n新token : "{token}"'
         "\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
