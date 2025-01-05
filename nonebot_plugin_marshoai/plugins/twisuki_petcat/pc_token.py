@@ -169,7 +169,7 @@ def dict_to_token(data: dict) -> str:
     saturation = data["saturation"]
     energy = data["energy"]
     skill = data["skill"]
-    date = (datetime(2025, 1, 1) - datetime.now()).days
+    date = data["date"]
 
     # 填入code
     code[0:3] = int_to_bool(name_length - 1, 3)

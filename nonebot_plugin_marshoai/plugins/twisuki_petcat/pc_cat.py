@@ -200,6 +200,7 @@ def cat_feed(token: str) -> str:
         return "猫猫很累, 请抱猫睡觉, 不要投喂食物或陪它玩耍"
 
     data["saturation"] = min(data["saturation"] + 32, 127)
+    data["date"] = (datetime(2025, 1, 1) - datetime.now()).days
 
     token = dict_to_token(data)
     return (
