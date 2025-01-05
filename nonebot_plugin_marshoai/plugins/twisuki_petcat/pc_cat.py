@@ -123,7 +123,7 @@ def cat_feed(token: str) -> str:
 
     token = dict_to_token(data)
     return (
-        f"你投喂了2单位标准猫粮, 猫猫的饱食度提升到了{vo(data["saturation"])}"
+        f'你投喂了2单位标准猫粮, 猫猫的饱食度提升到了{vo(data["saturation"])}'
         f'\n新token : "{token}"'
         "\n请妥善保存token, 这是猫猫的唯一标识符!"
     )
