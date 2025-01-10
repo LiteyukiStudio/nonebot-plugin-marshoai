@@ -323,10 +323,14 @@ async def marsho(
             # 需要获取额外信息，调用函数工具
             tool_msg = []
             while choice.message.tool_calls != None:
-                tool_msg.append(
-                    AssistantMessage(tool_calls=response.choices[0].message.tool_calls)
-                )
-                for tool_call in choice.message.tool_calls:
+                # await UniMessage(str(response)).send()
+                tool_calls = choice.message.tool_calls
+                if tool_calls[0]["function"]["name"].startswith("$"):
+                    choice.message.tool_calls[0][
+                        "type"
+                    ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
+                tool_msg.append(choice.message.as_dict())
+                for tool_call in tool_calls:
                     if isinstance(
                         tool_call, ChatCompletionsToolCall
                     ):  # 循环调用工具直到不需要调用
@@ -376,6 +380,8 @@ async def marsho(
                         tool_msg.append(
                             ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
                         )
+                    #  tool_msg[0]["tool_calls"][0]["type"] = "builtin_function"
+                    # await UniMessage(str(tool_msg)).send()
                 request_msg = context_msg + [UserMessage(content=usermsg).as_dict()] + tool_msg  # type: ignore
                 response = await make_chat(
                     client=client,

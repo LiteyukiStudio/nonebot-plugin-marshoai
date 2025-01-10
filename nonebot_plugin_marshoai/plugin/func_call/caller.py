@@ -17,11 +17,21 @@ _caller_data: dict[str, "Caller"] = {}
 
 
 class Caller:
-    def __init__(self, name: str = "", description: str | None = None):
+    def __init__(
+        self,
+        name: str = "",
+        description: str | None = None,
+        func_type: str = "function",
+        no_module_name: bool = False,
+    ):
         self._name: str = name
         """函数名称"""
         self._description = description
         """函数描述"""
+        self._func_type = func_type
+        """函数类型"""
+        self.no_module_name = no_module_name
+        """是否不包含模块名"""
         self._plugin: Plugin | None = None
         """所属插件对象，装饰时声明"""
         self.func: ASYNC_FUNCTION_CALL_FUNC | None = None
@@ -162,7 +172,7 @@ class Caller:
                 "description": "占位符，用于显示在对话框中",  # 为保证兼容性而设置的无用参数
             }
         return {
-            "type": "function",
+            "type": self._func_type,
             "function": {
                 "name": self.aifc_name,
                 "description": self._description,
@@ -237,6 +247,8 @@ class Caller:
     @property
     def aifc_name(self) -> str:
         """AI调用名，没有点"""
+        if self.no_module_name:
+            return self._name
         return self.full_name.replace(".", "-")
 
     @property
@@ -249,16 +261,29 @@ class Caller:
         return f"{self.full_name}({self._description})"
 
 
-def on_function_call(name: str = "", description: str | None = None) -> Caller:
+def on_function_call(
+    name: str = "",
+    description: str | None = None,
+    func_type: str = "function",
+    no_module_name: bool = False,
+) -> Caller:
     """返回一个Caller类，可用于装饰一个函数，使其注册为一个可被AI调用的function call函数
 
     Args:
+        name: 函数名称，若为空则从函数的__name__属性获取
         description: 函数描述，若为None则从函数的docstring中获取
+        func_type: 函数类型，默认为function，若要注册为 Moonshot AI 的内置函数则为builtin_function
+        no_module_name: 是否不包含模块名，当注册为 Moonshot AI 的内置函数时为True
 
     Returns:
         Caller: Caller对象
     """
-    caller = Caller(name=name, description=description)
+    caller = Caller(
+        name=name,
+        description=description,
+        func_type=func_type,
+        no_module_name=no_module_name,
+    )
     return caller
 
 

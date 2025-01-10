@@ -4,6 +4,7 @@ from zhDateTime import DateTime  # type: ignore
 
 from nonebot_plugin_marshoai.plugin import PluginMetadata, String, on_function_call
 
+# from .web import *
 # 定义插件元数据
 __marsho_meta__ = PluginMetadata(
     name="基本功能",
