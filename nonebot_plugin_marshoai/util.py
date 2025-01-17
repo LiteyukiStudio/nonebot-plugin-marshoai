@@ -27,7 +27,7 @@ loaded_target_list = []  # 记录已恢复备份的上下文的列表
 
 # noinspection LongLine
 chromium_headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0"
 }
 
 
