@@ -13,9 +13,9 @@ class ConfigModel(BaseModel):
     # marshoai_support_image_models: list = ["gpt-4o","gpt-4o-mini"]
     marshoai_default_name: str = "marsho"
     marshoai_at: bool = False
-    marshoai_aliases: set[str] = {
+    marshoai_aliases: list[str] = [
         "小棉",
-    }
+    ]
     marshoai_main_colour: str = "FFAAAA"
     marshoai_default_model: str = "gpt-4o-mini"
     marshoai_prompt: str = (
@@ -40,6 +40,7 @@ class ConfigModel(BaseModel):
     marshoai_enable_tools: bool = False
     marshoai_enable_plugins: bool = True
     marshoai_load_builtin_tools: bool = True
+    marshoai_fix_toolcalls: bool = True
     marshoai_toolset_dir: list = []
     marshoai_disabled_toolkits: list = []
     marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"

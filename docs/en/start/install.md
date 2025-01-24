@@ -49,7 +49,9 @@ Open the `pyproject.toml` file under nonebot2's root directory, Add to`[tool.non
 
 - Create new [personal access token](https://github.com/settings/tokens/new)，**Don't need any permissions**.
 - Copy the new token, add to the `.env` file's `marshoai_token` option.
-
+:::warning
+GitHub Models API comes with significant limitations and is therefore not recommended for use. For better alternatives, it's suggested to adjust the configuration `MARSHOAI_AZURE_ENDPOINT` to use other service providers' models instead.
+:::
 ## 🎉 Usage
 
 End `marsho` in order to get direction for use(If you configured the custom command, please use the configured one).
@@ -105,7 +107,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | Option                | Type       | Default     | Description          |
 | --------------------- | ---------- | ----------- | ----------------- |
 | MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | Command to call Marsho |
-| MARSHOAI_ALIASES      | `set[str]` | `set{"Marsho"}` | Other name(Alias) to call Marsho |
+| MARSHOAI_ALIASES      | `set[str]` | `list["小棉"]` | Other name(Alias) to call Marsho |
 | MARSHOAI_AT           | `bool`     | `false`     | Call by @ or not |
 | MARSHOAI_MAIN_COLOUR   |  `str`    | `FFAAAA`    | Theme color, used by some tools and features    |
 
@@ -125,6 +127,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | Max token number                                                                                |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | External image-support model list, such as `hunyuan-vision`                                                 |
 | MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | Limit for nickname length |
+| MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true`                                  | Fix tool calls or not |
 
 #### Feature Switches
 

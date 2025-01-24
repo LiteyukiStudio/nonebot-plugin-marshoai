@@ -50,8 +50,10 @@ title: 安装
 ## 🤖 获取 token(GitHub Models)
 
 - 新建一个[personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
-- 将新建的 token 复制，添加到`.env`文件中的`marshoai_token`配置项中。
-
+- 将新建的 token 复制，添加到`.env`文件中的`marshoai_token`配置项中。  
+:::warning
+GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOAI_AZURE_ENDPOINT`配置项来使用其它提供者的模型。
+:::
 ## 🎉 使用
 
 发送`marsho`指令可以获取使用说明(若在配置中自定义了指令前缀请使用自定义的指令前缀)。
@@ -107,7 +109,7 @@ title: 安装
 | 配置项                   | 类型         | 默认值         | 说明                |
 | --------------------- | ---------- | ----------- | ----------------- |
 | MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | 调用 Marsho 默认的命令前缀 |
-| MARSHOAI_ALIASES      | `set[str]` | `set{"小棉"}` | 调用 Marsho 的命令别名   |
+| MARSHOAI_ALIASES      | `set[str]` | `list["小棉"]` | 调用 Marsho 的命令别名   |
 | MARSHOAI_AT           | `bool`     | `false`     | 决定是否使用at触发   |
 | MARSHOAI_MAIN_COLOUR  | `str`      | `FFAAAA`      | 主题色，部分工具和功能可用   |
 
@@ -127,6 +129,7 @@ title: 安装
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | 最大生成 token 数                                                                                  |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | 额外添加的支持图片的模型列表，例如`hunyuan-vision`                                                             |
 | MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | 昵称长度限制 |
+| MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true`                                  | 是否修复工具调用（部分模型须关闭，使用 vLLM 部署的模型时须关闭） |
 
 #### 功能开关
 

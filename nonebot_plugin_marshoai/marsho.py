@@ -292,7 +292,7 @@ async def marsho(
         choice = response.choices[0]
         # Sprint(choice)
         # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
-        if choice.message.tool_calls != None:
+        if choice.message.tool_calls != None and config.marshoai_fix_toolcalls:
             choice["finish_reason"] = CompletionsFinishReason.TOOL_CALLS
         if choice["finish_reason"] == CompletionsFinishReason.STOPPED:
             # 当对话成功时，将dict的上下文添加到上下文类中
@@ -325,10 +325,13 @@ async def marsho(
             while choice.message.tool_calls != None:
                 # await UniMessage(str(response)).send()
                 tool_calls = choice.message.tool_calls
-                if tool_calls[0]["function"]["name"].startswith("$"):
-                    choice.message.tool_calls[0][
-                        "type"
-                    ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
+                try:
+                    if tool_calls[0]["function"]["name"].startswith("$"):
+                        choice.message.tool_calls[0][
+                            "type"
+                        ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
+                except:
+                    pass
                 tool_msg.append(choice.message.as_dict())
                 for tool_call in tool_calls:
                     if isinstance(
