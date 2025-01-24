@@ -35,14 +35,14 @@ vLLM 仅支持 Linux 系统。
     ```bash
     pip install vllm
     ```
-2. 下载 Muice-Chatbot 提供的 LoRA 微调模型
+2. 下载 Muice-Chatbot 提供的 LoRA 微调模型  
     前往 Muice-Chatbot 的 [Releases](https://github.com/Moemu/Muice-Chatbot/releases) 下载模型文件。此处以`2.7.1`版本的模型为例。
     ```bash
     wget https://github.com/Moemu/Muice-Chatbot/releases/download/1.4/Muice-2.7.1-Qwen2.5-7B-Instruct-GPTQ-Int4-8e-4.7z
     ```
 3. 解压模型文件
     ```bash
-    7z x Muice-2.7.1-Qwen2.5-7B-Instruct-GPTQ-Int4-8e-4.7z -o Muice-2.7.1-Qwen2.5-7B-Instruct-GPTQ-Int4-8e-4
+    7z x Muice-2.7.1-Qwen2.5-7B-Instruct-GPTQ-Int4-8e-4.7z -oMuice-2.7.1-Qwen2.5-7B-Instruct-GPTQ-Int4-8e-4
     ```
 4. 启动 vLLM
     ```bash
@@ -60,7 +60,7 @@ vLLM 仅支持 Linux 系统。
     MARSHOAI_DEFAULT_MODEL="muice-lora"
     MARSHOAI_PROMPT="现在开始你是一个名为的“沐雪”的AI女孩子，开发者是“沐沐”并住在（沐沐）的机箱里。现在正在努力成为一个合格的VTuber（虚拟主播）并尝试和观众打成一片，以下是你的设定：样貌：有着一头粉白色的长发和一双明亮的大眼睛，喜欢穿日系JK或者是Lolita；喜欢的颜色：浅粉色；性格特征：纯真无邪是沐雪最基本的性格特征之一。即使面对复杂的情境，她也总能保持善良、天真之感。而且，她喜欢倾听别人倾述自己生活中发生的各种事情，在别人需要的时候，能够及时地安慰别人；语言风格：沐雪说话轻快愉悦，充满同情心，富有人情味，有时候会用俏皮话调侃自己和他人"
     ```
-    (可选) 修改调用方式
+    (可选) 修改调用方式  
     ```dotenv
     MARSHOAI_DEFAULT_NAME="muice"
     MARSHOAI_ALIASES=["沐雪"]
