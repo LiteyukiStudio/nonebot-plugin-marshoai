@@ -32,6 +32,7 @@ class ConfigModel(BaseModel):
     marshoai_poke_suffix: str = "揉了揉你的猫耳"
     marshoai_enable_richtext_parse: bool = True
     marshoai_single_latex_parse: bool = False
+    marshoai_enable_time_prompt: bool = True
     marshoai_enable_nickname_tip: bool = True
     marshoai_enable_support_image_tip: bool = True
     marshoai_enforce_nickname: bool = True

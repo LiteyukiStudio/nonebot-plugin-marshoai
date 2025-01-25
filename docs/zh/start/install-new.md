@@ -138,6 +138,7 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | `bool` | `true` | 启用后用户发送带图请求时若模型不支持图片，则提示用户 |
 | MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | 启用后用户未设置昵称时提示用户设置          |
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | 是否启用夸赞名单功能                 |
+| MARSHOAI_ENABLE_TIME_PROMPT        | `bool` | `true` | 是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词  |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `false` | 是否启用小棉工具                   |
 | MARSHOAI_ENABLE_PLUGINS             | `bool` | `true` | 是否启用小棉插件    |
 | MARSHOAI_PLUGINS                | `list[str]` | `[]`   | 要从`sys.path`加载的插件的名称，例如从pypi安装的包      |

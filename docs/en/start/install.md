@@ -136,6 +136,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | `bool` | `true` | When on, if user send request with photo and model don't support that, remind the user |
 | MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | When on, if user haven't set username, remind user to set       |
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | Turn on Praise list or not           |
+| MARSHOAI_ENABLE_TIME_PROMPT        | `bool` | `true` | Turn on real-time date and time (accurate to seconds) and lunar date system prompt  |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `false` | Turn on Marsho Tools or not           |
 | MARSHOAI_ENABLE_PLUGINS             | `bool` | `true` | Turn on Marsho Plugins or not           
 | MARSHOAI_PLUGIN_DIRS             | `list[str]` | `[]` |  List of plugins directory        |

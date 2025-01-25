@@ -17,6 +17,7 @@ from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
 from openai import AsyncOpenAI
+from zhDateTime import DateTime
 
 from .config import config
 from .constants import *
@@ -245,6 +246,13 @@ def get_prompt():
     if config.marshoai_enable_praises:
         praises_prompt = build_praises()
         prompts += praises_prompt
+    if config.marshoai_enable_time_prompt:
+        current_time = DateTime.now().strftime("%Y.%m.%d %H:%M:%S")
+        current_lunar_date = (
+            DateTime.now().to_lunar().date_hanzify()[5:]
+        )  # 库更新之前使用切片
+        time_prompt = f"现在的时间是{current_time}，农历{current_lunar_date}。"
+        prompts += time_prompt
     marsho_prompt = config.marshoai_prompt
     spell = SystemMessage(content=marsho_prompt + prompts).as_dict()
     return spell
