@@ -412,9 +412,9 @@ async def marsho(
                 else:
                     await UniMessage(str(choice.message.content)).send(reply_to=True)
             else:
-                await marsho_cmd.finish(f"意外的完成原因:{choice['finish_reason']}")
+                await marsho_cmd.finish(f"意外的完成原因:{choice.finish_reason}")
         else:
-            await marsho_cmd.finish(f"意外的完成原因:{choice['finish_reason']}")
+            await marsho_cmd.finish(f"意外的完成原因:{choice.finish_reason}")
     except Exception as e:
         await UniMessage(str(e) + suggest_solution(str(e))).send()
         traceback.print_exc()
