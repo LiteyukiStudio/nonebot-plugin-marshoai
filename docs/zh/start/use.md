@@ -3,7 +3,7 @@ title: 使用
 ---
 
 # 安装
-- 请查看 [安装文档](./install-new.md)
+- 请查看 [安装文档](./install.md)
 
 # 使用
 ### API 部署
