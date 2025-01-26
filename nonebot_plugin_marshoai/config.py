@@ -31,8 +31,17 @@ class ConfigModel(BaseModel):
     marshoai_additional_prompt: str = ""
     marshoai_poke_suffix: str = "揉了揉你的猫耳"
     marshoai_enable_richtext_parse: bool = True
+    """
+    是否启用自动消息富文本解析 即若包含图片链接则发送图片、若包含LaTeX公式则发送公式图。
+    """
     marshoai_single_latex_parse: bool = False
+    """
+    单行公式是否渲染（当消息富文本解析启用时可用）
+    """
     marshoai_enable_time_prompt: bool = True
+    """
+    是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词
+    """
     marshoai_enable_nickname_tip: bool = True
     marshoai_enable_support_image_tip: bool = True
     marshoai_enforce_nickname: bool = True
