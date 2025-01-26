@@ -41,6 +41,7 @@ _chromium_headers = {
 """
 
 
+# noinspection LongLine
 _praises_init_data = {
     "like": [
         {
