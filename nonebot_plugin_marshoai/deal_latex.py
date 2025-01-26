@@ -311,6 +311,7 @@ class ConvertLatex:
             ConvertChannel
                 LaTeX 转换服务实例
         """
+
         async def channel_test_wrapper(
             channel: type[ConvertChannel],
         ) -> Tuple[int, type[ConvertChannel]]:
