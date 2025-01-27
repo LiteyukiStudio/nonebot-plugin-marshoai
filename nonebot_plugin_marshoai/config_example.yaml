@@ -42,6 +42,10 @@ marshoai_enable_plugins: true # 是否启用插件功能。
 
 marshoai_load_builtin_tools: true # 是否加载内置工具。
 
+marshoai_fix_toolcalls: true # 是否修复工具调用。
+
+marshoai_send_thinking: true # 是否发送思维链。
+
 marshoai_nickname_limit: 16 # 昵称长度限制。
 
 marshoai_toolset_dir: [] # 工具集路径。
@@ -60,6 +64,7 @@ marshoai_azure_endpoint: "https://models.inference.ai.azure.com" # OpenAI 标准
 marshoai_temperature: null # 调整生成的多样性，未设置时使用默认值。
 marshoai_max_tokens: null # 最大生成的token数，未设置时使用默认值。
 marshoai_top_p: null # 使用的概率采样值，未设置时使用默认值。
+marshoai_timeout: 50.0 # 请求超时时间。
 
 marshoai_additional_image_models: [] # 额外的图片模型列表，默认空。
 
