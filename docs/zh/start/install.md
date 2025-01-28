@@ -129,8 +129,7 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | 最大生成 token 数                                                                                  |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | 额外添加的支持图片的模型列表，例如`hunyuan-vision`                                                             |
 | MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | 昵称长度限制 |
-| MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true`                                  | 是否修复工具调用（部分模型须关闭，使用 vLLM 部署的模型时须关闭） |
-
+| MARSHOAI_TIMEOUT                 | `float` | `50`                                    | AI 请求超时时间（秒） |
 #### 功能开关
 
 | 配置项                               | 类型     | 默认值    | 说明                         |
@@ -148,6 +147,8 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | MARSHOAI_DISABLED_TOOLKITS        | `list` | `[]`   |  禁用的工具包包名列表           |
 | MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` |   是否启用自动解析消息（若包含图片链接则发送图片、若包含LaTeX公式则发送公式图）           |
 | MARSHOAI_SINGLE_LATEX_PARSE    | `bool` | `false` |   单行公式是否渲染（当消息富文本解析启用时可用）（如果单行也渲……只能说不好看）           |
+| MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true` | 是否修复工具调用（部分模型须关闭，使用 vLLM 部署的模型时须关闭） |
+| MARSHOAI_SEND_THINKING           | `bool`  | `true` | 是否发送思维链（部分模型不支持） |
 
 #### 开发及调试选项
 

@@ -148,6 +148,7 @@ async def make_chat_openai(
         temperature=config.marshoai_temperature,
         max_tokens=config.marshoai_max_tokens,
         top_p=config.marshoai_top_p,
+        timeout=config.marshoai_timeout,
     )
 
 

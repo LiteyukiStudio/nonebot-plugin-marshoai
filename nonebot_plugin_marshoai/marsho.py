@@ -301,7 +301,15 @@ async def marsho(
             context.append(
                 UserMessage(content=usermsg).as_dict(), target.id, target.private  # type: ignore
             )
-            context.append(choice.message, target.id, target.private)
+            choice_msg_dict = choice.message.to_dict()
+            if "reasoning_content" in choice_msg_dict:
+                if config.marshoai_send_thinking:
+                    await UniMessage(
+                        "思维链：\n" + choice_msg_dict["reasoning_content"]
+                    ).send()
+                del choice_msg_dict["reasoning_content"]
+            context.append(choice_msg_dict, target.id, target.private)
+
             if [target.id, target.private] not in target_list:
                 target_list.append([target.id, target.private])
 
@@ -402,7 +410,10 @@ async def marsho(
                     UserMessage(content=usermsg).as_dict(), target.id, target.private  # type: ignore
                 )
                 # context.append(tool_msg, target.id, target.private)
-                context.append(choice.message, target.id, target.private)
+                choice_msg_dict = choice.message.to_dict()
+                if "reasoning_content" in choice_msg_dict:
+                    del choice_msg_dict["reasoning_content"]
+                context.append(choice_msg_dict, target.id, target.private)
 
                 # 发送消息
                 if config.marshoai_enable_richtext_parse:
@@ -434,7 +445,7 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
         user_nickname = nicknames.get(user_id, "")
         try:
             if config.marshoai_poke_suffix != "":
-                response = await make_chat(
+                response = await make_chat_openai(
                     client=client,
                     model_name=model_name,
                     msg=[
