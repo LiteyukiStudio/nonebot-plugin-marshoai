@@ -74,6 +74,7 @@ dev = [
     "black>=24.10.0",
     "litedoc>=0.1.0.dev20240906203154",
     "viztracer>=1.0.0",
+    "types-aiofiles"
 ]
 test = [
     "nonebug>=0.4.3",

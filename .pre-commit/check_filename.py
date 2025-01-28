@@ -15,6 +15,7 @@ def is_valid_filename(filename: str) -> bool:
         bool: _description_
     """
     # 检查文件名是否仅包含小写字母，数字，下划线
+    # 啊？文件名还不能有大写啊……
     if not re.match(r"^[a-z0-9_]+\.py$", filename):
         return False
     else:

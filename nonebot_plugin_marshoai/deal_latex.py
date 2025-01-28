@@ -281,8 +281,7 @@ class ConvertLatex:
         """
         LaTeX 在线渲染
 
-        参数
-        ====
+        参数:
 
             latex: str
                 LaTeX 代码
@@ -294,8 +293,7 @@ class ConvertLatex:
                 超时时间
             retry_: int
                 重试次数
-        返回
-        ====
+        返回:
             bytes
             图片
         """
@@ -305,6 +303,15 @@ class ConvertLatex:
 
     @staticmethod
     async def auto_choose_channel() -> ConvertChannel:
+        """
+        依据访问延迟，自动选择 LaTeX 转换服务频道
+
+        返回
+        ====
+            ConvertChannel
+                LaTeX 转换服务实例
+        """
+
         async def channel_test_wrapper(
             channel: type[ConvertChannel],
         ) -> Tuple[int, type[ConvertChannel]]:
