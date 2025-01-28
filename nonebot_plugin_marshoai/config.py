@@ -51,12 +51,14 @@ class ConfigModel(BaseModel):
     marshoai_enable_plugins: bool = True
     marshoai_load_builtin_tools: bool = True
     marshoai_fix_toolcalls: bool = True
+    marshoai_send_thinking: bool = True
     marshoai_toolset_dir: list = []
     marshoai_disabled_toolkits: list = []
     marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
     marshoai_temperature: float | None = None
     marshoai_max_tokens: int | None = None
     marshoai_top_p: float | None = None
+    marshoai_timeout: float | None = 50.0
     marshoai_nickname_limit: int = 16
     marshoai_additional_image_models: list = []
     marshoai_tencent_secretid: str | None = None

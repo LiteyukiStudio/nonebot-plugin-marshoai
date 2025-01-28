@@ -127,7 +127,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | Max token number                                                                                |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | External image-support model list, such as `hunyuan-vision`                                                 |
 | MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | Limit for nickname length |
-| MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true`                                  | Fix tool calls or not |
+| MARSHOAI_TIMEOUT                 | `float` | `50`                                    | AI request timeout (seconds) |
 
 #### Feature Switches
 
@@ -145,3 +145,5 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_DISABLED_TOOLKITS        | `list` | `[]`   |  List of disabled toolkits' name     |
 | MARSHOAI_ENABLE_RICHTEXT_PARSE    | `bool` | `true` | Turn on auto parse rich text feature(including image, LaTeX equation)  |
 | MARSHOAI_SINGLE_LATEX_PARSE       | `bool` | `false`| Render single-line equation or not    |
+| MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true` | Fix tool calls or not |
+| MARSHOAI_SEND_THINKING           | `bool`  | `true` | Send thinking chain or not |
