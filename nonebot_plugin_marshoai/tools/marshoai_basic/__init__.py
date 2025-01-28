@@ -2,7 +2,6 @@ import os
 
 from zhDateTime import DateTime
 
-
 weekdays = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
 time_prompt = "现在的时间是{date_time}，{weekday_name}，农历{lunar_date}。"
 
