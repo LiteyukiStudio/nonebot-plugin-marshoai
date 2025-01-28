@@ -4,7 +4,7 @@ import mimetypes
 import uuid
 from typing import Any, Optional
 
-import aiofiles # type: ignore
+import aiofiles  # type: ignore
 import httpx
 import nonebot_plugin_localstore as store
 from azure.ai.inference.aio import ChatCompletionsClient
