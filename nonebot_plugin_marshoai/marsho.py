@@ -58,7 +58,7 @@ marsho_cmd = on_alconna(
         config.marshoai_default_name,
         Args["text?", AllParam],
     ),
-    aliases=config.marshoai_aliases,
+    aliases=tuple(config.marshoai_aliases),
     priority=10,
     block=True,
 )
