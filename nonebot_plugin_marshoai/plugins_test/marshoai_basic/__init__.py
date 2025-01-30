@@ -21,13 +21,9 @@ async def get_current_time() -> str:
     """获取当前的时间和日期"""
     current_time = DateTime.now()
 
-    time_prompt = (
-        "现在的时间是 {}，{current_weekday_name}，{current_lunar_date}。".format(
-            current_time.strftime("%Y.%m.%d %H:%M:%S"),
-            weekdays[current_time.weekday()],
-            current_time.chinesize.date_hanzify(
-                "农历{干支年}{生肖}年 {月份}月{数序日}"
-            ),
-        )
+    time_prompt = "现在的时间是 {}，{}，{}。".format(
+        current_time.strftime("%Y.%m.%d %H:%M:%S"),
+        weekdays[current_time.weekday()],
+        current_time.chinesize.date_hanzify("农历{干支年}{生肖}年 {月份}月{数序日}"),
     )
     return time_prompt
