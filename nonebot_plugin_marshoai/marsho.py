@@ -147,6 +147,9 @@ async def load_context(target: MsgTarget, arg: Message = CommandArg()):
 async def resetmem(target: MsgTarget):
     if [target.id, target.private] not in target_list:
         target_list.append([target.id, target.private])
+    backup_context = await get_backup_context(target.id, target.private)
+    if backup_context:
+        context.set_context(backup_context, target.id, target.private)
     context.reset(target.id, target.private)
     await resetmem_cmd.finish("上下文已重置")
 
@@ -284,6 +287,7 @@ async def marsho(
         tools_lists = tools.tools_list + list(
             map(lambda v: v.data(), get_function_calls().values())
         )
+        logger.debug(f"正在获取回答，模型：{model_name}")
         response = await make_chat_openai(
             client=client,
             model_name=model_name,
@@ -296,6 +300,7 @@ async def marsho(
         # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
         if choice.message.tool_calls != None and config.marshoai_fix_toolcalls:
             choice.finish_reason = CompletionsFinishReason.TOOL_CALLS
+        logger.info(f"完成原因：{choice.finish_reason}")
         if choice.finish_reason == CompletionsFinishReason.STOPPED:
             # 当对话成功时，将dict的上下文添加到上下文类中
             context.append(
@@ -445,11 +450,16 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
         user_nickname = nicknames.get(user_id, "")
         try:
             if config.marshoai_poke_suffix != "":
+                logger.info(f"收到戳一戳，用户昵称：{user_nickname}，用户ID：{user_id}")
                 response = await make_chat_openai(
                     client=client,
                     model_name=model_name,
                     msg=[
-                        get_prompt(),
+                        (
+                            get_prompt()
+                            if model_name.lower() not in NO_SYSPROMPT_MODELS
+                            else None
+                        ),
                         UserMessage(
                             content=f"*{user_nickname}{config.marshoai_poke_suffix}"
                         ),
