@@ -103,7 +103,7 @@ title: 安装
 | MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | 调用 Marsho 默认的命令前缀 |
 | MARSHOAI_ALIASES      | `set[str]` | `set{"小棉"}` | 调用 Marsho 的命令别名   |
 | MARSHOAI_AT           | `bool`     | `false`     | 决定是否使用at触发   |
-| MARSHOAI_MAIN_COLOUR  | `str`      | `FFAAAA`      | 主题色，部分工具和功能可用   |
+| MARSHOAI_MAIN_COLOUR  | `str`      | `FEABA9`      | 主题色，部分工具和功能可用   |
 
 #### AI 调用
 

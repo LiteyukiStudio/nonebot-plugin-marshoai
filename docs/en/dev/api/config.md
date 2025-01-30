@@ -14,7 +14,7 @@ title: config
 
 #### ***attr*** `marshoai_aliases: set[str] = {'小棉'}`
 
-#### ***attr*** `marshoai_main_colour: str = 'FFAAAA'`
+#### ***attr*** `marshoai_main_colour: str = 'FEABA9'`
 
 #### ***attr*** `marshoai_default_model: str = 'gpt-4o-mini'`
 
