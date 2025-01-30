@@ -14,7 +14,7 @@ from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, NotGiven
 from zhDateTime import DateTime
 
 from .config import config
@@ -24,6 +24,8 @@ from .deal_latex import ConvertLatex
 nickname_json = None  # 记录昵称
 praises_json = None  # 记录夸赞名单
 loaded_target_list = []  # 记录已恢复备份的上下文的列表
+
+NOT_GIVEN = NotGiven()
 
 # 时间参数相关
 if config.marshoai_enable_time_prompt:
@@ -141,13 +143,13 @@ async def make_chat_openai(
         model_name: 指定AI模型名
         tools: 工具列表
     """
-    return await client.chat.completions.create(
+    return await client.chat.completions.create(  # type: ignore
         messages=msg,
         model=model_name,
-        tools=tools,
-        temperature=config.marshoai_temperature,
-        max_tokens=config.marshoai_max_tokens,
-        top_p=config.marshoai_top_p,
+        tools=tools or NOT_GIVEN,
+        temperature=config.marshoai_temperature or NOT_GIVEN,
+        max_tokens=config.marshoai_max_tokens or NOT_GIVEN,
+        top_p=config.marshoai_top_p or NOT_GIVEN,
         timeout=config.marshoai_timeout,
     )
 

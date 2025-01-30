@@ -449,7 +449,11 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
                     client=client,
                     model_name=model_name,
                     msg=[
-                        get_prompt(),
+                        (
+                            get_prompt()
+                            if model_name.lower() not in NO_SYSPROMPT_MODELS
+                            else None
+                        ),
                         UserMessage(
                             content=f"*{user_nickname}{config.marshoai_poke_suffix}"
                         ),
