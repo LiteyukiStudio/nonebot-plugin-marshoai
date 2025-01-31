@@ -1,6 +1,7 @@
 import base64
 import json
 import mimetypes
+import re
 import uuid
 from typing import Any, Optional
 
@@ -15,6 +16,7 @@ from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
 from openai import AsyncOpenAI, NotGiven
+from openai.types.chat import ChatCompletionMessage
 from zhDateTime import DateTime
 
 from .config import config
@@ -34,7 +36,7 @@ if config.marshoai_enable_time_prompt:
 
 
 # noinspection LongLine
-_chromium_headers = {
+_browser_headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:134.0) Gecko/20100101 Firefox/134.0"
 }
 """
@@ -47,7 +49,7 @@ _praises_init_data = {
     "like": [
         {
             "name": "Asankilp",
-            "advantages": "赋予了Marsho猫娘人格，使用手机，在vim与vscode的加持下为Marsho写了许多代码，使Marsho更加可爱",
+            "advantages": "赋予了Marsho猫娘人格，在vim与vscode的加持下为Marsho写了许多代码，使Marsho更加可爱",
         }
     ]
 }
@@ -71,7 +73,7 @@ async def get_image_raw_and_type(
     """
 
     async with httpx.AsyncClient() as client:
-        response = await client.get(url, headers=_chromium_headers, timeout=timeout)
+        response = await client.get(url, headers=_browser_headers, timeout=timeout)
         if response.status_code == 200:
             # 获取图片数据
             content_type = response.headers.get("Content-Type")
@@ -180,7 +182,7 @@ async def refresh_praises_json():
     praises_json = data
 
 
-def build_praises():
+def build_praises() -> str:
     praises = get_praises()
     result = ["你喜欢以下几个人物，他们有各自的优点："]
     for item in praises["like"]:
@@ -461,3 +463,41 @@ if config.marshoai_enable_richtext_parse:
 """
 Mulan PSL v2 协议授权部分结束
 """
+
+
+def extract_content_and_think(
+    message: ChatCompletionMessage,
+) -> tuple[str, str | None, ChatCompletionMessage]:
+    """
+    处理 API 返回的消息对象，提取其中的内容和思维链，并返回处理后的消息，思维链，消息对象。
+
+    Args:
+        message (ChatCompletionMessage): API 返回的消息对象。
+    Returns:
+
+        - content (str): 提取出的消息内容。
+
+        - thinking (str | None): 提取出的思维链，如果没有则为 None。
+
+        - message (ChatCompletionMessage): 移除了思维链的消息对象。
+
+    本函数参考自 [nonebot-plugin-deepseek](https://github.com/KomoriDev/nonebot-plugin-deepseek)
+    """
+    try:
+        thinking = message.reasoning_content  # type: ignore
+    except AttributeError:
+        thinking = None
+    if thinking:
+        delattr(message, "reasoning_content")
+    else:
+        think_blocks = re.findall(
+            r"<think>(.*?)</think>", message.content or "", flags=re.DOTALL
+        )
+        thinking = "\n".join([block.strip() for block in think_blocks if block.strip()])
+
+    content = re.sub(
+        r"<think>.*?</think>", "", message.content or "", flags=re.DOTALL
+    ).strip()
+    message.content = content
+
+    return content, thinking, message

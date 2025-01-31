@@ -173,7 +173,7 @@ bot.py
 pdm.lock
 praises.json
 *.bak
-./config/
+config/
 
 # dev
 .vscode/
