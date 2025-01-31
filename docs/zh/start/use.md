@@ -14,7 +14,7 @@ title: 使用
 本插件理论上可兼容大部分可通过 OpenAI 兼容 API 调用的 LLM，部分模型可能需要调整插件配置。  
 
 例如：
-- 对于不支持 Function Call 的模型（Cohere Command R等）：
+- 对于不支持 Function Call 的模型（Cohere Command R，DeepSeek-R1等）：
     ```dotenv
     MARSHOAI_ENABLE_PLUGINS=false
     MARSHOAI_ENABLE_TOOLS=false
@@ -23,6 +23,21 @@ title: 使用
     ```dotenv
     MARSHOAI_ADDITIONAL_IMAGE_MODELS=["hunyuan-vision"]
     ```
+
+### 使用 DeepSeek-R1 模型
+MarshoAI 兼容 DeepSeek-R1 模型，你可通过以下步骤来使用：
+1. 获取 API Key  
+    前往[此处](https://platform.deepseek.com/api_keys)获取 API Key。
+2. 配置插件
+    ```dotenv
+    MARSHOAI_TOKEN="<你的 API Key>"
+    MARSHOAI_AZURE_ENDPOINT="https://api.deepseek.com"
+    MARSHOAI_DEFAULT_MODEL="deepseek-reasoner"
+    ```
+    你可修改 `MARSHOAI_DEFAULT_MODEL` 为 其它模型名来调用其它 DeepSeek 模型。
+    :::tip
+    如果使用 one-api 作为中转，你可将 `MARSHOAI_AZURE_ENDPOINT` 设置为 one-api 的地址，将 `MARSHOAI_TOKEN` 设为 one-api 配置的令牌，在 one-api 中添加 DeepSeek 渠道。
+    :::
 
 ### 使用 vLLM 部署本地模型
 
