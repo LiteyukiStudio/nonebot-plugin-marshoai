@@ -54,6 +54,7 @@ _谁不喜欢回复消息快又可爱的猫娘呢？_
 本项目使用了以下项目的代码：
 
 -   [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)
+-   [nonebot-plugin-deepseek](https://github.com/KomoriDev/nonebot-plugin-deepseek)
 
 "Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
 "nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。  

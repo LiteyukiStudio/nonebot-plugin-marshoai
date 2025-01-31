@@ -53,6 +53,7 @@ Please read [Documentation](https://marsho.liteyuki.icu/start/install)
 ## ❤ Thanks&Copyright
 This project uses the following code from other projects:  
 - [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)  
+- [nonebot-plugin-deepseek](https://github.com/KomoriDev/nonebot-plugin-deepseek)
 
 "Marsho" logo contributed by [@Asankilp](https://github.com/Asankilp),licensed under [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.  
 
