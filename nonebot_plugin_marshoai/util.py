@@ -268,7 +268,7 @@ def get_prompt():
             ),
             weekday_name=_weekdays[current_time.weekday()],
             lunar_date=current_time.chinesize.date_hanzify(
-                "农历{干支年}{生肖}年{月份}月{日期}"
+                "农历{干支年}{生肖}年{月份}月{数序日}"
             ),
         )
 
