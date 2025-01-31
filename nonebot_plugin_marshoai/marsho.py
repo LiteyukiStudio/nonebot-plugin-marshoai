@@ -6,7 +6,6 @@ import openai
 from arclet.alconna import Alconna, AllParam, Args
 from azure.ai.inference.models import (
     AssistantMessage,
-    ChatCompletionsToolCall,
     CompletionsFinishReason,
     ImageContentItem,
     ImageUrl,
@@ -22,7 +21,6 @@ from nonebot.permission import SUPERUSER
 from nonebot.rule import Rule, to_me
 from nonebot.typing import T_State
 from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
-from openai import AsyncOpenAI
 
 from .hooks import *
 from .instances import *
@@ -287,7 +285,7 @@ async def marsho(
         tools_lists = tools.tools_list + list(
             map(lambda v: v.data(), get_function_calls().values())
         )
-        logger.debug(f"正在获取回答，模型：{model_name}")
+        logger.info(f"正在获取回答，模型：{model_name}")
         response = await make_chat_openai(
             client=client,
             model_name=model_name,
@@ -306,25 +304,26 @@ async def marsho(
             context.append(
                 UserMessage(content=usermsg).as_dict(), target.id, target.private  # type: ignore
             )
-            choice_msg_dict = choice.message.to_dict()
-            if "reasoning_content" in choice_msg_dict:
-                if config.marshoai_send_thinking:
-                    await UniMessage(
-                        "思维链：\n" + choice_msg_dict["reasoning_content"]
-                    ).send()
-                del choice_msg_dict["reasoning_content"]
-            context.append(choice_msg_dict, target.id, target.private)
 
+            ##### DeepSeek-R1 兼容部分 #####
+            choice_msg_content, choice_msg_thinking, choice_msg_after = (
+                extract_content_and_think(choice.message)
+            )
+            if choice_msg_thinking and config.marshoai_send_thinking:
+                await UniMessage("思维链：\n" + choice_msg_thinking).send()
+            ##### 兼容部分结束 #####
+
+            context.append(choice_msg_after.to_dict(), target.id, target.private)
             if [target.id, target.private] not in target_list:
                 target_list.append([target.id, target.private])
 
             # 对话成功发送消息
             if config.marshoai_enable_richtext_parse:
-                await (await parse_richtext(str(choice.message.content))).send(
+                await (await parse_richtext(str(choice_msg_content))).send(
                     reply_to=True
                 )
             else:
-                await UniMessage(str(choice.message.content)).send(reply_to=True)
+                await UniMessage(str(choice_msg_content)).send(reply_to=True)
         elif choice.finish_reason == CompletionsFinishReason.CONTENT_FILTERED:
 
             # 对话失败，消息过滤
@@ -467,9 +466,8 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
                 )
                 choice = response.choices[0]
                 if choice.finish_reason == CompletionsFinishReason.STOPPED:
-                    await UniMessage(" " + str(choice.message.content)).send(
-                        at_sender=True
-                    )
+                    content = extract_content_and_think(choice.message)[0]
+                    await UniMessage(" " + str(content)).send(at_sender=True)
         except Exception as e:
             await UniMessage(str(e) + suggest_solution(str(e))).send()
             traceback.print_exc()
