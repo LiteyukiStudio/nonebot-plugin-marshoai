@@ -49,6 +49,8 @@ _谁不喜欢回复消息快又可爱的猫娘呢？_
 
 ## ❤ 鸣谢&版权说明
 
+> Copyright (c) 2025 Asankilp & LiteyukiStudio
+
 本项目使用了以下项目的代码：
 
 -   [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)

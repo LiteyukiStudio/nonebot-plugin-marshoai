@@ -16,7 +16,7 @@ class ConfigModel(BaseModel):
     marshoai_aliases: list[str] = [
         "小棉",
     ]
-    marshoai_main_colour: str = "FFAAAA"
+    marshoai_main_colour: str = "FEABA9"
     marshoai_default_model: str = "gpt-4o-mini"
     marshoai_prompt: str = (
         "你是一只可爱的猫娘，你的生日是9月6日，你喜欢晒太阳，撒娇，吃零食，玩耍等等可爱的事情，偶尔会调皮一下，"

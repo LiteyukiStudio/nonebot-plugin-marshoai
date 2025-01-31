@@ -109,7 +109,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_DEFAULT_NAME | `str`      | `marsho`    | Command to call Marsho |
 | MARSHOAI_ALIASES      | `set[str]` | `list["小棉"]` | Other name(Alias) to call Marsho |
 | MARSHOAI_AT           | `bool`     | `false`     | Call by @ or not |
-| MARSHOAI_MAIN_COLOUR   |  `str`    | `FFAAAA`    | Theme color, used by some tools and features    |
+| MARSHOAI_MAIN_COLOUR   |  `str`    | `FEABA9`    | Theme color, used by some tools and features    |
 
 #### AI call
 

@@ -30,7 +30,7 @@ NOT_GIVEN = NotGiven()
 # 时间参数相关
 if config.marshoai_enable_time_prompt:
     _weekdays = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
-    _time_prompt = "现在的时间是{date_time}，{weekday_name}，农历{lunar_date}。"
+    _time_prompt = "现在的时间是{date_time}{weekday_name}，{lunar_date}。"
 
 
 # noinspection LongLine
@@ -254,8 +254,7 @@ async def refresh_nickname_json():
 
 def get_prompt():
     """获取系统提示词"""
-    prompts = ""
-    prompts += config.marshoai_additional_prompt
+    prompts = config.marshoai_additional_prompt
     if config.marshoai_enable_praises:
         praises_prompt = build_praises()
         prompts += praises_prompt
@@ -266,8 +265,8 @@ def get_prompt():
                 "%Y年%m月%d日 %H:%M:%S"
             ),
             weekday_name=_weekdays[current_time.weekday()],
-            lunar_date=current_time.to_lunar().date_hanzify(
-                "{干支年}{生肖}年{月份}月{日期}日"
+            lunar_date=current_time.chinesize.date_hanzify(
+                "农历{干支年}{生肖}年{月份}月{日期}"
             ),
         )
 
