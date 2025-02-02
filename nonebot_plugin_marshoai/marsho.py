@@ -268,6 +268,7 @@ async def marsho(
                             )  # type: ignore
                         ).as_dict()  # type: ignore
                     )  # type: ignore
+                    logger.info(f"输入图片 {i.data['url']}")
                 elif config.marshoai_enable_support_image_tip:
                     await UniMessage(
                         "*此模型不支持图片处理或管理员未启用此模型的图片支持。图片将被忽略。"

@@ -96,7 +96,9 @@ async def get_image_b64(url: str, timeout: int = 10) -> Optional[str]:
     return: 图片base64编码
     """
 
-    if data_type := await get_image_raw_and_type(url, timeout):
+    if data_type := await get_image_raw_and_type(
+        url.replace("https://", "http://"), timeout
+    ):
         # image_format = content_type.split("/")[1] if content_type else "jpeg"
         base64_image = base64.b64encode(data_type[0]).decode("utf-8")
         data_url = "data:{};base64,{}".format(data_type[1], base64_image)
