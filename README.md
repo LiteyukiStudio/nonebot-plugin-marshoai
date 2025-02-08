@@ -8,8 +8,9 @@
 
 # nonebot-plugin-marshoai
 
-_✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
+_✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_  
 
+[![QQ群](https://img.shields.io/badge/QQ群-1029557452-blue.svg?logo=QQ)](https://qm.qq.com/q/a13iwP5kAw)
 [![NoneBot Registry](https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin%2Fnonebot-plugin-marshoai&style=flat-square)](https://registry.nonebot.dev/plugin/nonebot-plugin-marshoai:nonebot_plugin_marshoai)
 <a href="https://registry.nonebot.dev/plugin/nonebot-plugin-marshoai:nonebot_plugin_marshoai">
   <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin-adapters%2Fnonebot-plugin-marshoai&style=flat-square" alt="Supported Adapters">
@@ -19,7 +20,8 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 </a>
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg?style=flat-square" alt="python">
   <img src="https://img.shields.io/badge/Code%20Style-Black-121110.svg?style=flat-square" alt="codestyle">
-</div>
+</div>  
+
 
 ## 📖 介绍
 
