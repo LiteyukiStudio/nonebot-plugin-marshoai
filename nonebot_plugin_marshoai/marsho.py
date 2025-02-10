@@ -340,13 +340,13 @@ async def marsho(
             while choice.message.tool_calls != None:
                 # await UniMessage(str(response)).send()
                 tool_calls = choice.message.tool_calls
-                try:
-                    if tool_calls[0]["function"]["name"].startswith("$"):
-                        choice.message.tool_calls[0][
-                            "type"
-                        ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
-                except:
-                    pass
+                # try:
+                #     if tool_calls[0]["function"]["name"].startswith("$"):
+                #         choice.message.tool_calls[0][
+                #             "type"
+                #         ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
+                # except:
+                #     pass
                 tool_msg.append(choice.message)
                 for tool_call in tool_calls:
                     try:
