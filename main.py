@@ -1,5 +1,4 @@
-"""该入口文件仅在nb run无法正常工作时使用
-"""
+"""该入口文件仅在nb run无法正常工作时使用"""
 
 import nonebot
 from nonebot import get_driver
