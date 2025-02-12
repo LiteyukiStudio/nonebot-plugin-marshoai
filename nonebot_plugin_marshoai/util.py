@@ -126,9 +126,7 @@ async def make_chat(
         messages=msg,
         model=model_name,
         tools=tools,
-        temperature=config.marshoai_temperature,
-        max_tokens=config.marshoai_max_tokens,
-        top_p=config.marshoai_top_p,
+        **config.marshoai_model_args,
     )
 
 
@@ -151,10 +149,8 @@ async def make_chat_openai(
         messages=msg,
         model=model_name,
         tools=tools or NOT_GIVEN,
-        temperature=config.marshoai_temperature or NOT_GIVEN,
-        max_tokens=config.marshoai_max_tokens or NOT_GIVEN,
-        top_p=config.marshoai_top_p or NOT_GIVEN,
         timeout=config.marshoai_timeout,
+        **config.marshoai_model_args,
     )
 
 
