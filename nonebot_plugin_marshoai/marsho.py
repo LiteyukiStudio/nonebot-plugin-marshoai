@@ -61,7 +61,7 @@ marsho_cmd = on_alconna(
 )
 resetmem_cmd = on_alconna(
     Alconna(
-        config.marshoai_default_name + ".resetmem",
+        config.marshoai_default_name + ".reset",
     ),
     priority=10,
     block=True,
