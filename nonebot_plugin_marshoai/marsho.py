@@ -37,7 +37,6 @@ async def at_enable():
 changemodel_cmd = on_command(
     "changemodel", permission=SUPERUSER, priority=10, block=True
 )
-resetmem_cmd = on_command("reset", priority=10, block=True)
 # setprompt_cmd = on_command("prompt",permission=SUPERUSER)
 praises_cmd = on_command("praises", permission=SUPERUSER, priority=10, block=True)
 add_usermsg_cmd = on_command("usermsg", permission=SUPERUSER, priority=10, block=True)
@@ -57,6 +56,13 @@ marsho_cmd = on_alconna(
         Args["text?", AllParam],
     ),
     aliases=tuple(config.marshoai_aliases),
+    priority=10,
+    block=True,
+)
+resetmem_cmd = on_alconna(
+    Alconna(
+        config.marshoai_default_name + ".resetmem",
+    ),
     priority=10,
     block=True,
 )

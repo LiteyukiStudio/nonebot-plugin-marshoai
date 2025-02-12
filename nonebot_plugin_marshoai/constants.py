@@ -2,10 +2,11 @@ import re
 
 from .config import config
 
+NAME: str = config.marshoai_default_name
 USAGE: str = f"""用法：
-  {config.marshoai_default_name} <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
+  {NAME} <聊天内容> : 与 Marsho 进行对话。当模型为 GPT-4o(-mini) 等时，可以带上图片进行对话。
   nickname [昵称] : 为自己设定昵称，设置昵称后，Marsho 会根据你的昵称进行回答。使用'nickname reset'命令可清除自己设定的昵称。
-  reset : 重置当前会话的上下文。 ※需要加上命令前缀使用(默认为'/')。
+  {NAME}.reset : 重置当前会话的上下文。 
 超级用户命令(均需要加上命令前缀使用):
   changemodel <模型名> : 切换全局 AI 模型。
   contexts : 返回当前会话的上下文列表。 ※当上下文包含图片时，不要使用此命令。
