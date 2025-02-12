@@ -33,10 +33,12 @@ MarshoAI 兼容 DeepSeek-R1 模型，你可通过以下步骤来使用：
     MARSHOAI_TOKEN="<你的 API Key>"
     MARSHOAI_AZURE_ENDPOINT="https://api.deepseek.com"
     MARSHOAI_DEFAULT_MODEL="deepseek-reasoner"
+    MARSHOAI_ENABLE_PLUGINS=false
     ```
     你可修改 `MARSHOAI_DEFAULT_MODEL` 为 其它模型名来调用其它 DeepSeek 模型。
     :::tip
-    如果使用 one-api 作为中转，你可将 `MARSHOAI_AZURE_ENDPOINT` 设置为 one-api 的地址，将 `MARSHOAI_TOKEN` 设为 one-api 配置的令牌，在 one-api 中添加 DeepSeek 渠道。
+    如果使用 one-api 作为中转，你可将 `MARSHOAI_AZURE_ENDPOINT` 设置为 one-api 的地址，将 `MARSHOAI_TOKEN` 设为 one-api 配置的令牌，在 one-api 中添加 DeepSeek 渠道。  
+    同样可使用其它提供商（例如 [SiliconFlow](https://siliconflow.cn/)）提供的 DeepSeek 等模型。
     :::
 
 ### 使用 vLLM 部署本地模型
