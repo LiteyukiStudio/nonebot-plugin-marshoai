@@ -55,9 +55,7 @@ class ConfigModel(BaseModel):
     marshoai_toolset_dir: list = []
     marshoai_disabled_toolkits: list = []
     marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
-    marshoai_temperature: float | None = None
-    marshoai_max_tokens: int | None = None
-    marshoai_top_p: float | None = None
+    marshoai_model_args: dict = {}
     marshoai_timeout: float | None = 50.0
     marshoai_nickname_limit: int = 16
     marshoai_additional_image_models: list = []
