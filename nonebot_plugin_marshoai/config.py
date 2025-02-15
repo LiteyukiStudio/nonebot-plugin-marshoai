@@ -100,8 +100,8 @@ def check_yaml_is_changed():
     """
     with open(config_file_path, "r", encoding="utf-8") as f:
         old = yaml.load(f)
-    with StringIO(dump_config_to_yaml(ConfigModel())) as f:
-        example_ = yaml.load(f)
+    with StringIO(dump_config_to_yaml(ConfigModel())) as f2:
+        example_ = yaml.load(f2)
     keys1 = set(example_.keys())
     keys2 = set(old.keys())
     if keys1 == keys2:
@@ -138,8 +138,9 @@ if config.marshoai_use_yaml_config:
 
             with open(config_file_path, "r", encoding="utf-8") as f:
                 old_config = yaml_2.load(f)
-            with StringIO(dump_config_to_yaml(ConfigModel())) as f:
-                new_config = yaml.load(f)
+
+            with StringIO(dump_config_to_yaml(ConfigModel())) as f2:
+                new_config = yaml_2.load(f2)
 
             merged_config = merge_configs(old_config, new_config)
 
