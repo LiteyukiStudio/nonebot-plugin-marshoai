@@ -1,4 +1,5 @@
 import shutil
+from io import StringIO
 from pathlib import Path
 
 import yaml as yaml_  # type: ignore
@@ -76,27 +77,30 @@ yaml = YAML()
 
 config_file_path = Path("config/marshoai/config.yaml").resolve()
 
-current_dir = Path(__file__).parent.resolve()
-source_template = current_dir / "config_example.yaml"
-
 destination_folder = Path("config/marshoai/")
 destination_file = destination_folder / "config.yaml"
 
 
-def copy_config(source_template, destination_file):
-    """
-    复制模板配置文件到config
-    """
-    shutil.copy(source_template, destination_file)
+def dump_config_to_yaml(config: ConfigModel):
+    return yaml_.dump(config.model_dump(), allow_unicode=True, default_flow_style=False)
 
 
-def check_yaml_is_changed(source_template):
+def write_default_config(destination_file):
+    """
+    写入默认配置
+    """
+    with open(destination_file, "w", encoding="utf-8") as f:
+        with StringIO(dump_config_to_yaml(ConfigModel())) as f2:
+            f.write(f2.read())
+
+
+def check_yaml_is_changed():
     """
     检查配置文件是否需要更新
     """
     with open(config_file_path, "r", encoding="utf-8") as f:
         old = yaml.load(f)
-    with open(source_template, "r", encoding="utf-8") as f:
+    with StringIO(dump_config_to_yaml(ConfigModel())) as f:
         example_ = yaml.load(f)
     keys1 = set(example_.keys())
     keys2 = set(old.keys())
@@ -124,19 +128,18 @@ if config.marshoai_use_yaml_config:
     if not config_file_path.exists():
         logger.info("配置文件不存在,正在创建")
         config_file_path.parent.mkdir(parents=True, exist_ok=True)
-        copy_config(source_template, destination_file)
+        write_default_config(destination_file)
     else:
         logger.info("配置文件存在,正在读取")
 
-        if check_yaml_is_changed(source_template):
+        if check_yaml_is_changed():
             yaml_2 = YAML()
             logger.info("插件新的配置已更新, 正在更新")
 
             with open(config_file_path, "r", encoding="utf-8") as f:
                 old_config = yaml_2.load(f)
-
-            with open(source_template, "r", encoding="utf-8") as f:
-                new_config = yaml_2.load(f)
+            with StringIO(dump_config_to_yaml(ConfigModel())) as f:
+                new_config = yaml.load(f)
 
             merged_config = merge_configs(old_config, new_config)
 
