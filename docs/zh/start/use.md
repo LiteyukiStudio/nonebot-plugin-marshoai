@@ -23,7 +23,15 @@ title: 使用
     ```dotenv
     MARSHOAI_ADDITIONAL_IMAGE_MODELS=["hunyuan-vision"]
     ```
-
+- 对于本地部署的 DeepSeek-R1 模型：
+    :::tip
+    MarshoAI 默认使用 System Prompt 进行人设等的调整，但 DeepSeek-R1 官方推荐**避免**使用 System Prompt(但可以正常使用)。  
+    为解决此问题，引入了 System-As-User Prompt 配置，可将 System Prompt 作为用户传入的消息。
+    :::
+    ```dotenv 
+    MARSHOAI_ENABLE_SYSASUSER_PROMPT=true
+    MARSHOAI_SYSASUSER_PROMPT="好的喵~" # 假装是模型收到消息后的回答
+    ```
 ### 使用 DeepSeek-R1 模型
 MarshoAI 兼容 DeepSeek-R1 模型，你可通过以下步骤来使用：
 1. 获取 API Key  

@@ -26,7 +26,14 @@ SUPPORT_IMAGE_MODELS: list = [
     "llama-3.2-11b-vision-instruct",
     "gemini-2.0-flash-exp",
 ]
-NO_SYSPROMPT_MODELS: list = ["o1", "o1-preview", "o1-mini"]
+OPENAI_NEW_MODELS: list = [
+    "o1",
+    "o1-preview",
+    "o1-mini",
+    "o3",
+    "o3-mini",
+    "o3-mini-large",
+]
 INTRODUCTION: str = f"""MarshoAI-NoneBot by LiteyukiStudio
 你好喵~我是一只可爱的猫娘AI，名叫小棉~🐾！
 我的主页在这里哦~↓↓↓

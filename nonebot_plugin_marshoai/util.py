@@ -3,22 +3,23 @@ import json
 import mimetypes
 import re
 import uuid
-from typing import Any, Optional
+from typing import Any, Dict, List, Optional
 
 import aiofiles  # type: ignore
 import httpx
 import nonebot_plugin_localstore as store
 from azure.ai.inference.aio import ChatCompletionsClient
-from azure.ai.inference.models import SystemMessage
+from azure.ai.inference.models import AssistantMessage, SystemMessage, UserMessage
 from nonebot import get_driver
 from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
 from openai import AsyncOpenAI, NotGiven
-from openai.types.chat import ChatCompletionMessage
+from openai.types.chat import ChatCompletion, ChatCompletionMessage
 from zhDateTime import DateTime
 
+from ._types import DeveloperMessage
 from .config import config
 from .constants import *
 from .deal_latex import ConvertLatex
@@ -135,7 +136,7 @@ async def make_chat_openai(
     msg: list,
     model_name: str,
     tools: Optional[list] = None,
-):
+) -> ChatCompletion:
     """
     使用 Openai SDK 调用ai获取回复
 
@@ -252,7 +253,7 @@ async def refresh_nickname_json():
         logger.error("刷新 nickname_json 表错误：无法载入 nickname.json 文件")
 
 
-def get_prompt():
+def get_prompt(model: str) -> List[Dict[str, Any]]:
     """获取系统提示词"""
     prompts = config.marshoai_additional_prompt
     if config.marshoai_enable_praises:
@@ -271,8 +272,19 @@ def get_prompt():
         )
 
     marsho_prompt = config.marshoai_prompt
-    spell = SystemMessage(content=marsho_prompt + prompts).as_dict()
-    return spell
+    sysprompt_content = marsho_prompt + prompts
+    prompt_list: List[Dict[str, Any]] = []
+    if not config.marshoai_enable_sysasuser_prompt:
+        if model not in OPENAI_NEW_MODELS:
+            prompt_list += [SystemMessage(content=sysprompt_content).as_dict()]
+        else:
+            prompt_list += [DeveloperMessage(content=sysprompt_content).as_dict()]
+    else:
+        prompt_list += [UserMessage(content=sysprompt_content).as_dict()]
+        prompt_list += [
+            AssistantMessage(content=config.marshoai_sysasuser_prompt).as_dict()
+        ]
+    return prompt_list
 
 
 def suggest_solution(errinfo: str) -> str:
