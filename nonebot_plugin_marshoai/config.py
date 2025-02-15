@@ -28,6 +28,8 @@ class ConfigModel(BaseModel):
         "当主人给你图片作为问题，并且你确实可以处理图片时，你必须以猫娘的说话方式进行回答，"
         "当主人想要你回复一些有关 LaTeX 公式的时候，你切记一定不可以在公式中包含非 ASCII 字符。"
     )
+    marshoai_sysasuser_prompt: str = "好的喵~"
+    marshoai_enable_sysasuser_prompt: bool = False
     marshoai_additional_prompt: str = ""
     marshoai_poke_suffix: str = "揉了揉你的猫耳"
     marshoai_enable_richtext_parse: bool = True
@@ -146,6 +148,7 @@ if config.marshoai_use_yaml_config:
 
         config = ConfigModel(**yaml_config)
 else:
-    logger.info(
-        "MarshoAI 支持新的 YAML 配置系统，若要使用，请将 MARSHOAI_USE_YAML_CONFIG 配置项设置为 true。"
-    )
+    # logger.info(
+    #     "MarshoAI 支持新的 YAML 配置系统，若要使用，请将 MARSHOAI_USE_YAML_CONFIG 配置项设置为 true。"
+    # )
+    pass

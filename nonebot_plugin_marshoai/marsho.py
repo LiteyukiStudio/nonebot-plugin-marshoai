@@ -257,7 +257,7 @@ async def marsho(
             model_name.lower()
             in SUPPORT_IMAGE_MODELS + config.marshoai_additional_image_models
         )
-        is_reasoning_model = model_name.lower() in NO_SYSPROMPT_MODELS
+        is_openai_new_model = model_name.lower() in OPENAI_NEW_MODELS
         usermsg = [] if is_support_image_model else ""
         for i in text:  # type: ignore
             if i.type == "text":
@@ -285,14 +285,13 @@ async def marsho(
                 backup_context, target.id, target.private
             )  # 加载历史记录
             logger.info(f"已恢复会话 {target.id} 的上下文备份~")
-        context_msg = context.build(target.id, target.private)
-        if not is_reasoning_model:
-            context_msg = [get_prompt()] + context_msg
-            # o1等推理模型不支持系统提示词, 故不添加
+        context_msg = get_prompt(model_name) + context.build(target.id, target.private)
+
         tools_lists = tools.tools_list + list(
             map(lambda v: v.data(), get_function_calls().values())
         )
         logger.info(f"正在获取回答，模型：{model_name}")
+        # logger.info(f"上下文：{context_msg}")
         response = await make_chat_openai(
             client=client,
             model_name=model_name,
@@ -304,7 +303,7 @@ async def marsho(
         # Sprint(choice)
         # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
         if choice.message.tool_calls != None and config.marshoai_fix_toolcalls:
-            choice.finish_reason = CompletionsFinishReason.TOOL_CALLS
+            choice.finish_reason = "tool_calls"
         logger.info(f"完成原因：{choice.finish_reason}")
         if choice.finish_reason == CompletionsFinishReason.STOPPED:
             # 当对话成功时，将dict的上下文添加到上下文类中
@@ -460,12 +459,8 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
                 response = await make_chat_openai(
                     client=client,
                     model_name=model_name,
-                    msg=[
-                        (
-                            get_prompt()
-                            if model_name.lower() not in NO_SYSPROMPT_MODELS
-                            else None
-                        ),
+                    msg=get_prompt(model_name)
+                    + [
                         UserMessage(
                             content=f"*{user_nickname}{config.marshoai_poke_suffix}"
                         ),

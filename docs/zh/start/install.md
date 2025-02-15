@@ -119,7 +119,8 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
 | MARSHOAI_TOKEN                   | `str`   |                                         | 调用 AI API 所需的 token                                                                           |
 | MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | Marsho 默认调用的模型                                                                                |
-| MARSHOAI_PROMPT                  | `str`   | 猫娘 Marsho 人设提示词                         | Marsho 的基本系统提示词 **※部分模型(o1等)不支持系统提示词。**                                                       |
+| MARSHOAI_PROMPT                  | `str`   | 猫娘 Marsho 人设提示词                         | Marsho 的基本系统提示词                                                      |
+| MARSHOAI_SYSASUSER_PROMPT        | `str`   | `好的喵~`               | Marsho 的 System-As-User 启用时，使用的 Assistant 消息          |
 | MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho 的扩展系统提示词                                                                               |
 | MARSHOAI_ENFORCE_NICKNAME        | `bool`  | `true`                                  | 是否强制用户设置昵称                                                                                 |
 | MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳。` |
@@ -135,6 +136,7 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | `bool` | `true` | 启用后用户发送带图请求时若模型不支持图片，则提示用户 |
 | MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | 启用后用户未设置昵称时提示用户设置          |
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | 是否启用夸赞名单功能                 |
+| MARSHOAI_ENABLE_SYSASUSER_PROMPT  | `bool` | `false` | 是否启用 System-As-User 提示词     |
 | MARSHOAI_ENABLE_TIME_PROMPT        | `bool` | `true` | 是否启用实时更新的日期与时间（精确到秒）与农历日期系统提示词  |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `false` | 是否启用小棉工具                   |
 | MARSHOAI_ENABLE_PLUGINS             | `bool` | `true` | 是否启用小棉插件    |
