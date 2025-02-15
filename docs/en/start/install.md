@@ -117,7 +117,8 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
 | MARSHOAI_TOKEN                   | `str`   |                                         | The token needed to call AI API |
 | MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | The default model of Marsho                                                                        |
-| MARSHOAI_PROMPT                  | `str`   | Catgirl Marsho's character prompt                    | Marsho's basic system prompt **※Some models(o1 and so on) don't support it**                                                       |
+| MARSHOAI_PROMPT                  | `str`   | Catgirl Marsho's character prompt                    | Marsho's basic system prompt                                                        |
+| MARSHOAI_SYSASUSER_PROMPT        | `str`   | `好的喵~`               | Marsho 的 System-As-User 启用时，使用的 Assistant 消息          |
 | MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho's external system prompt                                                                              |
 | MARSHOAI_ENFORCE_NICKNAME        | `bool`  | `true`                                  | Enforce user to set nickname or not                                                               |
 | MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | When double click Marsho who connected to OneBot adapter, the chat content. When it's empty string, double click function is off. Such as, the default content is `*[昵称]揉了揉你的猫耳。` |
@@ -135,6 +136,7 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_ENABLE_SUPPORT_IMAGE_TIP | `bool` | `true` | When on, if user send request with photo and model don't support that, remind the user |
 | MARSHOAI_ENABLE_NICKNAME_TIP      | `bool` | `true` | When on, if user haven't set username, remind user to set       |
 | MARSHOAI_ENABLE_PRAISES           | `bool` | `true` | Turn on Praise list or not           |
+| MARSHOAI_ENABLE_SYSASUSER_PROMPT  | `bool` | `false` | 是否启用 System-As-User 提示词     |
 | MARSHOAI_ENABLE_TIME_PROMPT        | `bool` | `true` | Turn on real-time date and time (accurate to seconds) and lunar date system prompt  |
 | MARSHOAI_ENABLE_TOOLS             | `bool` | `false` | Turn on Marsho Tools or not           |
 | MARSHOAI_ENABLE_PLUGINS             | `bool` | `true` | Turn on Marsho Plugins or not           

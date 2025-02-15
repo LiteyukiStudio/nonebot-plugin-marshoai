@@ -303,7 +303,7 @@ async def marsho(
         # Sprint(choice)
         # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
         if choice.message.tool_calls != None and config.marshoai_fix_toolcalls:
-            choice.finish_reason = CompletionsFinishReason.TOOL_CALLS
+            choice.finish_reason = "tool_calls"
         logger.info(f"完成原因：{choice.finish_reason}")
         if choice.finish_reason == CompletionsFinishReason.STOPPED:
             # 当对话成功时，将dict的上下文添加到上下文类中

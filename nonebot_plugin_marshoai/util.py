@@ -9,7 +9,7 @@ import aiofiles  # type: ignore
 import httpx
 import nonebot_plugin_localstore as store
 from azure.ai.inference.aio import ChatCompletionsClient
-from azure.ai.inference.models import SystemMessage
+from azure.ai.inference.models import AssistantMessage, SystemMessage, UserMessage
 from nonebot import get_driver
 from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
@@ -274,10 +274,16 @@ def get_prompt(model: str) -> List[Dict[str, Any]]:
     marsho_prompt = config.marshoai_prompt
     sysprompt_content = marsho_prompt + prompts
     prompt_list: List[Dict[str, Any]] = []
-    if model not in OPENAI_NEW_MODELS:
-        prompt_list += [SystemMessage(content=sysprompt_content).as_dict()]
+    if not config.marshoai_enable_sysasuser_prompt:
+        if model not in OPENAI_NEW_MODELS:
+            prompt_list += [SystemMessage(content=sysprompt_content).as_dict()]
+        else:
+            prompt_list += [DeveloperMessage(content=sysprompt_content).as_dict()]
     else:
-        prompt_list += [DeveloperMessage(content=sysprompt_content).as_dict()]
+        prompt_list += [UserMessage(content=sysprompt_content).as_dict()]
+        prompt_list += [
+            AssistantMessage(content=config.marshoai_sysasuser_prompt).as_dict()
+        ]
     return prompt_list
 
 
