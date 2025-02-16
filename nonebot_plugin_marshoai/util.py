@@ -21,12 +21,12 @@ from zhDateTime import DateTime
 
 from ._types import DeveloperMessage
 from .config import config
-from .constants import *
+from .constants import CODE_BLOCK_PATTERN, IMG_LATEX_PATTERN, OPENAI_NEW_MODELS
 from .deal_latex import ConvertLatex
 
 nickname_json = None  # 记录昵称
 praises_json = None  # 记录夸赞名单
-loaded_target_list = []  # 记录已恢复备份的上下文的列表
+loaded_target_list: List[str] = []  # 记录已恢复备份的上下文的列表
 
 NOT_GIVEN = NotGiven()
 
@@ -219,7 +219,7 @@ async def get_nicknames():
         try:
             async with aiofiles.open(filename, "r", encoding="utf-8") as f:
                 nickname_json = json.loads(await f.read())
-        except Exception:
+        except (json.JSONDecodeError, FileNotFoundError):
             nickname_json = {}
     return nickname_json
 
@@ -249,7 +249,7 @@ async def refresh_nickname_json():
             store.get_plugin_data_file("nickname.json"), "r", encoding="utf-8"
         ) as f:
             nickname_json = json.loads(await f.read())
-    except Exception:
+    except (json.JSONDecodeError, FileNotFoundError):
         logger.error("刷新 nickname_json 表错误：无法载入 nickname.json 文件")
 
 

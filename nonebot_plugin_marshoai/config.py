@@ -1,4 +1,3 @@
-import shutil
 from io import StringIO
 from pathlib import Path
 
@@ -81,15 +80,15 @@ destination_folder = Path("config/marshoai/")
 destination_file = destination_folder / "config.yaml"
 
 
-def dump_config_to_yaml(config: ConfigModel):
-    return yaml_.dump(config.model_dump(), allow_unicode=True, default_flow_style=False)
+def dump_config_to_yaml(cfg: ConfigModel):
+    return yaml_.dump(cfg.model_dump(), allow_unicode=True, default_flow_style=False)
 
 
-def write_default_config(destination_file):
+def write_default_config(dest_file):
     """
     写入默认配置
     """
-    with open(destination_file, "w", encoding="utf-8") as f:
+    with open(dest_file, "w", encoding="utf-8") as f:
         with StringIO(dump_config_to_yaml(ConfigModel())) as f2:
             f.write(f2.read())
 
@@ -110,17 +109,17 @@ def check_yaml_is_changed():
         return True
 
 
-def merge_configs(old_config, new_config):
+def merge_configs(existing_cfg, new_cfg):
     """
     合并配置文件
     """
-    for key, value in new_config.items():
-        if key in old_config:
+    for key, value in new_cfg.items():
+        if key in existing_cfg:
             continue
         else:
             logger.info(f"新增配置项: {key} = {value}")
-            old_config[key] = value
-    return old_config
+            existing_cfg[key] = value
+    return existing_cfg
 
 
 config: ConfigModel = get_plugin_config(ConfigModel)

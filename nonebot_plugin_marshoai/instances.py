@@ -1,6 +1,4 @@
 # Marsho 的类实例以及全局变量
-from azure.ai.inference.aio import ChatCompletionsClient
-from azure.core.credentials import AzureKeyCredential
 from nonebot import get_driver
 from openai import AsyncOpenAI
 
