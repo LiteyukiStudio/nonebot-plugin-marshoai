@@ -10,7 +10,7 @@
 
 _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_  
 
-[![QQ群](https://img.shields.io/badge/QQ群-1029557452-blue.svg?logo=QQ)](https://qm.qq.com/q/a13iwP5kAw)
+[![QQ群](https://img.shields.io/badge/QQ群-1029557452-blue.svg?logo=QQ&style=flat-square)](https://qm.qq.com/q/a13iwP5kAw)
 [![NoneBot Registry](https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin%2Fnonebot-plugin-marshoai&style=flat-square)](https://registry.nonebot.dev/plugin/nonebot-plugin-marshoai:nonebot_plugin_marshoai)
 <a href="https://registry.nonebot.dev/plugin/nonebot-plugin-marshoai:nonebot_plugin_marshoai">
   <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnbbdg.lgc2333.top%2Fplugin-adapters%2Fnonebot-plugin-marshoai&style=flat-square" alt="Supported Adapters">
@@ -28,7 +28,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 通过调用 OpenAI 标准格式 API(例如 GitHub Models API) 来实现聊天的插件。  
 插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
 _谁不喜欢回复消息快又可爱的猫娘呢？_  
-**对 OneBot 以外的适配器与非 GitHub Models API 的支持未经过完全验证。**  
+**对 OneBot 以外的适配器与非 GitHub Models API 的支持未完全经过验证。**  
 [Melobot 实现](https://github.com/LiteyukiStudio/marshoai-melo)
 
 ## 🐱 设定
@@ -58,7 +58,7 @@ _谁不喜欢回复消息快又可爱的猫娘呢？_
 -   [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)
 -   [nonebot-plugin-deepseek](https://github.com/KomoriDev/nonebot-plugin-deepseek)
 
-"Marsho" logo 由 [@Asankilp](https://github.com/Asankilp)绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
+"Marsho" logo 由 [@Asankilp](https://github.com/Asankilp) 绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
 "nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。  
 部分指定的代码基于 [Mulan PSL v2](./LICENSE-MULAN) 许可下提供。
 
