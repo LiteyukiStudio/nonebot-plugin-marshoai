@@ -1,4 +1,5 @@
 import contextlib
+import json
 import traceback
 from typing import Optional
 
@@ -21,9 +22,10 @@ from nonebot.rule import to_me
 from nonebot.typing import T_State
 from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
 
-from .constants import INTRODUCTION, OPENAI_NEW_MODELS, SUPPORT_IMAGE_MODELS
+from .config import config
+from .constants import INTRODUCTION, SUPPORT_IMAGE_MODELS
 from .hooks import *
-from .instances import *
+from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
 from .plugin.func_call.caller import get_function_calls
 from .plugin.func_call.models import SessionContext
@@ -257,7 +259,6 @@ async def marsho(
             model_name.lower()
             in SUPPORT_IMAGE_MODELS + config.marshoai_additional_image_models
         )
-        is_openai_new_model = model_name.lower() in OPENAI_NEW_MODELS
         usermsg = [] if is_support_image_model else ""
         for i in text:  # type: ignore
             if i.type == "text":
@@ -302,7 +303,7 @@ async def marsho(
         choice = response.choices[0]
         # Sprint(choice)
         # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
-        if choice.message.tool_calls != None and config.marshoai_fix_toolcalls:
+        if choice.message.tool_calls is not None and config.marshoai_fix_toolcalls:
             choice.finish_reason = "tool_calls"
         logger.info(f"完成原因：{choice.finish_reason}")
         if choice.finish_reason == CompletionsFinishReason.STOPPED:
@@ -342,7 +343,7 @@ async def marsho(
             # function call
             # 需要获取额外信息，调用函数工具
             tool_msg = []
-            while choice.message.tool_calls != None:
+            while choice.message.tool_calls is not None:
                 # await UniMessage(str(response)).send()
                 tool_calls = choice.message.tool_calls
                 # try:
@@ -411,7 +412,7 @@ async def marsho(
                 )
                 choice = response.choices[0]
                 # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
-                if choice.message.tool_calls != None:
+                if choice.message.tool_calls is not None:
                     choice.finish_reason = CompletionsFinishReason.TOOL_CALLS
             if choice.finish_reason == CompletionsFinishReason.STOPPED:
 

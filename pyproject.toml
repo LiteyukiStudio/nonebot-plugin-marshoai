@@ -81,4 +81,4 @@ test = [
 ]
 
 [tool.ruff.lint]
-ignore = ["E402"]
+ignore = ["E402", "F405"]
