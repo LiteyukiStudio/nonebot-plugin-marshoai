@@ -9,7 +9,6 @@ import traceback
 from nonebot import logger
 
 from .config import config
-from .util import *
 
 
 class MarshoContext:

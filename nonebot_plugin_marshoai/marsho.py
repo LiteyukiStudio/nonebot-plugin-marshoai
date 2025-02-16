@@ -2,7 +2,6 @@ import contextlib
 import traceback
 from typing import Optional
 
-import openai
 from arclet.alconna import Alconna, AllParam, Args
 from azure.ai.inference.models import (
     AssistantMessage,
@@ -18,10 +17,11 @@ from nonebot.adapters import Bot, Event, Message
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
-from nonebot.rule import Rule, to_me
+from nonebot.rule import to_me
 from nonebot.typing import T_State
 from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
 
+from .constants import INTRODUCTION, OPENAI_NEW_MODELS, SUPPORT_IMAGE_MODELS
 from .hooks import *
 from .instances import *
 from .metadata import metadata
