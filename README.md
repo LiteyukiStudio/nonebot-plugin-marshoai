@@ -25,8 +25,8 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
 
 ## 📖 介绍
 
-通过调用 OpenAI 标准格式 API(例如 GitHub Models API) 来实现聊天的插件。  
-插件内置了猫娘小棉(Marsho)的人物设定，可以进行可爱的聊天！  
+通过调用 OpenAI 标准格式应用程序接口（例如 GitHub Models API），来实现聊天的插件。  
+插件内置了猫娘小棉（Marsho，マルショ）的人物设定，可以进行可爱的聊天！  
 _谁不喜欢回复消息快又可爱的猫娘呢？_  
 **对 OneBot 以外的适配器与非 GitHub Models API 的支持未完全经过验证。**  
 [Melobot 实现](https://github.com/LiteyukiStudio/marshoai-melo)
@@ -35,7 +35,7 @@ _谁不喜欢回复消息快又可爱的猫娘呢？_
 
 #### 基本信息
 
--   名字：小棉(Marsho)
+-   名字：小棉（Marsho，マルショ）
 -   生日：9 月 6 日
 
 #### 喜好
