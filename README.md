@@ -60,7 +60,6 @@ _谁不喜欢回复消息快又可爱的猫娘呢？_
 
 "Marsho" logo 由 [@Asankilp](https://github.com/Asankilp) 绘制，基于 [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) 许可下提供。  
 "nonebot-plugin-marshoai" 基于 [MIT](./LICENSE-MIT) 许可下提供。  
-部分指定的代码基于 [Mulan PSL v2](./LICENSE-MULAN) 许可下提供。
 
 <div>
   <a href="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/graphs/contributors">
