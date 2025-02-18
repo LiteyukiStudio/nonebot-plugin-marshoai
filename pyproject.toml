@@ -31,7 +31,7 @@ dependencies = [
     "openai>=1.58.1",
     "nonebot-plugin-latex>=0.0.2.2"
 ]
-license = { text = "MIT, Mulan PSL v2" }
+license = { text = "MIT" }
 
 [project.urls]
 Homepage = "https://marsho.liteyuki.icu/"
