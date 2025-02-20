@@ -10,12 +10,12 @@ import httpx
 import nonebot_plugin_localstore as store
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import AssistantMessage, SystemMessage, UserMessage
-from nonebot import get_driver
+# from nonebot import get_driver
 from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
-from nonebot_plugin_latex import converter
+from nonebot_plugin_latex import get_converter
 from openai import AsyncOpenAI, NotGiven
 from openai.types.chat import ChatCompletion, ChatCompletionMessage
 from zhDateTime import DateTime
@@ -330,6 +330,7 @@ if config.marshoai_enable_richtext_parse:
     # @get_driver().on_bot_connect
     # async def load_latex_convert():
     #     await latex_convert.load_channel(None)
+    latex_converter = get_converter()
 
     async def get_uuid_back2codeblock(
         msg: str, code_blank_uuid_map: list[tuple[str, str]]
@@ -414,10 +415,12 @@ if config.marshoai_enable_richtext_parse:
                     .replace("\\]", ""),
                     code_blank_uuid_map,
                 )
-                latex_generate_ok, latex_generate_result = await converter.generate_png(
-                    latex_exp,
-                    dpi=300,
-                    foreground_colour=config.marshoai_main_colour,
+                latex_generate_ok, latex_generate_result = (
+                    await latex_converter.generate_png(
+                        latex_exp,
+                        dpi=300,
+                        foreground_colour=config.marshoai_main_colour,
+                    )
                 )
 
                 if latex_generate_ok:
