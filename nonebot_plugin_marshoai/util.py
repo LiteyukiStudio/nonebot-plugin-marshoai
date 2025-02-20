@@ -10,6 +10,7 @@ import httpx
 import nonebot_plugin_localstore as store
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import AssistantMessage, SystemMessage, UserMessage
+
 # from nonebot import get_driver
 from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
