@@ -6,7 +6,7 @@ import nonebot_plugin_localstore as store
 from nonebot import logger
 
 from .config import config
-from .instances import *
+from .instances import context, driver, target_list, tools
 from .plugin import load_plugin, load_plugins
 from .util import get_backup_context, save_context_to_json
 

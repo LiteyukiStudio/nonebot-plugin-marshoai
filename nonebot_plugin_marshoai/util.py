@@ -20,11 +20,10 @@ from openai.types.chat import ChatCompletion, ChatCompletionMessage
 from zhDateTime import DateTime
 
 from ._types import DeveloperMessage
+from .cache.decos import *
 from .config import config
 from .constants import CODE_BLOCK_PATTERN, IMG_LATEX_PATTERN, OPENAI_NEW_MODELS
 from .deal_latex import ConvertLatex
-from .decos import from_cache, update_to_cache
-from .instances import cache
 
 # nickname_json = None  # 记录昵称
 # praises_json = None  # 记录夸赞名单
@@ -238,6 +237,11 @@ async def set_nickname(user_id: str, name: str):
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
     return data
+
+
+async def get_nickname_by_user_id(user_id: str):
+    nickname_json = await get_nicknames()
+    return nickname_json.get(user_id, "")
 
 
 @update_to_cache("nickname")

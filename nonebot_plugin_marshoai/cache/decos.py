@@ -1,4 +1,6 @@
-from .instances import cache
+from ..models import Cache
+
+cache = Cache()
 
 
 def from_cache(key):
