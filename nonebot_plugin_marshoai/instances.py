@@ -3,7 +3,7 @@ from nonebot import get_driver
 from openai import AsyncOpenAI
 
 from .config import config
-from .models import MarshoContext, MarshoTools
+from .models import Cache, MarshoContext, MarshoTools
 
 driver = get_driver()
 
@@ -11,6 +11,7 @@ command_start = driver.config.command_start
 model_name = config.marshoai_default_model
 context = MarshoContext()
 tools = MarshoTools()
+cache = Cache()
 token = config.marshoai_token
 endpoint = config.marshoai_azure_endpoint
 # client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))

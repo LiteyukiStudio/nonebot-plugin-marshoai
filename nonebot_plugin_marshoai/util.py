@@ -23,6 +23,7 @@ from ._types import DeveloperMessage
 from .config import config
 from .constants import CODE_BLOCK_PATTERN, IMG_LATEX_PATTERN, OPENAI_NEW_MODELS
 from .deal_latex import ConvertLatex
+from .instances import cache
 
 nickname_json = None  # 记录昵称
 praises_json = None  # 记录夸赞名单
