@@ -107,3 +107,24 @@ class MarshoHandler:
             tools=tools,
         )
         return response
+
+    async def handle_common_chat(
+        self,
+        user_message: Union[str, list],
+        model_name: str,
+        tools: list,
+        with_context: bool = True,
+        stream: bool = False,
+    ) -> ChatCompletion:
+        """
+        处理一般聊天
+        """
+        if stream:
+            raise NotImplementedError
+        response = await self.handle_single_chat(
+            user_message=user_message,
+            model_name=model_name,
+            tools=tools,
+            with_context=with_context,
+        )
+        return response
