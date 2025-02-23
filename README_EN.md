@@ -58,7 +58,6 @@ This project uses the following code from other projects:
 "Marsho" logo contributed by [@Asankilp](https://github.com/Asankilp),licensed under [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.  
 
 "nonebot-plugin-marshoai" is licensed under [MIT](./LICENSE-MIT) license.  
-Some of the code is licensed under [Mulan PSL v2](./LICENSE-MULAN) license.
 
 <div>
   <a href="https://github.com/LiteyukiStudio/nonebot-plugin-marshoai/graphs/contributors">
