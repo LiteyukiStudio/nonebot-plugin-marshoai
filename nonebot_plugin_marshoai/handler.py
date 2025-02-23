@@ -15,10 +15,8 @@ from nonebot.matcher import (
     Matcher,
     current_bot,
     current_event,
-    current_handler,
     current_matcher,
 )
-from nonebot.typing import T_State
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from openai import AsyncOpenAI
 from openai.types.chat import ChatCompletion, ChatCompletionMessage
@@ -31,7 +29,6 @@ from .plugin.func_call.caller import get_function_calls
 from .plugin.func_call.models import SessionContext
 from .util import (
     extract_content_and_think,
-    get_backup_context,
     get_image_b64,
     get_nickname_by_user_id,
     get_prompt,
@@ -68,7 +65,7 @@ class MarshoHandler:
         usermsg = [] if is_support_image_model else ""
         user_nickname = await get_nickname_by_user_id(self.event.get_user_id())
         if user_nickname:
-            nickname_prompt = f"此消息的说话者为: {user_nickname}"
+            nickname_prompt = f"\n此消息的说话者为: {user_nickname}"
         else:
             nickname_prompt = ""
         for i in user_input:  # type: ignore

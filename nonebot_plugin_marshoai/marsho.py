@@ -1,5 +1,4 @@
 import contextlib
-import json
 import traceback
 from typing import Optional
 
@@ -7,10 +6,6 @@ from arclet.alconna import Alconna, AllParam, Args
 from azure.ai.inference.models import (
     AssistantMessage,
     CompletionsFinishReason,
-    ImageContentItem,
-    ImageUrl,
-    TextContentItem,
-    ToolMessage,
     UserMessage,
 )
 from nonebot import logger, on_command, on_message
@@ -29,7 +24,6 @@ from .hooks import *
 from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
 from .plugin.func_call.caller import get_function_calls
-from .plugin.func_call.models import SessionContext
 from .util import *
 
 
