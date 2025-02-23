@@ -263,11 +263,14 @@ async def marsho(
         )
         logger.info(f"正在获取回答，模型：{model_name}")
         # logger.info(f"上下文：{context_msg}")
-        response = await handler.handle_single_chat(
-            usermsg, model_name, tools_lists, with_context=True
-        )
+        response = await handler.handle_common_chat(usermsg, model_name, tools_lists)
         # await UniMessage(str(response)).send()
-
+        if response is not None:
+            context_user, context_assistant = response
+            context.append(context_user.as_dict(), target.id, target.private)
+            context.append(context_assistant.to_dict(), target.id, target.private)
+        else:
+            await UniMessage("没有回答").send()
     except Exception as e:
         await UniMessage(str(e) + suggest_solution(str(e))).send()
         traceback.print_exc()

@@ -3,7 +3,6 @@ from nonebot import get_driver
 from openai import AsyncOpenAI
 
 from .config import config
-from .handler import MarshoHandler
 from .models import MarshoContext, MarshoTools
 
 driver = get_driver()

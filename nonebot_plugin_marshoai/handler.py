@@ -1,5 +1,5 @@
 import json
-from typing import Optional, Union
+from typing import Optional, Tuple, Union
 
 from azure.ai.inference.models import (
     CompletionsFinishReason,
@@ -21,11 +21,11 @@ from nonebot.matcher import (
 from nonebot.typing import T_State
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from openai import AsyncOpenAI
-from openai.types.chat import ChatCompletion
+from openai.types.chat import ChatCompletion, ChatCompletionMessage
 
 from .config import config
 from .constants import SUPPORT_IMAGE_MODELS
-from .instances import target_list, tools
+from .instances import target_list
 from .models import MarshoContext
 from .plugin.func_call.caller import get_function_calls
 from .plugin.func_call.models import SessionContext
@@ -50,7 +50,7 @@ class MarshoHandler:
         self.context = context
         self.bot: Bot = current_bot.get()
         self.event: Event = current_event.get()
-        self.state: T_State = current_handler.get().state
+        # self.state: T_State = current_handler.get().state
         self.matcher: Matcher = current_matcher.get()
         self.message_id: str = UniMessage.get_message_id(self.event)
         self.target = UniMessage.get_target(self.event)
@@ -97,138 +97,97 @@ class MarshoHandler:
         self,
         user_message: Union[str, list],
         model_name: str,
-        tools: list,
-        with_context: bool = True,
+        tools_list: list,
+        tool_message: Optional[list] = None,
     ) -> ChatCompletion:
         """
         处理单条聊天
         """
 
-        context_msg = (
-            get_prompt(model_name)
-            + (self.context.build(self.target.id, self.target.private))
-            if with_context
-            else ""
+        context_msg = get_prompt(model_name) + (
+            self.context.build(self.target.id, self.target.private)
         )
         response = await make_chat_openai(
             client=self.client,
-            msg=context_msg + [UserMessage(content=user_message).as_dict()],  # type: ignore
+            msg=context_msg + [UserMessage(content=user_message).as_dict()] + (tool_message if tool_message else []),  # type: ignore
             model_name=model_name,
-            tools=tools,
+            tools=tools_list if tools_list else None,
         )
         return response
 
     async def handle_function_call(
         self,
         completion: ChatCompletion,
+        user_message: Union[str, list],
+        model_name: str,
+        tools_list: list,
     ):
         # function call
         # 需要获取额外信息，调用函数工具
         tool_msg = []
         choice = completion.choices[0]
-        while choice.message.tool_calls is not None:
-            # await UniMessage(str(response)).send()
-            tool_calls = choice.message.tool_calls
-            # try:
-            #     if tool_calls[0]["function"]["name"].startswith("$"):
-            #         choice.message.tool_calls[0][
-            #             "type"
-            #         ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
-            # except:
-            #     pass
-            tool_msg.append(choice.message)
-            for tool_call in tool_calls:
-                try:
-                    function_args = json.loads(tool_call.function.arguments)
-                except json.JSONDecodeError:
-                    function_args = json.loads(
-                        tool_call.function.arguments.replace("'", '"')
+        # await UniMessage(str(response)).send()
+        tool_calls = choice.message.tool_calls
+        # try:
+        #     if tool_calls[0]["function"]["name"].startswith("$"):
+        #         choice.message.tool_calls[0][
+        #             "type"
+        #         ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
+        # except:
+        #     pass
+        tool_msg.append(choice.message)
+        for tool_call in tool_calls:
+            try:
+                function_args = json.loads(tool_call.function.arguments)
+            except json.JSONDecodeError:
+                function_args = json.loads(
+                    tool_call.function.arguments.replace("'", '"')
+                )
+            # 删除args的placeholder参数
+            if "placeholder" in function_args:
+                del function_args["placeholder"]
+            logger.info(
+                f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
+                + "\n".join([f"{k}={v}" for k, v in function_args.items()])
+            )
+            await UniMessage(
+                f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
+                + "\n".join([f"{k}={v}" for k, v in function_args.items()])
+            ).send()
+            if caller := get_function_calls().get(tool_call.function.name):
+                logger.debug(f"调用插件函数 {caller.full_name}")
+                # 权限检查，规则检查 TODO
+                # 实现依赖注入，检查函数参数及参数注解类型，对Event类型的参数进行注入
+                func_return = await caller.with_ctx(
+                    SessionContext(
+                        bot=self.bot,
+                        event=self.event,
+                        matcher=self.matcher,
                     )
-                # 删除args的placeholder参数
-                if "placeholder" in function_args:
-                    del function_args["placeholder"]
-                logger.info(
-                    f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
-                    + "\n".join([f"{k}={v}" for k, v in function_args.items()])
-                )
-                await UniMessage(
-                    f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
-                    + "\n".join([f"{k}={v}" for k, v in function_args.items()])
-                ).send()
-                # TODO 临时追加插件函数，若工具中没有则调用插件函数
-                if tools.has_function(tool_call.function.name):
-                    logger.debug(f"调用工具函数 {tool_call.function.name}")
-                    func_return = await tools.call(
-                        tool_call.function.name, function_args
-                    )  # 获取返回值
-                else:
-                    if caller := get_function_calls().get(tool_call.function.name):
-                        logger.debug(f"调用插件函数 {caller.full_name}")
-                        # 权限检查，规则检查 TODO
-                        # 实现依赖注入，检查函数参数及参数注解类型，对Event类型的参数进行注入
-                        func_return = await caller.with_ctx(
-                            SessionContext(
-                                bot=self.bot,
-                                event=self.event,
-                                state=self.state,
-                                matcher=self.matcher,
-                            )
-                        ).call(**function_args)
-                    else:
-                        logger.error(
-                            f"未找到函数 {tool_call.function.name.replace('-', '.')}"
-                        )
-                        func_return = (
-                            f"未找到函数 {tool_call.function.name.replace('-', '.')}"
-                        )
-                tool_msg.append(
-                    ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
-                )
-                #  tool_msg[0]["tool_calls"][0]["type"] = "builtin_function"
-                # await UniMessage(str(tool_msg)).send()
-            request_msg = context_msg + [UserMessage(content=usermsg).as_dict()] + tool_msg  # type: ignore
-            response = await make_chat_openai(
-                client=client,
-                model_name=model_name,
-                msg=request_msg,  # type: ignore
-                tools=(
-                    tools_lists if tools_lists else None
-                ),  # TODO 临时追加函数，后期优化
-            )
-            choice = response.choices[0]
-            # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
-            if choice.message.tool_calls is not None:
-                choice.finish_reason = CompletionsFinishReason.TOOL_CALLS
-        if choice.finish_reason == CompletionsFinishReason.STOPPED:
-
-            # 对话成功 添加上下文
-            context.append(
-                UserMessage(content=usermsg).as_dict(), self.target.id, self.target.private  # type: ignore
-            )
-            # context.append(tool_msg, self.target.id, self.target.private)
-            choice_msg_dict = choice.message.to_dict()
-            if "reasoning_content" in choice_msg_dict:
-                del choice_msg_dict["reasoning_content"]
-            context.append(choice_msg_dict, self.target.id, self.target.private)
-
-            # 发送消息
-            if config.marshoai_enable_richtext_parse:
-                await (await parse_richtext(str(choice.message.content))).send(
-                    reply_to=True
-                )
+                ).call(**function_args)
             else:
-                await UniMessage(str(choice.message.content)).send(reply_to=True)
-        else:
-            await marsho_cmd.finish(f"意外的完成原因:{choice.finish_reason}")
+                logger.error(f"未找到函数 {tool_call.function.name.replace('-', '.')}")
+                func_return = f"未找到函数 {tool_call.function.name.replace('-', '.')}"
+            tool_msg.append(
+                ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
+            )
+            #  tool_msg[0]["tool_calls"][0]["type"] = "builtin_function"
+            # await UniMessage(str(tool_msg)).send()
+        return await self.handle_common_chat(
+            user_message=user_message,
+            model_name=model_name,
+            tools_list=tools_list,
+            tool_message=tool_msg,
+        )
 
     async def handle_common_chat(
         self,
         user_message: Union[str, list],
         model_name: str,
-        tools: list,
-        with_context: bool = True,
+        tools_list: list,
         stream: bool = False,
-    ) -> ChatCompletion:
+        tool_message: Optional[list] = None,
+    ) -> Union[Tuple[UserMessage, ChatCompletionMessage], None]:
         """
         处理一般聊天
         """
@@ -238,8 +197,8 @@ class MarshoHandler:
         response = await self.handle_single_chat(
             user_message=user_message,
             model_name=model_name,
-            tools=tools,
-            with_context=with_context,
+            tools_list=tools_list,
+            tool_message=tool_message,
         )
         choice = response.choices[0]
         # Sprint(choice)
@@ -267,7 +226,7 @@ class MarshoHandler:
                 )
             else:
                 await UniMessage(str(choice_msg_content)).send(reply_to=True)
-            return (UserMessage(context=user_message), choice_msg_after)
+            return UserMessage(content=user_message), choice_msg_after
         elif choice.finish_reason == CompletionsFinishReason.CONTENT_FILTERED:
 
             # 对话失败，消息过滤
@@ -277,7 +236,9 @@ class MarshoHandler:
             )
             return None
         elif choice.finish_reason == CompletionsFinishReason.TOOL_CALLS:
-            pass
+            return await self.handle_function_call(
+                response, user_message, model_name, tools_list
+            )
         else:
             await UniMessage(f"意外的完成原因:{choice.finish_reason}").send()
             return None
