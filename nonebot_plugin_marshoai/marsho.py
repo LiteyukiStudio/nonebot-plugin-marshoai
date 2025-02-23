@@ -1,5 +1,4 @@
 import contextlib
-import json
 import traceback
 from typing import Optional
 
@@ -7,10 +6,6 @@ from arclet.alconna import Alconna, AllParam, Args
 from azure.ai.inference.models import (
     AssistantMessage,
     CompletionsFinishReason,
-    ImageContentItem,
-    ImageUrl,
-    TextContentItem,
-    ToolMessage,
     UserMessage,
 )
 from nonebot import logger, on_command, on_message
@@ -24,11 +19,11 @@ from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
 
 from .config import config
 from .constants import INTRODUCTION, SUPPORT_IMAGE_MODELS
+from .handler import MarshoHandler
 from .hooks import *
 from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
 from .plugin.func_call.caller import get_function_calls
-from .plugin.func_call.models import SessionContext
 from .util import *
 
 
@@ -232,16 +227,16 @@ async def marsho(
         # 发送说明
         # await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
         await marsho_cmd.finish(INTRODUCTION)
+        backup_context = await get_backup_context(target.id, target.private)
+        if backup_context:
+            context.set_context(
+                backup_context, target.id, target.private
+            )  # 加载历史记录
+            logger.info(f"已恢复会话 {target.id} 的上下文备份~")
+    handler = MarshoHandler(client, context)
     try:
-        user_id = event.get_user_id()
-        nicknames = await get_nicknames()
-        user_nickname = nicknames.get(user_id, "")
-        if user_nickname != "":
-            nickname_prompt = (
-                f"\n*此消息的说话者id为:{user_id}，名字为:{user_nickname}*"
-            )
-        else:
-            nickname_prompt = ""
+        user_nickname = await get_nickname_by_user_id(event.get_user_id())
+        if not user_nickname:
             # 用户名无法获取，暂时注释
             # user_nickname = event.sender.nickname  # 未设置昵称时获取用户名
             # nickname_prompt = f"\n*此消息的说话者:{user_nickname}"
@@ -255,188 +250,21 @@ async def marsho(
                     "※你未设置自己的昵称。推荐使用「nickname [昵称]」命令设置昵称来获得个性化(可能）回答。"
                 ).send()
 
-        is_support_image_model = (
-            model_name.lower()
-            in SUPPORT_IMAGE_MODELS + config.marshoai_additional_image_models
-        )
-        usermsg = [] if is_support_image_model else ""
-        for i in text:  # type: ignore
-            if i.type == "text":
-                if is_support_image_model:
-                    usermsg += [TextContentItem(text=i.data["text"] + nickname_prompt).as_dict()]  # type: ignore
-                else:
-                    usermsg += str(i.data["text"] + nickname_prompt)  # type: ignore
-            elif i.type == "image":
-                if is_support_image_model:
-                    usermsg.append(  # type: ignore
-                        ImageContentItem(
-                            image_url=ImageUrl(  # type: ignore
-                                url=str(await get_image_b64(i.data["url"]))  # type: ignore
-                            )  # type: ignore
-                        ).as_dict()  # type: ignore
-                    )  # type: ignore
-                    logger.info(f"输入图片 {i.data['url']}")
-                elif config.marshoai_enable_support_image_tip:
-                    await UniMessage(
-                        "*此模型不支持图片处理或管理员未启用此模型的图片支持。图片将被忽略。"
-                    ).send()
-        backup_context = await get_backup_context(target.id, target.private)
-        if backup_context:
-            context.set_context(
-                backup_context, target.id, target.private
-            )  # 加载历史记录
-            logger.info(f"已恢复会话 {target.id} 的上下文备份~")
-        context_msg = get_prompt(model_name) + context.build(target.id, target.private)
+        usermsg = await handler.process_user_input(text, model_name)
 
         tools_lists = tools.tools_list + list(
             map(lambda v: v.data(), get_function_calls().values())
         )
         logger.info(f"正在获取回答，模型：{model_name}")
         # logger.info(f"上下文：{context_msg}")
-        response = await make_chat_openai(
-            client=client,
-            model_name=model_name,
-            msg=context_msg + [UserMessage(content=usermsg).as_dict()],  # type: ignore
-            tools=tools_lists if tools_lists else None,  # TODO 临时追加函数，后期优化
-        )
+        response = await handler.handle_common_chat(usermsg, model_name, tools_lists)
         # await UniMessage(str(response)).send()
-        choice = response.choices[0]
-        # Sprint(choice)
-        # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
-        if choice.message.tool_calls is not None and config.marshoai_fix_toolcalls:
-            choice.finish_reason = "tool_calls"
-        logger.info(f"完成原因：{choice.finish_reason}")
-        if choice.finish_reason == CompletionsFinishReason.STOPPED:
-            # 当对话成功时，将dict的上下文添加到上下文类中
-            context.append(
-                UserMessage(content=usermsg).as_dict(), target.id, target.private  # type: ignore
-            )
-
-            ##### DeepSeek-R1 兼容部分 #####
-            choice_msg_content, choice_msg_thinking, choice_msg_after = (
-                extract_content_and_think(choice.message)
-            )
-            if choice_msg_thinking and config.marshoai_send_thinking:
-                await UniMessage("思维链：\n" + choice_msg_thinking).send()
-            ##### 兼容部分结束 #####
-
-            context.append(choice_msg_after.to_dict(), target.id, target.private)
-            if [target.id, target.private] not in target_list:
-                target_list.append([target.id, target.private])
-
-            # 对话成功发送消息
-            if config.marshoai_enable_richtext_parse:
-                await (await parse_richtext(str(choice_msg_content))).send(
-                    reply_to=True
-                )
-            else:
-                await UniMessage(str(choice_msg_content)).send(reply_to=True)
-        elif choice.finish_reason == CompletionsFinishReason.CONTENT_FILTERED:
-
-            # 对话失败，消息过滤
-
-            await UniMessage("*已被内容过滤器过滤。请调整聊天内容后重试。").send(
-                reply_to=True
-            )
-            return
-        elif choice.finish_reason == CompletionsFinishReason.TOOL_CALLS:
-            # function call
-            # 需要获取额外信息，调用函数工具
-            tool_msg = []
-            while choice.message.tool_calls is not None:
-                # await UniMessage(str(response)).send()
-                tool_calls = choice.message.tool_calls
-                # try:
-                #     if tool_calls[0]["function"]["name"].startswith("$"):
-                #         choice.message.tool_calls[0][
-                #             "type"
-                #         ] = "builtin_function"  # 兼容 moonshot AI 内置函数的临时方案
-                # except:
-                #     pass
-                tool_msg.append(choice.message)
-                for tool_call in tool_calls:
-                    try:
-                        function_args = json.loads(tool_call.function.arguments)
-                    except json.JSONDecodeError:
-                        function_args = json.loads(
-                            tool_call.function.arguments.replace("'", '"')
-                        )
-                    # 删除args的placeholder参数
-                    if "placeholder" in function_args:
-                        del function_args["placeholder"]
-                    logger.info(
-                        f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
-                        + "\n".join([f"{k}={v}" for k, v in function_args.items()])
-                    )
-                    await UniMessage(
-                        f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
-                        + "\n".join([f"{k}={v}" for k, v in function_args.items()])
-                    ).send()
-                    # TODO 临时追加插件函数，若工具中没有则调用插件函数
-                    if tools.has_function(tool_call.function.name):
-                        logger.debug(f"调用工具函数 {tool_call.function.name}")
-                        func_return = await tools.call(
-                            tool_call.function.name, function_args
-                        )  # 获取返回值
-                    else:
-                        if caller := get_function_calls().get(tool_call.function.name):
-                            logger.debug(f"调用插件函数 {caller.full_name}")
-                            # 权限检查，规则检查 TODO
-                            # 实现依赖注入，检查函数参数及参数注解类型，对Event类型的参数进行注入
-                            func_return = await caller.with_ctx(
-                                SessionContext(
-                                    bot=bot,
-                                    event=event,
-                                    state=state,
-                                    matcher=matcher,
-                                )
-                            ).call(**function_args)
-                        else:
-                            logger.error(
-                                f"未找到函数 {tool_call.function.name.replace('-', '.')}"
-                            )
-                            func_return = f"未找到函数 {tool_call.function.name.replace('-', '.')}"
-                    tool_msg.append(
-                        ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
-                    )
-                    #  tool_msg[0]["tool_calls"][0]["type"] = "builtin_function"
-                    # await UniMessage(str(tool_msg)).send()
-                request_msg = context_msg + [UserMessage(content=usermsg).as_dict()] + tool_msg  # type: ignore
-                response = await make_chat_openai(
-                    client=client,
-                    model_name=model_name,
-                    msg=request_msg,  # type: ignore
-                    tools=(
-                        tools_lists if tools_lists else None
-                    ),  # TODO 临时追加函数，后期优化
-                )
-                choice = response.choices[0]
-                # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
-                if choice.message.tool_calls is not None:
-                    choice.finish_reason = CompletionsFinishReason.TOOL_CALLS
-            if choice.finish_reason == CompletionsFinishReason.STOPPED:
-
-                # 对话成功 添加上下文
-                context.append(
-                    UserMessage(content=usermsg).as_dict(), target.id, target.private  # type: ignore
-                )
-                # context.append(tool_msg, target.id, target.private)
-                choice_msg_dict = choice.message.to_dict()
-                if "reasoning_content" in choice_msg_dict:
-                    del choice_msg_dict["reasoning_content"]
-                context.append(choice_msg_dict, target.id, target.private)
-
-                # 发送消息
-                if config.marshoai_enable_richtext_parse:
-                    await (await parse_richtext(str(choice.message.content))).send(
-                        reply_to=True
-                    )
-                else:
-                    await UniMessage(str(choice.message.content)).send(reply_to=True)
-            else:
-                await marsho_cmd.finish(f"意外的完成原因:{choice.finish_reason}")
+        if response is not None:
+            context_user, context_assistant = response
+            context.append(context_user.as_dict(), target.id, target.private)
+            context.append(context_assistant.to_dict(), target.id, target.private)
         else:
-            await marsho_cmd.finish(f"意外的完成原因:{choice.finish_reason}")
+            await UniMessage("没有回答").send()
     except Exception as e:
         await UniMessage(str(e) + suggest_solution(str(e))).send()
         traceback.print_exc()
@@ -451,12 +279,10 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
     @poke_notify.handle()
     async def poke(event: Event):
 
-        user_id = event.get_user_id()
-        nicknames = await get_nicknames()
-        user_nickname = nicknames.get(user_id, "")
+        user_nickname = await get_nickname_by_user_id(event.get_user_id())
         try:
             if config.marshoai_poke_suffix != "":
-                logger.info(f"收到戳一戳，用户昵称：{user_nickname}，用户ID：{user_id}")
+                logger.info(f"收到戳一戳，用户昵称：{user_nickname}")
                 response = await make_chat_openai(
                     client=client,
                     model_name=model_name,

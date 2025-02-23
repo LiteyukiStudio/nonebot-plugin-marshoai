@@ -22,6 +22,7 @@ _✨ 使用 OpenAI 标准格式 API 的聊天机器人插件 ✨_
   <img src="https://img.shields.io/badge/Code%20Style-Black-121110.svg?style=flat-square" alt="codestyle">
 </div>  
 
+<img width="100%" src="https://starify.komoridevs.icu/api/starify?owner=LiteyukiStudio&repo=nonebot-plugin-marshoai" alt="starify" />
 
 ## 📖 介绍
 

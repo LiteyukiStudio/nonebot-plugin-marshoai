@@ -70,11 +70,9 @@ class Caller:
         ):
             return False, "告诉用户 Permission Denied 权限不足"
 
-        if self.ctx.state is None:
-            return False, "State is None"
-        if self._rule and not await self._rule(
-            self.ctx.bot, self.ctx.event, self.ctx.state
-        ):
+        # if self.ctx.state is None:
+        #     return False, "State is None"
+        if self._rule and not await self._rule(self.ctx.bot, self.ctx.event):
             return False, "告诉用户 Rule Denied 规则不匹配"
 
         return True, ""
@@ -115,6 +113,10 @@ class Caller:
         # 检查函数签名，确定依赖注入参数
         sig = inspect.signature(func)
         for name, param in sig.parameters.items():
+            if param.annotation == T_State:
+                self.di.state = name
+                continue  # 防止后续判断T_State子类时报错
+
             if issubclass(param.annotation, Event) or isinstance(
                 param.annotation, Event
             ):
@@ -132,9 +134,6 @@ class Caller:
                 param.annotation, Matcher
             ):
                 self.di.matcher = name
-
-            if param.annotation == T_State:
-                self.di.state = name
 
         # 检查默认值情况
         for name, param in sig.parameters.items():

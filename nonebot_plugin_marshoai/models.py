@@ -11,6 +11,25 @@ from nonebot import logger
 from .config import config
 
 
+class Cache:
+    """
+    缓存类
+    """
+
+    def __init__(self):
+        self.cache = {}
+
+    def get(self, key):
+        if key in self.cache:
+            return self.cache[key]
+        else:
+            self.cache[key] = None
+            return None
+
+    def set(self, key, value):
+        self.cache[key] = value
+
+
 class MarshoContext:
     """
     Marsho 的上下文类
