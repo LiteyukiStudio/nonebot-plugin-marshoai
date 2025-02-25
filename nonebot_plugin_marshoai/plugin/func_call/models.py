@@ -19,7 +19,7 @@ class SessionContext(BaseModel):
     bot: Bot
     event: Event
     matcher: Matcher
-    # state: T_State
+    state: T_State | None
     caller: Any = None
 
     class Config:

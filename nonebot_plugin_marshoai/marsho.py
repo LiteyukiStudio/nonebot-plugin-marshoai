@@ -264,7 +264,7 @@ async def marsho(
             context.append(context_user.as_dict(), target.id, target.private)
             context.append(context_assistant.to_dict(), target.id, target.private)
         else:
-            await UniMessage("没有回答").send()
+            return
     except Exception as e:
         await UniMessage(str(e) + suggest_solution(str(e))).send()
         traceback.print_exc()

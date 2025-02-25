@@ -133,7 +133,7 @@ class MarshoHandler:
         # except:
         #     pass
         tool_msg.append(choice.message)
-        for tool_call in tool_calls:
+        for tool_call in tool_calls:  # type: ignore
             try:
                 function_args = json.loads(tool_call.function.arguments)
             except json.JSONDecodeError:
@@ -160,6 +160,7 @@ class MarshoHandler:
                         bot=self.bot,
                         event=self.event,
                         matcher=self.matcher,
+                        state=None,
                     )
                 ).call(**function_args)
             else:
@@ -184,7 +185,7 @@ class MarshoHandler:
         tools_list: list,
         stream: bool = False,
         tool_message: Optional[list] = None,
-    ) -> Union[Tuple[UserMessage, ChatCompletionMessage], None]:
+    ) -> Optional[Tuple[UserMessage, ChatCompletionMessage]]:
         """
         处理一般聊天
         """
