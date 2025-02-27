@@ -16,7 +16,7 @@ marsho_memory_cmd = on_alconna(
         Subcommand("view", alias={"v"}),
         Subcommand("reset", alias={"r"}),
     ),
-    priority=10,
+    priority=96,
     block=True,
 )
 

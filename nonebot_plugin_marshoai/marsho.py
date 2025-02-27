@@ -32,20 +32,20 @@ async def at_enable():
 
 
 changemodel_cmd = on_command(
-    "changemodel", permission=SUPERUSER, priority=10, block=True
+    "changemodel", permission=SUPERUSER, priority=96, block=True
 )
 # setprompt_cmd = on_command("prompt",permission=SUPERUSER)
-praises_cmd = on_command("praises", permission=SUPERUSER, priority=10, block=True)
-add_usermsg_cmd = on_command("usermsg", permission=SUPERUSER, priority=10, block=True)
+praises_cmd = on_command("praises", permission=SUPERUSER, priority=96, block=True)
+add_usermsg_cmd = on_command("usermsg", permission=SUPERUSER, priority=96, block=True)
 add_assistantmsg_cmd = on_command(
-    "assistantmsg", permission=SUPERUSER, priority=10, block=True
+    "assistantmsg", permission=SUPERUSER, priority=96, block=True
 )
-contexts_cmd = on_command("contexts", permission=SUPERUSER, priority=10, block=True)
+contexts_cmd = on_command("contexts", permission=SUPERUSER, priority=96, block=True)
 save_context_cmd = on_command(
-    "savecontext", permission=SUPERUSER, priority=10, block=True
+    "savecontext", permission=SUPERUSER, priority=96, block=True
 )
 load_context_cmd = on_command(
-    "loadcontext", permission=SUPERUSER, priority=10, block=True
+    "loadcontext", permission=SUPERUSER, priority=96, block=True
 )
 marsho_cmd = on_alconna(
     Alconna(
@@ -53,42 +53,42 @@ marsho_cmd = on_alconna(
         Args["text?", AllParam],
     ),
     aliases=tuple(config.marshoai_aliases),
-    priority=10,
+    priority=96,
     block=True,
 )
 resetmem_cmd = on_alconna(
     Alconna(
         config.marshoai_default_name + ".reset",
     ),
-    priority=10,
+    priority=96,
     block=True,
 )
 marsho_help_cmd = on_alconna(
     Alconna(
         config.marshoai_default_name + ".help",
     ),
-    priority=10,
+    priority=96,
     block=True,
 )
 marsho_status_cmd = on_alconna(
     Alconna(
         config.marshoai_default_name + ".status",
     ),
-    priority=10,
+    priority=96,
     block=True,
 )
 
-marsho_at = on_message(rule=to_me() & at_enable, priority=11)
+marsho_at = on_message(rule=to_me() & at_enable, priority=97)
 nickname_cmd = on_alconna(
     Alconna(
         "nickname",
         Args["name?", str],
     ),
-    priority=10,
+    priority=96,
     block=True,
 )
 refresh_data_cmd = on_command(
-    "refresh_data", permission=SUPERUSER, priority=10, block=True
+    "refresh_data", permission=SUPERUSER, priority=96, block=True
 )
 
 
