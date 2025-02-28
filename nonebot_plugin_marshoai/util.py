@@ -10,11 +10,11 @@ import httpx
 import nonebot_plugin_localstore as store
 from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import AssistantMessage, SystemMessage, UserMessage
-from nonebot import get_driver
 from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
+from nonebot_plugin_latex import get_converter
 from openai import AsyncOpenAI, NotGiven
 from openai.types.chat import ChatCompletion, ChatCompletionMessage
 from zhDateTime import DateTime
@@ -23,7 +23,8 @@ from ._types import DeveloperMessage
 from .cache.decos import *
 from .config import config
 from .constants import CODE_BLOCK_PATTERN, IMG_LATEX_PATTERN, OPENAI_NEW_MODELS
-from .deal_latex import ConvertLatex
+
+# from .deal_latex import ConvertLatex
 
 # nickname_json = None  # 记录昵称
 # praises_json = None  # 记录夸赞名单
@@ -326,31 +327,14 @@ async def get_backup_context(target_id: str, target_private: bool) -> list:
     return []
 
 
-"""
-以下函数依照 Mulan PSL v2 协议授权
-
-函数: parse_markdown, get_uuid_back2codeblock
-
-版权所有 © 2024 金羿ELS
-Copyright (R) 2024 Eilles(EillesWan@outlook.com)
-
-Licensed under Mulan PSL v2.
-You can use this software according to the terms and conditions of the Mulan PSL v2.
-You may obtain a copy of Mulan PSL v2 at:
-         http://license.coscl.org.cn/MulanPSL2
-THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-See the Mulan PSL v2 for more details.
-"""
-
 if config.marshoai_enable_richtext_parse:
 
-    latex_convert = ConvertLatex()  # 开启一个转换实例
+    # latex_convert = ConvertLatex()  # 开启一个转换实例
 
-    @get_driver().on_bot_connect
-    async def load_latex_convert():
-        await latex_convert.load_channel(None)
+    # @get_driver().on_bot_connect
+    # async def load_latex_convert():
+    #     await latex_convert.load_channel(None)
+    latex_converter = get_converter()
 
     async def get_uuid_back2codeblock(
         msg: str, code_blank_uuid_map: list[tuple[str, str]]
@@ -436,7 +420,7 @@ if config.marshoai_enable_richtext_parse:
                     code_blank_uuid_map,
                 )
                 latex_generate_ok, latex_generate_result = (
-                    await latex_convert.generate_png(
+                    await latex_converter.generate_png(
                         latex_exp,
                         dpi=300,
                         foreground_colour=config.marshoai_main_colour,
@@ -473,11 +457,6 @@ if config.marshoai_enable_richtext_parse:
         )
 
         return result_msg
-
-
-"""
-Mulan PSL v2 协议授权部分结束
-"""
 
 
 def extract_content_and_think(
