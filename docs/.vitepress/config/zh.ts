@@ -23,7 +23,7 @@ export const zh = defineConfig({
         lightModeSwitchTitle: '轻色模式',
         darkModeSwitchTitle: '深色模式',
         footer: {
-            message: "文档完善中，欢迎提出建议或帮助我们完善。",
+            message: "文档完善中，欢迎提出建议或帮助我们完善。<br>网页由 <a href='https://cdn.liteyuki.icu' target='_blank'>Liteyukiflare CDN</a> 提供加速服务。",
             copyright: '© 2024 <a href="https://liteyuki.icu" target="_blank">Liteyuki Studio</a>',
         }
     },

@@ -23,7 +23,7 @@ export const ja = defineConfig({
         lightModeSwitchTitle: 'ライト',
         darkModeSwitchTitle: 'ダーク',
         footer: {
-            message: "ドキュメントは改善中です。ご意見をお待ちしております。",
+            message: "ドキュメントは改善中です。ご意見をお待ちしております。<br>ウェブページは <a href='https://cdn.liteyuki.icu' target='_blank'>Liteyukiflare CDN</a> によって加速されています。",
             copyright: '© 2024 <a href="https://liteyuki.icu" target="_blank">Liteyuki Studio</a>',
         }
     },
