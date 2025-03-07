@@ -13,7 +13,7 @@ export default defineConfig({
     rewrites: {
         [`${defaultLang}/:rest*`]: ":rest*",
     },
-    cleanUrls: true,
+    cleanUrls: false,
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
         logo: {
