@@ -1,25 +1,20 @@
-# 构建 VitePress 站点并将其部署到 GitHub Pages 的示例工作流程
-#
-name: Deploy VitePress site to Pages
+name: Deploy VitePress site to Liteyuki PaaS
 
 on:
-  # 在针对 `main` 分支的推送上运行。如果你
-  # 使用 `master` 分支作为默认分支，请将其更改为 `master`
   push:
     branches: [main]
-
-  # 允许你从 Actions 选项卡手动运行此工作流程
   workflow_dispatch:
 
-# 设置 GITHUB_TOKEN 的权限，以允许部署到 GitHub Pages
 permissions:
   contents: write
+  statuses: write
 
-# 只允许同时进行一次部署，跳过正在运行和最新队列之间的运行队列
-# 但是，不要取消正在进行的运行，因为我们希望允许这些生产部署完成
 concurrency:
   group: pages
   cancel-in-progress: false
+
+env:
+  MELI_SITE: f31e3b17-c4ea-4d9d-bdce-9417d67fd30e
 
 jobs:
   # 构建工作
@@ -30,8 +25,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # 如果未启用 lastUpdated，则不需要
-      # - uses: pnpm/action-setup@v3 # 如果使用 pnpm，请取消注释
-      # - uses: oven-sh/setup-bun@v1 # 如果使用 Bun，请取消注释
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -59,9 +52,14 @@ jobs:
         run: |-
           pnpm run docs:build
 
-      - name: 部署文档
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          # 这是文档部署到的分支名称
-          branch: docs
-          folder: docs/.vitepress/dist
+
+      - name: "发布"
+        run: |
+          npx -p "@getmeli/cli" meli upload docs/.vitepress/dist \
+            --url "https://meli.liteyuki.icu" \
+            --site "$MELI_SITE" \
+            --token "$MELI_TOKEN" \
+            --release "$GITHUB_SHA"
+        env:
+          MELI_TOKEN: ${{ secrets.MELI_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
