@@ -37,7 +37,7 @@ OPENAI_NEW_MODELS: list = [
 INTRODUCTION: str = f"""MarshoAI-NoneBot by LiteyukiStudio
 你好喵~我是一只可爱的猫娘AI，名叫小棉~🐾！
 我的主页在这里哦~↓↓↓
-https://marsho.liteyuki.icu
+https://marshoai-docs.meli.liteyuki.icu
 
 ※ 使用 「{config.marshoai_default_name}.status」命令获取状态信息。
 ※ 使用「{config.marshoai_default_name}.help」命令获取使用说明。"""

@@ -32,6 +32,7 @@ class ConfigModel(BaseModel):
     marshoai_enable_sysasuser_prompt: bool = False
     marshoai_additional_prompt: str = ""
     marshoai_poke_suffix: str = "揉了揉你的猫耳"
+    marshoai_stream: bool = False
     marshoai_enable_richtext_parse: bool = True
     """
     是否启用自动消息富文本解析 即若包含图片链接则发送图片、若包含LaTeX公式则发送公式图。

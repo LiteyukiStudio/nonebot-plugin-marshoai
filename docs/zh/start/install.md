@@ -68,7 +68,7 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 
 ## 🧩 小棉插件
 
-小棉插件是`v1.0.0`的新增功能，替代旧的小棉工具功能。[使用文档](https://marsho.liteyuki.icu/dev/extension)
+小棉插件是`v1.0.0`的新增功能，替代旧的小棉工具功能。[使用文档](https://marshoai-docs.meli.liteyuki.icu/dev/extension)
 
 ## 👍 夸赞名单
 
@@ -149,6 +149,8 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | MARSHOAI_SINGLE_LATEX_PARSE    | `bool` | `false` |   单行公式是否渲染（当消息富文本解析启用时可用）（如果单行也渲……只能说不好看）           |
 | MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true` | 是否修复工具调用（部分模型须关闭，使用 vLLM 部署的模型时须关闭） |
 | MARSHOAI_SEND_THINKING           | `bool`  | `true` | 是否发送思维链（部分模型不支持） |
+| MARSHOAI_STREAM                  | `bool`  | `false`| 是否通过流式方式请求 API **开启此项后暂无法使用函数调用，无法在 Bot 用户侧聊天界面呈现出流式效果** |
+
 
 #### 开发及调试选项
 

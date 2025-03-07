@@ -65,7 +65,7 @@ When nonebot linked to OneBot v11 adapter, can recieve double click and response
 MarshoTools is a feature added in `v0.5.0`, support loading external function library to provide Function Call for Marsho. 
 
 ## 🧩 Marsho Plugin
-Marsho Plugin is a feature added in `v1.0.0`, replacing the old MarshoTools feature. [Documentation](https://marsho.liteyuki.icu/dev/extension)
+Marsho Plugin is a feature added in `v1.0.0`, replacing the old MarshoTools feature. [Documentation](https://marshoai-docs.meli.liteyuki.icu/dev/extension)
 
 ## 👍 Praise list
 
@@ -148,3 +148,4 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_SINGLE_LATEX_PARSE       | `bool` | `false`| Render single-line equation or not    |
 | MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true` | Fix tool calls or not |
 | MARSHOAI_SEND_THINKING           | `bool`  | `true` | Send thinking chain or not |
+| MARSHOAI_STREAM                  | `bool`  | `false`| 是否通过流式方式请求 API **开启此项后暂无法使用函数调用，无法在 Bot 用户侧聊天界面呈现出流式效果** |

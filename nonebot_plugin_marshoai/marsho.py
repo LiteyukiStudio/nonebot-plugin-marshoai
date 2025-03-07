@@ -257,7 +257,9 @@ async def marsho(
         )
         logger.info(f"正在获取回答，模型：{model_name}")
         # logger.info(f"上下文：{context_msg}")
-        response = await handler.handle_common_chat(usermsg, model_name, tools_lists)
+        response = await handler.handle_common_chat(
+            usermsg, model_name, tools_lists, config.marshoai_stream
+        )
         # await UniMessage(str(response)).send()
         if response is not None:
             context_user, context_assistant = response
@@ -293,7 +295,7 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
                         ),
                     ],
                 )
-                choice = response.choices[0]
+                choice = response.choices[0]  # type: ignore
                 if choice.finish_reason == CompletionsFinishReason.STOPPED:
                     content = extract_content_and_think(choice.message)[0]
                     await UniMessage(" " + str(content)).send(at_sender=True)
