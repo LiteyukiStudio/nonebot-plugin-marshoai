@@ -20,6 +20,7 @@ from nonebot.matcher import (
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from openai import AsyncOpenAI, AsyncStream
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
+from openai.types.chat.chat_completion import Choice
 
 from .config import config
 from .constants import SUPPORT_IMAGE_MODELS
@@ -94,7 +95,7 @@ class MarshoHandler:
         self,
         user_message: Union[str, list],
         model_name: str,
-        tools_list: list,
+        tools_list: list | None,
         tool_message: Optional[list] = None,
         stream: bool = False,
     ) -> Union[ChatCompletion, AsyncStream[ChatCompletionChunk]]:
@@ -196,13 +197,19 @@ class MarshoHandler:
         """
         global target_list
         if stream:
-            raise NotImplementedError
-        response = await self.handle_single_chat(
-            user_message=user_message,
-            model_name=model_name,
-            tools_list=tools_list,
-            tool_message=tool_message,
-        )
+            response = await self.handle_stream_request(
+                user_message=user_message,
+                model_name=model_name,
+                tools_list=tools_list,
+                tools_message=tool_message,
+            )
+        else:
+            response = await self.handle_single_chat(  # type: ignore
+                user_message=user_message,
+                model_name=model_name,
+                tools_list=tools_list,
+                tool_message=tool_message,
+            )
         if isinstance(response, ChatCompletion):
             choice = response.choices[0]
         else:
@@ -250,22 +257,35 @@ class MarshoHandler:
             return None
 
     async def handle_stream_request(
-        self, user_message: Union[str, list], model_name: str, tools_list: list
-    ):
+        self,
+        user_message: Union[str, list],
+        model_name: str,
+        tools_list: list,
+        tools_message: Optional[list] = None,
+    ) -> Union[ChatCompletion, None]:
         """
         处理流式请求
         """
         response = await self.handle_single_chat(
             user_message=user_message,
             model_name=model_name,
-            tools_list=tools_list,
+            tools_list=None,  # TODO:让流式调用支持工具调用
+            tool_message=tools_message,
             stream=True,
         )
 
         if isinstance(response, AsyncStream):
             reasoning_contents = ""
             answer_contents = ""
+            last_chunk = None
+            is_first_token_appeared = False
+            is_answering = False
             async for chunk in response:
+                last_chunk = chunk
+                # print(chunk)
+                if not is_first_token_appeared:
+                    logger.debug(f"{chunk.id}: 第一个 token 已出现")
+                    is_first_token_appeared = True
                 if not chunk.choices:
                     logger.info("Usage:", chunk.usage)
                 else:
@@ -276,5 +296,33 @@ class MarshoHandler:
                     ):
                         reasoning_contents += delta.reasoning_content
                     else:
+                        if not is_answering:
+                            logger.debug(
+                                f"{chunk.id}: 思维链已输出完毕或无 reasoning_content 字段输出"
+                            )
+                            is_answering = True
                         if delta.content is not None:
                             answer_contents += delta.content
+            # print(last_chunk)
+            # 创建新的 ChatCompletion 对象
+            if last_chunk and last_chunk.choices:
+                message = ChatCompletionMessage(
+                    content=answer_contents,
+                    role="assistant",
+                    tool_calls=last_chunk.choices[0].delta.tool_calls,  # type: ignore
+                )
+                choice = Choice(
+                    finish_reason=last_chunk.choices[0].finish_reason,  # type: ignore
+                    index=last_chunk.choices[0].index,
+                    message=message,
+                )
+                return ChatCompletion(
+                    id=last_chunk.id,
+                    choices=[choice],
+                    created=last_chunk.created,
+                    model=last_chunk.model,
+                    system_fingerprint=last_chunk.system_fingerprint,
+                    object="chat.completion",
+                    usage=last_chunk.usage,
+                )
+        return None
