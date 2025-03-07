@@ -26,6 +26,7 @@ from nonebot.plugin import require
 
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
+require("nonebot_plugin_latex")
 
 import nonebot_plugin_localstore as store  # type: ignore
 from nonebot import get_driver, logger  # type: ignore
