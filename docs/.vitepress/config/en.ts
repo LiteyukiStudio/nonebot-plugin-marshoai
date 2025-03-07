@@ -23,7 +23,7 @@ export const en = defineConfig({
         lightModeSwitchTitle: 'Light',
         darkModeSwitchTitle: 'Dark',
         footer: {
-            message: "The document is being improved. Suggestions are welcome.<br>Webpage is deployed at <a href='https://meli.liteyuki.icu' target='_blank'>Liteyukiflare Meli</a> and accelerated by <a href='https://cdn.liteyuki.icu' target='_blank'>Liteyukiflare CDN</a>.",
+            message: "The document is being improved. Suggestions are welcome.<br>Webpage is deployed at <a href='https://meli.liteyuki.icu' target='_blank'>Liteyuki Meli</a> and accelerated by <a href='https://cdn.liteyuki.icu' target='_blank'>Liteyukiflare</a>.",
             copyright: '© 2024 <a href="https://liteyuki.icu" target="_blank">Liteyuki Studio</a>',
         }
     },
