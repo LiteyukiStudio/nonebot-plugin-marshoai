@@ -3,7 +3,7 @@ import json
 import mimetypes
 import re
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import aiofiles  # type: ignore
 import httpx
@@ -15,8 +15,8 @@ from nonebot.log import logger
 from nonebot_plugin_alconna import Image as ImageMsg
 from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
-from openai import AsyncOpenAI, NotGiven
-from openai.types.chat import ChatCompletion, ChatCompletionMessage
+from openai import AsyncOpenAI, AsyncStream, NotGiven
+from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
 from zhDateTime import DateTime
 
 from ._types import DeveloperMessage
@@ -109,35 +109,13 @@ async def get_image_b64(url: str, timeout: int = 10) -> Optional[str]:
         return None
 
 
-async def make_chat(
-    client: ChatCompletionsClient,
-    msg: list,
-    model_name: str,
-    tools: Optional[list] = None,
-):
-    """
-    调用ai获取回复
-
-    参数:
-        client: 用于与AI模型进行通信
-        msg: 消息内容
-        model_name: 指定AI模型名
-        tools: 工具列表
-    """
-    return await client.complete(
-        messages=msg,
-        model=model_name,
-        tools=tools,
-        **config.marshoai_model_args,
-    )
-
-
 async def make_chat_openai(
     client: AsyncOpenAI,
     msg: list,
     model_name: str,
     tools: Optional[list] = None,
-) -> ChatCompletion:
+    stream: bool = False,
+) -> Union[ChatCompletion, AsyncStream[ChatCompletionChunk]]:
     """
     使用 Openai SDK 调用ai获取回复
 
@@ -152,6 +130,7 @@ async def make_chat_openai(
         model=model_name,
         tools=tools or NOT_GIVEN,
         timeout=config.marshoai_timeout,
+        stream=stream,
         **config.marshoai_model_args,
     )
 

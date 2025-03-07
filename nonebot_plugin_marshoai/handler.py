@@ -18,8 +18,9 @@ from nonebot.matcher import (
     current_matcher,
 )
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
-from openai import AsyncOpenAI
-from openai.types.chat import ChatCompletion, ChatCompletionMessage
+from openai import AsyncOpenAI, AsyncStream
+from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
+from openai.types.chat.chat_completion import Choice
 
 from .config import config
 from .constants import SUPPORT_IMAGE_MODELS
@@ -94,9 +95,10 @@ class MarshoHandler:
         self,
         user_message: Union[str, list],
         model_name: str,
-        tools_list: list,
+        tools_list: list | None,
         tool_message: Optional[list] = None,
-    ) -> ChatCompletion:
+        stream: bool = False,
+    ) -> Union[ChatCompletion, AsyncStream[ChatCompletionChunk]]:
         """
         处理单条聊天
         """
@@ -109,12 +111,13 @@ class MarshoHandler:
             msg=context_msg + [UserMessage(content=user_message).as_dict()] + (tool_message if tool_message else []),  # type: ignore
             model_name=model_name,
             tools=tools_list if tools_list else None,
+            stream=stream,
         )
         return response
 
     async def handle_function_call(
         self,
-        completion: ChatCompletion,
+        completion: Union[ChatCompletion, AsyncStream[ChatCompletionChunk]],
         user_message: Union[str, list],
         model_name: str,
         tools_list: list,
@@ -122,7 +125,10 @@ class MarshoHandler:
         # function call
         # 需要获取额外信息，调用函数工具
         tool_msg = []
-        choice = completion.choices[0]
+        if isinstance(completion, ChatCompletion):
+            choice = completion.choices[0]
+        else:
+            raise ValueError("Unexpected completion type")
         # await UniMessage(str(response)).send()
         tool_calls = choice.message.tool_calls
         # try:
@@ -191,14 +197,23 @@ class MarshoHandler:
         """
         global target_list
         if stream:
-            raise NotImplementedError
-        response = await self.handle_single_chat(
-            user_message=user_message,
-            model_name=model_name,
-            tools_list=tools_list,
-            tool_message=tool_message,
-        )
-        choice = response.choices[0]
+            response = await self.handle_stream_request(
+                user_message=user_message,
+                model_name=model_name,
+                tools_list=tools_list,
+                tools_message=tool_message,
+            )
+        else:
+            response = await self.handle_single_chat(  # type: ignore
+                user_message=user_message,
+                model_name=model_name,
+                tools_list=tools_list,
+                tool_message=tool_message,
+            )
+        if isinstance(response, ChatCompletion):
+            choice = response.choices[0]
+        else:
+            raise ValueError("Unexpected response type")
         # Sprint(choice)
         # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
         if choice.message.tool_calls is not None and config.marshoai_fix_toolcalls:
@@ -240,3 +255,74 @@ class MarshoHandler:
         else:
             await UniMessage(f"意外的完成原因:{choice.finish_reason}").send()
             return None
+
+    async def handle_stream_request(
+        self,
+        user_message: Union[str, list],
+        model_name: str,
+        tools_list: list,
+        tools_message: Optional[list] = None,
+    ) -> Union[ChatCompletion, None]:
+        """
+        处理流式请求
+        """
+        response = await self.handle_single_chat(
+            user_message=user_message,
+            model_name=model_name,
+            tools_list=None,  # TODO:让流式调用支持工具调用
+            tool_message=tools_message,
+            stream=True,
+        )
+
+        if isinstance(response, AsyncStream):
+            reasoning_contents = ""
+            answer_contents = ""
+            last_chunk = None
+            is_first_token_appeared = False
+            is_answering = False
+            async for chunk in response:
+                last_chunk = chunk
+                # print(chunk)
+                if not is_first_token_appeared:
+                    logger.debug(f"{chunk.id}: 第一个 token 已出现")
+                    is_first_token_appeared = True
+                if not chunk.choices:
+                    logger.info("Usage:", chunk.usage)
+                else:
+                    delta = chunk.choices[0].delta
+                    if (
+                        hasattr(delta, "reasoning_content")
+                        and delta.reasoning_content is not None
+                    ):
+                        reasoning_contents += delta.reasoning_content
+                    else:
+                        if not is_answering:
+                            logger.debug(
+                                f"{chunk.id}: 思维链已输出完毕或无 reasoning_content 字段输出"
+                            )
+                            is_answering = True
+                        if delta.content is not None:
+                            answer_contents += delta.content
+            # print(last_chunk)
+            # 创建新的 ChatCompletion 对象
+            if last_chunk and last_chunk.choices:
+                message = ChatCompletionMessage(
+                    content=answer_contents,
+                    role="assistant",
+                    tool_calls=last_chunk.choices[0].delta.tool_calls,  # type: ignore
+                )
+                choice = Choice(
+                    finish_reason=last_chunk.choices[0].finish_reason,  # type: ignore
+                    index=last_chunk.choices[0].index,
+                    message=message,
+                )
+                return ChatCompletion(
+                    id=last_chunk.id,
+                    choices=[choice],
+                    created=last_chunk.created,
+                    model=last_chunk.model,
+                    system_fingerprint=last_chunk.system_fingerprint,
+                    object="chat.completion",
+                    usage=last_chunk.usage,
+                )
+        return None

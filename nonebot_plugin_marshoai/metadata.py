@@ -5,7 +5,7 @@ from .constants import USAGE
 
 metadata = PluginMetadata(
     name="Marsho AI 插件",
-    description="接入 Azure API 或其他 API 的 AI 聊天插件，支持图片处理，外部函数调用，兼容包括 DeepSeek-R1 在内的多个模型",
+    description="接入 Azure API 或其他 API 的 AI 聊天插件，支持图片处理，外部函数调用，兼容包括 DeepSeek-R1， QwQ-32B 在内的多个模型",
     usage=USAGE,
     type="application",
     config=ConfigModel,
