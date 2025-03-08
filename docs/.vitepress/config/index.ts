@@ -8,6 +8,7 @@ import { generateSidebar } from 'vitepress-sidebar'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
     head: [
+        ["script", { src: "https://cdn.liteyuki.icu/js/liteyuki_footer.js" }],
         ['link', { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     ],
     rewrites: {
