@@ -1,9 +1,6 @@
 name: Deploy VitePress site to Liteyuki PaaS
 
-on:
-  push:
-    branches: [main]
-  workflow_dispatch:
+on: ["push", "pull_request"]
 
 permissions:
   contents: write
@@ -28,7 +25,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Setup API markdown
         run: |-
@@ -51,7 +48,6 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=8192
         run: |-
           pnpm run docs:build
-
 
       - name: "发布"
         run: |
