@@ -210,10 +210,7 @@ class MarshoHandler:
                 tools_list=tools_list,
                 tool_message=tool_message,
             )
-        if isinstance(response, ChatCompletion):
-            choice = response.choices[0]
-        else:
-            raise ValueError("Unexpected response type")
+        choice = response.choices[0]  # type: ignore
         # Sprint(choice)
         # 当tool_calls非空时，将finish_reason设置为TOOL_CALLS
         if choice.message.tool_calls is not None and config.marshoai_fix_toolcalls:
@@ -311,6 +308,8 @@ class MarshoHandler:
                     role="assistant",
                     tool_calls=last_chunk.choices[0].delta.tool_calls,  # type: ignore
                 )
+                if reasoning_contents != "":
+                    setattr(message, "reasoning_content", reasoning_contents)
                 choice = Choice(
                     finish_reason=last_chunk.choices[0].finish_reason,  # type: ignore
                     index=last_chunk.choices[0].index,

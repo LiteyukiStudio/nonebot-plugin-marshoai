@@ -68,7 +68,7 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 
 ## 🧩 小棉插件
 
-小棉插件是`v1.0.0`的新增功能，替代旧的小棉工具功能。[使用文档](https://marshoai-docs.pages.liteyuki.icu/dev/extension)
+小棉插件是`v1.0.0`的新增功能，替代旧的小棉工具功能。[使用文档](https://marsho.liteyuki.icu/dev/extension)
 
 ## 👍 夸赞名单
 
