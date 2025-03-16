@@ -136,15 +136,15 @@ async def make_chat_openai(
 
 
 @from_cache("praises")
-def get_praises():
+async def get_praises():
     praises_file = store.get_plugin_data_file(
         "praises.json"
     )  # 夸赞名单文件使用localstore存储
     if not praises_file.exists():
-        with open(praises_file, "w", encoding="utf-8") as f:
+        async with aiofiles.open(praises_file, "w", encoding="utf-8") as f:
             json.dump(_praises_init_data, f, ensure_ascii=False, indent=4)
-    with open(praises_file, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    async with aiofiles.open(praises_file, "r", encoding="utf-8") as f:
+        data = json.loads(await f.read())
     praises_json = data
     return praises_json
 
@@ -160,8 +160,8 @@ async def refresh_praises_json():
     return data
 
 
-def build_praises() -> str:
-    praises = get_praises()
+async def build_praises() -> str:
+    praises = await get_praises()
     result = ["你喜欢以下几个人物，他们有各自的优点："]
     for item in praises["like"]:
         result.append(f"名字：{item['name']}，优点：{item['advantages']}")
@@ -237,11 +237,11 @@ async def refresh_nickname_json():
         logger.error("刷新 nickname_json 表错误：无法载入 nickname.json 文件")
 
 
-def get_prompt(model: str) -> List[Dict[str, Any]]:
+async def get_prompt(model: str) -> List[Dict[str, Any]]:
     """获取系统提示词"""
     prompts = config.marshoai_additional_prompt
     if config.marshoai_enable_praises:
-        praises_prompt = build_praises()
+        praises_prompt = await build_praises()
         prompts += praises_prompt
 
     if config.marshoai_enable_time_prompt:

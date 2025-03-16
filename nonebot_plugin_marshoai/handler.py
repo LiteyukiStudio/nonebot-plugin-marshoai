@@ -103,7 +103,7 @@ class MarshoHandler:
         处理单条聊天
         """
 
-        context_msg = get_prompt(model_name) + (
+        context_msg = await get_prompt(model_name) + (
             self.context.build(self.target.id, self.target.private)
         )
         response = await make_chat_openai(

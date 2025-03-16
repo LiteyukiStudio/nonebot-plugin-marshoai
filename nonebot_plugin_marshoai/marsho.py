@@ -288,7 +288,7 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
                 response = await make_chat_openai(
                     client=client,
                     model_name=model_name,
-                    msg=get_prompt(model_name)
+                    msg=await get_prompt(model_name)
                     + [
                         UserMessage(
                             content=f"*{user_nickname}{config.marshoai_poke_suffix}"
