@@ -34,7 +34,7 @@ dependencies = [
 license = { text = "MIT, Mulan PSL v2" }
 
 [project.urls]
-Homepage = "https://marsho.liteyuki.icu/"
+Homepage = "https://marshoai-docs.pages.liteyuki.icu/"
 
 
 [tool.nonebot]
