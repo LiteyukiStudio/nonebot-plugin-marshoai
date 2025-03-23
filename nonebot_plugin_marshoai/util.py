@@ -2,6 +2,7 @@ import base64
 import json
 import mimetypes
 import re
+import ssl
 import uuid
 from typing import Any, Dict, List, Optional, Union
 
@@ -58,6 +59,8 @@ _praises_init_data = {
 """
 初始夸赞名单之数据
 """
+_ssl_context = ssl.create_default_context()
+_ssl_context.set_ciphers("DEFAULT")
 
 
 async def get_image_raw_and_type(
@@ -74,7 +77,7 @@ async def get_image_raw_and_type(
         tuple[bytes, str]: 图片二进制数据, 图片MIME格式
     """
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=_ssl_context) as client:
         response = await client.get(url, headers=_browser_headers, timeout=timeout)
         if response.status_code == 200:
             # 获取图片数据
@@ -98,9 +101,7 @@ async def get_image_b64(url: str, timeout: int = 10) -> Optional[str]:
     return: 图片base64编码
     """
 
-    if data_type := await get_image_raw_and_type(
-        url.replace("https://", "http://"), timeout
-    ):
+    if data_type := await get_image_raw_and_type(url, timeout):
         # image_format = content_type.split("/")[1] if content_type else "jpeg"
         base64_image = base64.b64encode(data_type[0]).decode("utf-8")
         data_url = "data:{};base64,{}".format(data_type[1], base64_image)
