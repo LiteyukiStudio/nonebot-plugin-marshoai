@@ -48,7 +48,7 @@ Plugin internally installed the catgirl character of Marsho, is able to have a c
 - 🐾 Play! I like play with friends!
 
 ## 😼 Usage
-Please read [Documentation](https://marshoai-docs.pages.liteyuki.icu/start/install)
+Please read [Documentation](https://marshoai-docs.pages.liteyuki.icu/start/use.html)
 
 ## ❤ Thanks&Copyright
 This project uses the following code from other projects:  
