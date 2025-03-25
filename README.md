@@ -48,7 +48,7 @@ _谁不喜欢回复消息快又可爱的猫娘呢？_
 
 ## 😼 使用
 
-请查看[使用文档](https://marshoai-docs.pages.liteyuki.icu/start/use)
+请查看[使用文档](https://marshoai-docs.pages.liteyuki.icu/start/use.html)
 
 ## ❤ 鸣谢&版权说明
 
