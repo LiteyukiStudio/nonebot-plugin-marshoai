@@ -143,7 +143,7 @@ async def get_praises():
     )  # 夸赞名单文件使用localstore存储
     if not praises_file.exists():
         async with aiofiles.open(praises_file, "w", encoding="utf-8") as f:
-            json.dump(_praises_init_data, f, ensure_ascii=False, indent=4)
+            await f.write(json.dumps(_praises_init_data, ensure_ascii=False, indent=4))
     async with aiofiles.open(praises_file, "r", encoding="utf-8") as f:
         data = json.loads(await f.read())
     praises_json = data
@@ -214,8 +214,8 @@ async def set_nickname(user_id: str, name: str):
     data[user_id] = name
     if name == "" and user_id in data:
         del data[user_id]
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    async with aiofiles.open(filename, "w", encoding="utf-8") as f:
+        await f.write(json.dumps(data, ensure_ascii=False, indent=4))
     return data
 
 
