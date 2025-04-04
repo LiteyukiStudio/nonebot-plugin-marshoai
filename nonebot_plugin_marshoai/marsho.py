@@ -30,7 +30,6 @@ from .handler import MarshoHandler
 from .hooks import *
 from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
-from .models import MarshoContext
 from .plugin.func_call.caller import get_function_calls
 from .util import *
 from .utils.request import process_chat_stream

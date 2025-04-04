@@ -20,7 +20,6 @@ from nonebot.matcher import (
 from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
 from openai import AsyncOpenAI, AsyncStream
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
-from openai.types.chat.chat_completion import Choice
 
 from .config import config
 from .constants import SUPPORT_IMAGE_MODELS
