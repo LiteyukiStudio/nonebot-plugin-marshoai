@@ -35,7 +35,7 @@ from .util import (
     make_chat_openai,
     parse_richtext,
 )
-from .utils.request import process_chat_stream
+from .utils.processor import process_chat_stream
 
 
 class MarshoHandler:
@@ -50,7 +50,7 @@ class MarshoHandler:
         self.event: Event = current_event.get()
         # self.state: T_State = current_handler.get().state
         self.matcher: Matcher = current_matcher.get()
-        self.message_id: str = get_message_id(self.event)
+        self.message_id: str = UniMessage.get_message_id(self.event)
         self.target = get_target(self.event)
 
     async def process_user_input(

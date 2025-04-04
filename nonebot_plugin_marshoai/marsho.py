@@ -32,7 +32,7 @@ from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
 from .plugin.func_call.caller import get_function_calls
 from .util import *
-from .utils.request import process_chat_stream
+from .utils.processor import process_chat_stream
 
 
 async def at_enable():

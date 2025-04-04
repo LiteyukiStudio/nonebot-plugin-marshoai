@@ -7,6 +7,7 @@ import sys
 import traceback
 
 from nonebot import logger
+from typing_extensions import deprecated
 
 from .config import config
 
@@ -73,6 +74,7 @@ class MarshoContext:
         return self._get_target_dict(is_private).setdefault(target_id, [])
 
 
+@deprecated("小棉工具已弃用，无法正常调用")
 class MarshoTools:
     """
     Marsho 的工具类
