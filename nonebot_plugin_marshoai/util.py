@@ -18,7 +18,7 @@ from nonebot_plugin_alconna import Text as TextMsg
 from nonebot_plugin_alconna import UniMessage
 from openai import AsyncOpenAI, AsyncStream, NotGiven
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
-from zhDateTime import DateTime
+from zhDateTime import DateTime  # type: ignore
 
 from ._types import DeveloperMessage
 from .cache.decos import *
