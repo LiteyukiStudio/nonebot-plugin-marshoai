@@ -33,6 +33,7 @@ from .metadata import metadata
 from .models import MarshoContext
 from .plugin.func_call.caller import get_function_calls
 from .util import *
+from .utils.request import process_chat_stream
 
 
 async def at_enable():
@@ -298,15 +299,15 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
         try:
             if config.marshoai_poke_suffix != "":
                 logger.info(f"收到戳一戳，用户昵称：{user_nickname}")
-                if config.marshoai_stream:
-                    handler = MarshoHandler(client, MarshoContext())
-                    response = await handler.handle_stream_request(usermsg, model_name)
-                else:
-                    response = await make_chat_openai(
-                        client=client,
-                        model_name=model_name,
-                        msg=usermsg,
-                    )
+
+                response = await make_chat_openai(
+                    client=client,
+                    model_name=model_name,
+                    msg=usermsg,
+                    stream=config.marshoai_stream,
+                )
+                if isinstance(response, AsyncStream):
+                    response = await process_chat_stream(response)
                 choice = response.choices[0]  # type: ignore
                 if choice.finish_reason == CompletionsFinishReason.STOPPED:
                     content = extract_content_and_think(choice.message)[0]

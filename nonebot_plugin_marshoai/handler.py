@@ -264,7 +264,7 @@ class MarshoHandler:
         """
         处理流式请求
         """
-        response: AsyncStream[ChatCompletionChunk] = await self.handle_single_chat(
+        response = await self.handle_single_chat(
             user_message=user_message,
             model_name=model_name,
             tools_list=None,  # TODO:让流式调用支持工具调用
@@ -272,4 +272,8 @@ class MarshoHandler:
             stream=True,
         )
 
-        return await process_chat_stream(response)
+        if isinstance(response, AsyncStream):
+            return await process_chat_stream(response)
+        else:
+            logger.error("Unexpected response type for stream request")
+            return None
