@@ -17,7 +17,7 @@ from nonebot.matcher import (
     current_event,
     current_matcher,
 )
-from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
+from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg, get_message_id, get_target
 from openai import AsyncOpenAI, AsyncStream
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
 
@@ -50,8 +50,8 @@ class MarshoHandler:
         self.event: Event = current_event.get()
         # self.state: T_State = current_handler.get().state
         self.matcher: Matcher = current_matcher.get()
-        self.message_id: str = UniMessage.get_message_id(self.event)
-        self.target = UniMessage.get_target(self.event)
+        self.message_id: str = get_message_id(self.event)
+        self.target = get_target(self.event)
 
     async def process_user_input(
         self, user_input: UniMsg, model_name: str
@@ -117,7 +117,7 @@ class MarshoHandler:
 
     async def handle_function_call(
         self,
-        completion: Union[ChatCompletion, AsyncStream[ChatCompletionChunk]],
+        completion: Union[ChatCompletion],
         user_message: Union[str, list],
         model_name: str,
         tools_list: list | None = None,
@@ -259,7 +259,7 @@ class MarshoHandler:
         model_name: str,
         tools_list: list | None = None,
         tools_message: Optional[list] = None,
-    ) -> Union[ChatCompletion, None]:
+    ) -> ChatCompletion:
         """
         处理流式请求
         """
@@ -274,5 +274,4 @@ class MarshoHandler:
         if isinstance(response, AsyncStream):
             return await process_chat_stream(response)
         else:
-            logger.error("Unexpected response type for stream request")
-            return None
+            raise TypeError("Unexpected response type for stream request")

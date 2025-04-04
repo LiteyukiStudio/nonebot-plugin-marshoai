@@ -299,14 +299,16 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
             if config.marshoai_poke_suffix != "":
                 logger.info(f"收到戳一戳，用户昵称：{user_nickname}")
 
-                response = await make_chat_openai(
+                pre_response = await make_chat_openai(
                     client=client,
                     model_name=model_name,
                     msg=usermsg,
                     stream=config.marshoai_stream,
                 )
-                if isinstance(response, AsyncStream):
-                    response = await process_chat_stream(response)
+                if isinstance(pre_response, AsyncStream):
+                    response = await process_chat_stream(pre_response)
+                else:
+                    response = pre_response
                 choice = response.choices[0]  # type: ignore
                 if choice.finish_reason == CompletionsFinishReason.STOPPED:
                     content = extract_content_and_think(choice.message)[0]
