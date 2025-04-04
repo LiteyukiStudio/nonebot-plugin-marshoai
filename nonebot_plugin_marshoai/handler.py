@@ -17,10 +17,9 @@ from nonebot.matcher import (
     current_event,
     current_matcher,
 )
-from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg
+from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg, get_message_id, get_target
 from openai import AsyncOpenAI, AsyncStream
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
-from openai.types.chat.chat_completion import Choice
 
 from .config import config
 from .constants import SUPPORT_IMAGE_MODELS
@@ -36,6 +35,7 @@ from .util import (
     make_chat_openai,
     parse_richtext,
 )
+from .utils.request import process_chat_stream
 
 
 class MarshoHandler:
@@ -50,8 +50,8 @@ class MarshoHandler:
         self.event: Event = current_event.get()
         # self.state: T_State = current_handler.get().state
         self.matcher: Matcher = current_matcher.get()
-        self.message_id: str = UniMessage.get_message_id(self.event)
-        self.target = UniMessage.get_target(self.event)
+        self.message_id: str = get_message_id(self.event)
+        self.target = get_target(self.event)
 
     async def process_user_input(
         self, user_input: UniMsg, model_name: str
@@ -117,10 +117,10 @@ class MarshoHandler:
 
     async def handle_function_call(
         self,
-        completion: Union[ChatCompletion, AsyncStream[ChatCompletionChunk]],
+        completion: Union[ChatCompletion],
         user_message: Union[str, list],
         model_name: str,
-        tools_list: list,
+        tools_list: list | None = None,
     ):
         # function call
         # 需要获取额外信息，调用函数工具
@@ -188,7 +188,7 @@ class MarshoHandler:
         self,
         user_message: Union[str, list],
         model_name: str,
-        tools_list: list,
+        tools_list: list | None = None,
         stream: bool = False,
         tool_message: Optional[list] = None,
     ) -> Optional[Tuple[UserMessage, ChatCompletionMessage]]:
@@ -257,9 +257,9 @@ class MarshoHandler:
         self,
         user_message: Union[str, list],
         model_name: str,
-        tools_list: list,
+        tools_list: list | None = None,
         tools_message: Optional[list] = None,
-    ) -> Union[ChatCompletion, None]:
+    ) -> ChatCompletion:
         """
         处理流式请求
         """
@@ -272,56 +272,6 @@ class MarshoHandler:
         )
 
         if isinstance(response, AsyncStream):
-            reasoning_contents = ""
-            answer_contents = ""
-            last_chunk = None
-            is_first_token_appeared = False
-            is_answering = False
-            async for chunk in response:
-                last_chunk = chunk
-                # print(chunk)
-                if not is_first_token_appeared:
-                    logger.debug(f"{chunk.id}: 第一个 token 已出现")
-                    is_first_token_appeared = True
-                if not chunk.choices:
-                    logger.info("Usage:", chunk.usage)
-                else:
-                    delta = chunk.choices[0].delta
-                    if (
-                        hasattr(delta, "reasoning_content")
-                        and delta.reasoning_content is not None
-                    ):
-                        reasoning_contents += delta.reasoning_content
-                    else:
-                        if not is_answering:
-                            logger.debug(
-                                f"{chunk.id}: 思维链已输出完毕或无 reasoning_content 字段输出"
-                            )
-                            is_answering = True
-                        if delta.content is not None:
-                            answer_contents += delta.content
-            # print(last_chunk)
-            # 创建新的 ChatCompletion 对象
-            if last_chunk and last_chunk.choices:
-                message = ChatCompletionMessage(
-                    content=answer_contents,
-                    role="assistant",
-                    tool_calls=last_chunk.choices[0].delta.tool_calls,  # type: ignore
-                )
-                if reasoning_contents != "":
-                    setattr(message, "reasoning_content", reasoning_contents)
-                choice = Choice(
-                    finish_reason=last_chunk.choices[0].finish_reason,  # type: ignore
-                    index=last_chunk.choices[0].index,
-                    message=message,
-                )
-                return ChatCompletion(
-                    id=last_chunk.id,
-                    choices=[choice],
-                    created=last_chunk.created,
-                    model=last_chunk.model,
-                    system_fingerprint=last_chunk.system_fingerprint,
-                    object="chat.completion",
-                    usage=last_chunk.usage,
-                )
-        return None
+            return await process_chat_stream(response)
+        else:
+            raise TypeError("Unexpected response type for stream request")

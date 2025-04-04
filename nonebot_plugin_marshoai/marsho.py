@@ -15,7 +15,14 @@ from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot.rule import to_me
 from nonebot.typing import T_State
-from nonebot_plugin_alconna import MsgTarget, UniMessage, UniMsg, on_alconna
+from nonebot_plugin_alconna import (
+    Emoji,
+    MsgTarget,
+    UniMessage,
+    UniMsg,
+    message_reaction,
+    on_alconna,
+)
 
 from .config import config
 from .constants import INTRODUCTION, SUPPORT_IMAGE_MODELS
@@ -25,6 +32,7 @@ from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
 from .plugin.func_call.caller import get_function_calls
 from .util import *
+from .utils.request import process_chat_stream
 
 
 async def at_enable():
@@ -226,6 +234,7 @@ async def marsho(
     if not text:
         # 发送说明
         # await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
+        await message_reaction(Emoji("38"))
         await marsho_cmd.finish(INTRODUCTION)
         backup_context = await get_backup_context(target.id, target.private)
         if backup_context:
@@ -256,6 +265,7 @@ async def marsho(
             map(lambda v: v.data(), get_function_calls().values())
         )
         logger.info(f"正在获取回答，模型：{model_name}")
+        await message_reaction(Emoji("66"))
         # logger.info(f"上下文：{context_msg}")
         response = await handler.handle_common_chat(
             usermsg, model_name, tools_lists, config.marshoai_stream
@@ -282,19 +292,23 @@ with contextlib.suppress(ImportError):  # 优化先不做（）
     async def poke(event: Event):
 
         user_nickname = await get_nickname_by_user_id(event.get_user_id())
+        usermsg = await get_prompt(model_name) + [
+            UserMessage(content=f"*{user_nickname}{config.marshoai_poke_suffix}"),
+        ]
         try:
             if config.marshoai_poke_suffix != "":
                 logger.info(f"收到戳一戳，用户昵称：{user_nickname}")
-                response = await make_chat_openai(
+
+                pre_response = await make_chat_openai(
                     client=client,
                     model_name=model_name,
-                    msg=await get_prompt(model_name)
-                    + [
-                        UserMessage(
-                            content=f"*{user_nickname}{config.marshoai_poke_suffix}"
-                        ),
-                    ],
+                    msg=usermsg,
+                    stream=config.marshoai_stream,
                 )
+                if isinstance(pre_response, AsyncStream):
+                    response = await process_chat_stream(pre_response)
+                else:
+                    response = pre_response
                 choice = response.choices[0]  # type: ignore
                 if choice.finish_reason == CompletionsFinishReason.STOPPED:
                     content = extract_content_and_think(choice.message)[0]
