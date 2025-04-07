@@ -9,7 +9,7 @@ from nonebot.typing import T_State
 from nonebot_plugin_marshoai.plugin.load import reload_plugin
 
 from .config import config
-from .marsho import context
+from .instances import context
 from .plugin.func_call.models import SessionContext
 
 require("nonebot_plugin_alconna")

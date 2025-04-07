@@ -69,3 +69,19 @@ async def process_chat_stream(
             object="chat.completion",
             usage=None,
         )
+
+
+async def process_completion_to_details(completion: ChatCompletion) -> str:
+    usage_text = ""
+    usage = completion.usage
+    if usage is None:
+        usage_text = "无"
+    else:
+        usage_text = str(usage)
+
+    details_text = f"""=========消息详情=========
+    模型: {completion.model}
+    消息 ID: {completion.id}
+    用量信息: {usage_text}"""
+    print(details_text)
+    return details_text

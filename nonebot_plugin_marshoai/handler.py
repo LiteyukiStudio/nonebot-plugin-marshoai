@@ -1,4 +1,5 @@
 import json
+from datetime import timedelta
 from typing import Optional, Tuple, Union
 
 from azure.ai.inference.models import (
@@ -17,7 +18,14 @@ from nonebot.matcher import (
     current_event,
     current_matcher,
 )
-from nonebot_plugin_alconna.uniseg import UniMessage, UniMsg, get_message_id, get_target
+from nonebot_plugin_alconna.uniseg import (
+    Text,
+    UniMessage,
+    UniMsg,
+    get_message_id,
+    get_target,
+)
+from nonebot_plugin_argot import Argot
 from openai import AsyncOpenAI, AsyncStream
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
 
@@ -35,7 +43,7 @@ from .util import (
     make_chat_openai,
     parse_richtext,
 )
-from .utils.processor import process_chat_stream
+from .utils.processor import process_chat_stream, process_completion_to_details
 
 
 class MarshoHandler:
@@ -230,12 +238,20 @@ class MarshoHandler:
                 target_list.append([self.target.id, self.target.private])
 
             # 对话成功发送消息
+            send_message = UniMessage()
             if config.marshoai_enable_richtext_parse:
-                await (await parse_richtext(str(choice_msg_content))).send(
-                    reply_to=True
-                )
+                send_message = await parse_richtext(str(choice_msg_content))
             else:
-                await UniMessage(str(choice_msg_content)).send(reply_to=True)
+                send_message = UniMessage(str(choice_msg_content))
+            send_message.append(
+                Argot(
+                    "detail",
+                    Text(await process_completion_to_details(response)),
+                    command=f"detail",
+                    expired_at=timedelta(minutes=5),
+                )
+            )
+            await send_message.send(reply_to=True)
             return UserMessage(content=user_message), choice_msg_after
         elif choice.finish_reason == CompletionsFinishReason.CONTENT_FILTERED:
 
