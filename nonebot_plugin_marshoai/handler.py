@@ -251,6 +251,14 @@ class MarshoHandler:
                     expired_at=timedelta(minutes=5),
                 )
             )
+            # send_message.append(
+            #     Argot(
+            #         "debug",
+            #         Text(str(response)),
+            #         command=f"debug",
+            #         expired_at=timedelta(minutes=5),
+            #     )
+            # )
             await send_message.send(reply_to=True)
             return UserMessage(content=user_message), choice_msg_after
         elif choice.finish_reason == CompletionsFinishReason.CONTENT_FILTERED:

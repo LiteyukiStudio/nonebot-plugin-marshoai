@@ -83,5 +83,5 @@ async def process_completion_to_details(completion: ChatCompletion) -> str:
     模型: {completion.model}
     消息 ID: {completion.id}
     用量信息: {usage_text}"""
-    print(details_text)
+    # print(details_text)
     return details_text

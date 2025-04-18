@@ -10,7 +10,7 @@ authors = [
 ]
 dependencies = [
     "nonebot2>=2.4.0",
-    "nonebot-plugin-alconna>=0.57.0",
+    "nonebot-plugin-alconna>=0.57.1",
     "nonebot-plugin-localstore>=0.7.1",
     "zhDatetime>=2.0.0",
     "aiohttp>=3.9",
