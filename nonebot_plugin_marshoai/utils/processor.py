@@ -16,7 +16,7 @@ async def process_chat_stream(
         last_chunk = chunk
         # print(chunk)
         if not is_first_token_appeared:
-            logger.debug(f"{chunk.id}: 第一个 token 已出现")
+            logger.info(f"{chunk.id}: 第一个 token 已出现")
             is_first_token_appeared = True
         if not chunk.choices:
             logger.info("Usage:", chunk.usage)
@@ -29,7 +29,7 @@ async def process_chat_stream(
                 reasoning_contents += delta.reasoning_content
             else:
                 if not is_answering:
-                    logger.debug(
+                    logger.info(
                         f"{chunk.id}: 思维链已输出完毕或无 reasoning_content 字段输出"
                     )
                     is_answering = True
