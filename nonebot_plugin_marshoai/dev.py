@@ -1,15 +1,16 @@
 import os
 from pathlib import Path
 
-from nonebot import get_driver, logger, require
+from nonebot import get_driver, logger, on_command, require
 from nonebot.adapters import Bot, Event
 from nonebot.matcher import Matcher
 from nonebot.typing import T_State
+from nonebot_plugin_argot import add_argot, get_message_id
 
 from nonebot_plugin_marshoai.plugin.load import reload_plugin
 
 from .config import config
-from .marsho import context
+from .instances import context
 from .plugin.func_call.models import SessionContext
 
 require("nonebot_plugin_alconna")
@@ -47,6 +48,21 @@ function_call = on_alconna(
     aliases={"mfc"},
     permission=SUPERUSER,
 )
+
+argot_test = on_command("argot", permission=SUPERUSER)
+
+
+@argot_test.handle()
+async def _():
+    await argot_test.send(
+        "aa",
+        argot={
+            "name": "test",
+            "command": "test",
+            "segment": f"{os.getcwd()}",
+            "expired_at": 1000,
+        },
+    )
 
 
 @function_call.assign("list")

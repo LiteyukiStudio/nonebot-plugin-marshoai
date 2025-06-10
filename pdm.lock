@@ -5,7 +5,7 @@
 groups = ["default", "dev", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:9dd3edfe69c332deac360af2685358e82c5dac0870900668534fc6f1d34040f8"
+content_hash = "sha256:6aa043fb1d2d4d384e0d0c698c02a27f22e099828d2973a4baef05c5316f4ee0"
 
 [[metadata.targets]]
 requires_python = "~=3.10"
@@ -1520,8 +1520,26 @@ files = [
 ]
 
 [[package]]
+name = "nonebot-plugin-argot"
+version = "0.1.7"
+requires_python = ">=3.10"
+summary = "NoneBot 暗语"
+groups = ["default"]
+dependencies = [
+    "aiofiles>=24.1.0",
+    "nonebot-plugin-alconna>=0.51.1",
+    "nonebot-plugin-apscheduler>=0.5.0",
+    "nonebot-plugin-localstore>=0.7.4",
+    "nonebot2>=2.3.2",
+]
+files = [
+    {file = "nonebot_plugin_argot-0.1.7-py3-none-any.whl", hash = "sha256:1af939a60967e27aff6f7ce97150d26cba8f1ef0cf216b44372cc0d8e5937204"},
+    {file = "nonebot_plugin_argot-0.1.7.tar.gz", hash = "sha256:f76c2139c9af1e2de6efdc487b728fbad84737d272bf1f600d085bbe6ed79094"},
+]
+
+[[package]]
 name = "nonebot-plugin-localstore"
-version = "0.7.3"
+version = "0.7.4"
 requires_python = "<4.0,>=3.9"
 summary = "Local Storage Support for NoneBot2"
 groups = ["default"]
@@ -1532,8 +1550,8 @@ dependencies = [
     "typing-extensions<5.0.0,>=4.0.0",
 ]
 files = [
-    {file = "nonebot_plugin_localstore-0.7.3-py3-none-any.whl", hash = "sha256:1bc239b4b5320df0dc08eada7c4f8ba4cb92d4dc3134bf4646ab5e297bd7e575"},
-    {file = "nonebot_plugin_localstore-0.7.3.tar.gz", hash = "sha256:1aff10e2dacfc5bc9ce239fd34849f8d7172a118135dbc5aeba1c97605d9959d"},
+    {file = "nonebot_plugin_localstore-0.7.4-py3-none-any.whl", hash = "sha256:3b08030878eadcdd8b9ce3d079da0dc2d0e41dc91f0b2d8cf7fa862a27de9090"},
+    {file = "nonebot_plugin_localstore-0.7.4.tar.gz", hash = "sha256:85ddc13814bfcd484ab311306823651390020bf44f4fb4733b343a58e72723ce"},
 ]
 
 [[package]]

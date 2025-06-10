@@ -26,16 +26,18 @@ from nonebot.plugin import require
 
 require("nonebot_plugin_alconna")
 require("nonebot_plugin_localstore")
+require("nonebot_plugin_argot")
 
 import nonebot_plugin_localstore as store  # type: ignore
 from nonebot import get_driver, logger  # type: ignore
 
 from .config import config
-
-# from .hunyuan import *
 from .dev import *
 from .marsho import *
 from .metadata import metadata
+
+# from .hunyuan import *
+
 
 __author__ = "Asankilp"
 __plugin_meta__ = metadata
