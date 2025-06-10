@@ -22,10 +22,9 @@ from nonebot_plugin_alconna.uniseg import (
     Text,
     UniMessage,
     UniMsg,
-    get_message_id,
     get_target,
 )
-from nonebot_plugin_argot import Argot
+from nonebot_plugin_argot import Argot  # type: ignore
 from openai import AsyncOpenAI, AsyncStream
 from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletionMessage
 
@@ -247,7 +246,7 @@ class MarshoHandler:
                 Argot(
                     "detail",
                     Text(await process_completion_to_details(response)),
-                    command=f"detail",
+                    command="detail",
                     expired_at=timedelta(minutes=5),
                 )
             )

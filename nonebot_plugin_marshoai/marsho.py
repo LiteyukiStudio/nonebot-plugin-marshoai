@@ -23,7 +23,7 @@ from nonebot_plugin_alconna import (
     message_reaction,
     on_alconna,
 )
-from nonebot_plugin_argot.extension import ArgotExtension
+from nonebot_plugin_argot.extension import ArgotExtension  # type: ignore
 
 from .config import config
 from .constants import INTRODUCTION, SUPPORT_IMAGE_MODELS
