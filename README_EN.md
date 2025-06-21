@@ -1,6 +1,6 @@
 <!--suppress LongLine -->
 <div align="center">
-  <a href="https://marshoai-docs.pages.liteyuki.icu"><img src="https://marshoai-docs.pages.liteyuki.icu/marsho-full.svg" width="800" height="430" alt="MarshoLogo"></a>
+  <a href="https://marsho.liteyuki.org"><img src="https://marsho.liteyuki.org/marsho-full.svg" width="800" height="430" alt="MarshoLogo"></a>
   <br>
 </div>
 
@@ -48,7 +48,7 @@ Plugin internally installed the catgirl character of Marsho, is able to have a c
 - 🐾 Play! I like play with friends!
 
 ## 😼 Usage
-Please read [Documentation](https://marshoai-docs.pages.liteyuki.icu/start/use.html)
+Please read [Documentation](https://marsho.liteyuki.org/start/use.html)
 
 ## ❤ Thanks&Copyright
 This project uses the following code from other projects:  

@@ -1,6 +1,6 @@
 <!--suppress LongLine -->
 <div align="center">
-  <a href="https://marshoai-docs.pages.liteyuki.icu"><img src="https://marshoai-docs.pages.liteyuki.icu/marsho-full.svg" width="800" height="430" alt="MarshoLogo"></a>
+  <a href="https://marsho.liteyuki.org"><img src="https://marsho.liteyuki.org/marsho-full.svg" width="800" height="430" alt="MarshoLogo"></a>
   <br>
 </div>
 
@@ -48,7 +48,7 @@ _谁不喜欢回复消息快又可爱的猫娘呢？_
 
 ## 😼 使用
 
-请查看[使用文档](https://marshoai-docs.pages.liteyuki.icu/start/use.html)
+请查看[使用文档](https://marsho.liteyuki.org/start/use.html)
 
 ## ❤ 鸣谢&版权说明
 
