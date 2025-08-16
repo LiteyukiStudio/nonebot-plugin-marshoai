@@ -22,6 +22,7 @@ from nonebot_plugin_alconna.uniseg import (
     Text,
     UniMessage,
     UniMsg,
+    get_message_id,
     get_target,
 )
 from nonebot_plugin_argot import Argot  # type: ignore
@@ -57,7 +58,7 @@ class MarshoHandler:
         self.event: Event = current_event.get()
         # self.state: T_State = current_handler.get().state
         self.matcher: Matcher = current_matcher.get()
-        self.message_id: str = UniMessage.get_message_id(self.event)
+        self.message_id: str = get_message_id(self.event)
         self.target = get_target(self.event)
 
     async def process_user_input(
