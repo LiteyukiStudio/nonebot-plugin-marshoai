@@ -116,7 +116,8 @@ class MarshoTools:
                 spec = importlib.util.spec_from_file_location(
                     package_name, os.path.join(package_path, "__init__.py")
                 )
-                assert spec, f"工具包 {package_name} 未找到"
+                if not spec:
+                    raise ImportError(f"工具包 {package_name} 未找到")
                 package = importlib.util.module_from_spec(spec)
                 self.imported_packages[package_name] = package
                 sys.modules[package_name] = package
