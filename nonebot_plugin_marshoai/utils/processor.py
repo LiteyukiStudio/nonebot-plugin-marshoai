@@ -24,9 +24,9 @@ async def process_chat_stream(
             delta = chunk.choices[0].delta
             if (
                 hasattr(delta, "reasoning_content")
-                and delta.reasoning_content is not None
+                and delta.reasoning_content is not None  # type:ignore
             ):
-                reasoning_contents += delta.reasoning_content
+                reasoning_contents += delta.reasoning_content  # type:ignore
             else:
                 if not is_answering:
                     logger.info(

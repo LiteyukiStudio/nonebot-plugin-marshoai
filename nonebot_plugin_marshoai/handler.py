@@ -125,7 +125,7 @@ class MarshoHandler:
 
     async def handle_function_call(
         self,
-        completion: Union[ChatCompletion],
+        completion: Union[ChatCompletion, AsyncStream[ChatCompletionChunk]],
         user_message: Union[str, list],
         model_name: str,
         tools_list: list | None = None,
@@ -249,7 +249,7 @@ class MarshoHandler:
                     Text(await process_completion_to_details(response)),
                     command="detail",
                     expired_at=timedelta(minutes=5),
-                )
+                )  # type:ignore
             )
             # send_message.append(
             #     Argot(
