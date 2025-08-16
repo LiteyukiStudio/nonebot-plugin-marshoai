@@ -29,7 +29,7 @@ def debounce(wait):
         def wrapper(*args, **kwargs):
             nonlocal last_call_time
             current_time = time.time()
-            if (current_time - last_call_time) > wait:
+            if last_call_time is None or (current_time - last_call_time) > wait:
                 last_call_time = current_time
                 return func(*args, **kwargs)
 
@@ -52,7 +52,7 @@ class CodeModifiedHandler(FileSystemEventHandler):
     """
 
     @debounce(1)
-    def on_modified(self, event):
+    def on_modified(self, event: FileSystemEvent):
         raise NotImplementedError("on_modified must be implemented")
 
     def on_created(self, event):

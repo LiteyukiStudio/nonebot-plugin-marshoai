@@ -121,7 +121,7 @@ async def add_assistantmsg(target: MsgTarget, arg: Message = CommandArg()):
 @praises_cmd.handle()
 async def praises():
     # await UniMessage(await tools.call("marshoai-weather.get_weather", {"location":"杭州"})).send()
-    await praises_cmd.finish(build_praises())
+    await praises_cmd.finish(await build_praises())
 
 
 @contexts_cmd.handle()
