@@ -72,6 +72,9 @@ async def process_chat_stream(
 
 
 async def process_completion_to_details(completion: ChatCompletion) -> str:
+    if not isinstance(completion, ChatCompletion):
+        return "暂不支持对流式调用用量的获取，或预期之外的输入"
+
     usage_text = ""
     usage = completion.usage
     if usage is None:
