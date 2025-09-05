@@ -54,6 +54,8 @@ Please read [Documentation](https://marsho.liteyuki.org/start/use.html)
 This project uses the following code from other projects:  
 - [nonebot-plugin-latex](https://github.com/EillesWan/nonebot-plugin-latex)  
 - [nonebot-plugin-deepseek](https://github.com/KomoriDev/nonebot-plugin-deepseek)
+- [MuiceBot](https://github.com/Moemu/MuiceBot)
+
 
 "Marsho" logo contributed by [@Asankilp](https://github.com/Asankilp),licensed under [CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/) lisense.  
 

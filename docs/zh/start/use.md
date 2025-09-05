@@ -32,6 +32,27 @@ title: 使用
     MARSHOAI_ENABLE_SYSASUSER_PROMPT=true
     MARSHOAI_SYSASUSER_PROMPT="好的喵~" # 假装是模型收到消息后的回答
     ```
+
+### 使用 MCP
+MarshoAI 内置了 MCP（Model Context Protocol）功能，可使用兼容 Function Call 的 LLM 调用 MCP 兼容的工具。
+1. 启用 MCP 功能
+    ```dotenv
+    MARSHOAI_ENABLE_MCP=true
+    ```
+2. 配置 MCP 服务器
+    在 Bot 工作目录下的 `config/marshoai/mcp.json` 文件中写入标准 MCP 配置文件，例如：
+    ```json
+    {
+        "mcpServers": {
+            "my-mcp": {
+                "type": "sse",
+                "url": "https://example.com/sse"
+            }
+        }
+    }
+    ```
+    支持流式 HTTP(StreamableHttp)，SSE，以及 Stdio 三种类型的 MCP 服务器。
+
 ### 使用 DeepSeek-R1 模型
 MarshoAI 兼容 DeepSeek-R1 模型，你可通过以下步骤来使用：
 1. 获取 API Key  

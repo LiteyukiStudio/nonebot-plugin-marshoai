@@ -150,10 +150,5 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true` | 是否修复工具调用（部分模型须关闭，使用 vLLM 部署的模型时须关闭） |
 | MARSHOAI_SEND_THINKING           | `bool`  | `true` | 是否发送思维链（部分模型不支持） |
 | MARSHOAI_STREAM                  | `bool`  | `false`| 是否通过流式方式请求 API **开启此项后暂无法使用函数调用，无法在 Bot 用户侧聊天界面呈现出流式效果** |
+| MARSHOAI_ENABLE_MCP              | `bool`  | `false`| 是否启用 MCP 功能 |
 
-
-#### 开发及调试选项
-
-| 配置项                      | 类型     | 默认值     | 说明               |
-| ------------------------ | ------ | ------- | ---------------- |
-| MARSHOAI_DEVMODE    | `bool` | `false` | 是否启用开发者模式  |

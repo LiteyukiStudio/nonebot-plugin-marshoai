@@ -6,7 +6,6 @@ from nonebot.adapters import Bot, Event
 from nonebot.matcher import Matcher
 from nonebot.permission import Permission
 from nonebot.rule import Rule
-from nonebot.typing import T_State
 
 from ..models import Plugin
 from ..typing import ASYNC_FUNCTION_CALL_FUNC, F
@@ -73,7 +72,7 @@ class Caller:
         # if self.ctx.state is None:
         #     return False, "State is None"
         if self._rule and not await self._rule(
-            self.ctx.bot, self.ctx.event, self.ctx.state
+            self.ctx.bot, self.ctx.event, self.ctx.state or {}
         ):
             return False, "告诉用户 Rule Denied 规则不匹配"
 

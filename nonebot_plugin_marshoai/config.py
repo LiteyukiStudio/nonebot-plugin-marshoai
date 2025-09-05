@@ -71,11 +71,13 @@ class ConfigModel(BaseModel):
     """开发者模式,启用本地插件插件重载"""
     marshoai_plugins: list[str] = []
     """marsho插件的名称列表，从pip安装的使用包名，从本地导入的使用路径"""
+    marshoai_enable_mcp: bool = False
 
 
 yaml = YAML()
 
-config_file_path = Path("config/marshoai/config.yaml").resolve()
+marsho_config_file_path = Path("config/marshoai/config.yaml").resolve()
+mcp_config_file_path = Path("config/marshoai/mcp.json").resolve()
 
 destination_folder = Path("config/marshoai/")
 destination_file = destination_folder / "config.yaml"
@@ -98,7 +100,7 @@ def check_yaml_is_changed():
     """
     检查配置文件是否需要更新
     """
-    with open(config_file_path, "r", encoding="utf-8") as f:
+    with open(marsho_config_file_path, "r", encoding="utf-8") as f:
         old = yaml.load(f)
     with StringIO(dump_config_to_yaml(ConfigModel())) as f2:
         example_ = yaml.load(f2)
@@ -125,9 +127,9 @@ def merge_configs(existing_cfg, new_cfg):
 
 config: ConfigModel = get_plugin_config(ConfigModel)
 if config.marshoai_use_yaml_config:
-    if not config_file_path.exists():
+    if not marsho_config_file_path.exists():
         logger.info("配置文件不存在,正在创建")
-        config_file_path.parent.mkdir(parents=True, exist_ok=True)
+        marsho_config_file_path.parent.mkdir(parents=True, exist_ok=True)
         write_default_config(destination_file)
     else:
         logger.info("配置文件存在,正在读取")
@@ -136,7 +138,7 @@ if config.marshoai_use_yaml_config:
             yaml_2 = YAML()
             logger.info("插件新的配置已更新, 正在更新")
 
-            with open(config_file_path, "r", encoding="utf-8") as f:
+            with open(marsho_config_file_path, "r", encoding="utf-8") as f:
                 old_config = yaml_2.load(f)
 
             with StringIO(dump_config_to_yaml(ConfigModel())) as f2:
@@ -147,7 +149,7 @@ if config.marshoai_use_yaml_config:
             with open(destination_file, "w", encoding="utf-8") as f:
                 yaml_2.dump(merged_config, f)
 
-    with open(config_file_path, "r", encoding="utf-8") as f:
+    with open(marsho_config_file_path, "r", encoding="utf-8") as f:
         yaml_config = yaml_.load(f, Loader=yaml_.FullLoader)
 
         config = ConfigModel(**yaml_config)
@@ -156,3 +158,10 @@ else:
     #     "MarshoAI 支持新的 YAML 配置系统，若要使用，请将 MARSHOAI_USE_YAML_CONFIG 配置项设置为 true。"
     # )
     pass
+
+
+if config.marshoai_enable_mcp:
+    if not mcp_config_file_path.exists():
+        mcp_config_file_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(mcp_config_file_path, "w", encoding="utf-8") as f:
+            f.write("{}")

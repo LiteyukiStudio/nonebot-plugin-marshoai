@@ -62,7 +62,8 @@ async def weather(location: str) -> str:
 `on_function_call`装饰器用于标记一个函数为function call，`description`参数用于描述这个函数的作用，`params`方法用于定义函数的参数，`String`、`Integer`等是OpenAI API接受的参数的类型，`description`是参数的描述。这些都是给AI看的，AI会根据这些信息来调用函数。  
 
 :::warning
-参数名不得为`placeholder`。此参数名是Marsho内部保留的用于保证兼容性的占位参数。
+参数名不得为`placeholder`。此参数名是Marsho内部保留的用于保证兼容性的占位参数。  
+部分函数名可能会与 MCP 工具名称冲突。
 :::
 
 ```python

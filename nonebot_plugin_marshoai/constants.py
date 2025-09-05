@@ -41,7 +41,8 @@ SUPPORT_IMAGE_MODELS: list = [
     "mistral-ai/mistral-small-2503",
 ]
 OPENAI_NEW_MODELS: list = [
-    "openai/o4" "openai/o4-mini",
+    "openai/o4",
+    "openai/o4-mini",
     "openai/o3",
     "openai/o3-mini",
     "openai/o1",
