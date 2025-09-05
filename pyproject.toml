@@ -29,7 +29,8 @@ dependencies = [
     "watchdog>=6.0.0",
     "nonebot-plugin-apscheduler>=0.5.0",
     "openai>=1.58.1",
-    "nonebot-plugin-argot>=0.1.7"
+    "nonebot-plugin-argot>=0.1.7",
+    "mcp[cli]>=1.9.0"
 
 ]
 license = { text = "MIT, Mulan PSL v2" }

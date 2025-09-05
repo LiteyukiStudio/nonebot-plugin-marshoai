@@ -22,6 +22,7 @@ from nonebot_plugin_alconna.uniseg import (
     Text,
     UniMessage,
     UniMsg,
+    get_message_id,
     get_target,
 )
 from nonebot_plugin_argot import Argot  # type: ignore
@@ -30,6 +31,7 @@ from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletio
 
 from .config import config
 from .constants import SUPPORT_IMAGE_MODELS
+from .extensions.mcp_extension.client import handle_mcp_tool, is_mcp_tool
 from .instances import target_list
 from .models import MarshoContext
 from .plugin.func_call.caller import get_function_calls
@@ -57,7 +59,7 @@ class MarshoHandler:
         self.event: Event = current_event.get()
         # self.state: T_State = current_handler.get().state
         self.matcher: Matcher = current_matcher.get()
-        self.message_id: str = UniMessage.get_message_id(self.event)
+        self.message_id: str = get_message_id(self.event)
         self.target = get_target(self.event)
 
     async def process_user_input(
@@ -124,7 +126,7 @@ class MarshoHandler:
 
     async def handle_function_call(
         self,
-        completion: Union[ChatCompletion],
+        completion: Union[ChatCompletion, AsyncStream[ChatCompletionChunk]],
         user_message: Union[str, list],
         model_name: str,
         tools_list: list | None = None,
@@ -147,43 +149,58 @@ class MarshoHandler:
         #     pass
         tool_msg.append(choice.message)
         for tool_call in tool_calls:  # type: ignore
+            tool_name = tool_call.function.name
+            tool_clean_name = tool_name.replace("-", ".")
             try:
                 function_args = json.loads(tool_call.function.arguments)
             except json.JSONDecodeError:
                 function_args = json.loads(
                     tool_call.function.arguments.replace("'", '"')
                 )
+            if await is_mcp_tool(tool_name):
+                tool_clean_name = tool_name  # MCP 工具不需要替换
             # 删除args的placeholder参数
             if "placeholder" in function_args:
                 del function_args["placeholder"]
             logger.info(
-                f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
+                f"调用工具 {tool_clean_name}，参数:"
                 + "\n".join([f"{k}={v}" for k, v in function_args.items()])
             )
             await UniMessage(
-                f"调用函数 {tool_call.function.name.replace('-', '.')}\n参数:"
+                f"调用工具 {tool_clean_name}\n参数:"
                 + "\n".join([f"{k}={v}" for k, v in function_args.items()])
             ).send()
-            if caller := get_function_calls().get(tool_call.function.name):
-                logger.debug(f"调用插件函数 {caller.full_name}")
-                # 权限检查，规则检查 TODO
-                # 实现依赖注入，检查函数参数及参数注解类型，对Event类型的参数进行注入
-                func_return = await caller.with_ctx(
-                    SessionContext(
-                        bot=self.bot,
-                        event=self.event,
-                        matcher=self.matcher,
-                        state=None,
+            if not await is_mcp_tool(tool_name):
+                if caller := get_function_calls().get(tool_call.function.name):
+                    logger.debug(f"调用插件函数 {caller.full_name}")
+                    # 权限检查，规则检查 TODO
+                    # 实现依赖注入，检查函数参数及参数注解类型，对Event类型的参数进行注入
+                    func_return = await caller.with_ctx(
+                        SessionContext(
+                            bot=self.bot,
+                            event=self.event,
+                            matcher=self.matcher,
+                            state=None,
+                        )
+                    ).call(**function_args)
+                else:
+                    logger.error(
+                        f"未找到函数 {tool_call.function.name.replace('-', '.')}"
                     )
-                ).call(**function_args)
+                    func_return = (
+                        f"未找到函数 {tool_call.function.name.replace('-', '.')}"
+                    )
+                tool_msg.append(
+                    ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
+                )
             else:
-                logger.error(f"未找到函数 {tool_call.function.name.replace('-', '.')}")
-                func_return = f"未找到函数 {tool_call.function.name.replace('-', '.')}"
-            tool_msg.append(
-                ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
-            )
-            #  tool_msg[0]["tool_calls"][0]["type"] = "builtin_function"
-            # await UniMessage(str(tool_msg)).send()
+                func_return = await handle_mcp_tool(tool_name, function_args)
+                if config.marshoai_enable_mcp_result_logging:
+                    logger.info(f"MCP工具 {tool_clean_name} 返回结果: {func_return}")
+                tool_msg.append(
+                    ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
+                )
+
         return await self.handle_common_chat(
             user_message=user_message,
             model_name=model_name,
@@ -248,7 +265,7 @@ class MarshoHandler:
                     Text(await process_completion_to_details(response)),
                     command="detail",
                     expired_at=timedelta(minutes=5),
-                )
+                )  # type:ignore
             )
             # send_message.append(
             #     Argot(

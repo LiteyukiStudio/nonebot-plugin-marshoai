@@ -47,10 +47,10 @@ Open the `pyproject.toml` file under nonebot2's root directory, Add to`[tool.non
 
 ## 🤖 Get token(GitHub Models)
 
-- Create new [personal access token](https://github.com/settings/tokens/new)，**Don't need any permissions**.
+- Create new [personal access token](https://github.com/settings/tokens/new), and add the `models` permission.
 - Copy the new token, add to the `.env` file's `marshoai_token` option.
 :::warning
-GitHub Models API comes with significant limitations and is therefore not recommended for use. For better alternatives, it's suggested to adjust the configuration `MARSHOAI_AZURE_ENDPOINT` to use other service providers' models instead.
+GitHub Models API comes with significant limitations and is therefore not recommended for use. For better alternatives, it's suggested to adjust the configuration `MARSHOAI_ENDPOINT` to use other service providers' models instead.
 :::
 ## 🎉 Usage
 
@@ -116,13 +116,13 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | Option                           | Type    | Default                                 | Description                                                                                           |
 | -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
 | MARSHOAI_TOKEN                   | `str`   |                                         | The token needed to call AI API |
-| MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | The default model of Marsho                                                                        |
+| MARSHOAI_DEFAULT_MODEL           | `str`   | `openai/gpt-4.1`                           | The default model of Marsho                                                                        |
 | MARSHOAI_PROMPT                  | `str`   | Catgirl Marsho's character prompt                    | Marsho's basic system prompt                                                        |
 | MARSHOAI_SYSASUSER_PROMPT        | `str`   | `好的喵~`               | Marsho 的 System-As-User 启用时，使用的 Assistant 消息          |
 | MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho's external system prompt                                                                              |
 | MARSHOAI_ENFORCE_NICKNAME        | `bool`  | `true`                                  | Enforce user to set nickname or not                                                               |
 | MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | When double click Marsho who connected to OneBot adapter, the chat content. When it's empty string, double click function is off. Such as, the default content is `*[昵称]揉了揉你的猫耳。` |
-| MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI standard API                                                                            |
+| MARSHOAI_ENDPOINT          | `str`   | `https://models.github.ai/inference` | OpenAI standard API                                                                            |
 | MARSHOAI_MODEL_ARGS              | `dict`  |   `{}`                        |model arguments(such as `temperature`, `top_p`, `max_tokens` etc.) |
 
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | External image-support model list, such as `hunyuan-vision`                                                 |
@@ -149,3 +149,5 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_FIX_TOOLCALLS           | `bool`  | `true` | Fix tool calls or not |
 | MARSHOAI_SEND_THINKING           | `bool`  | `true` | Send thinking chain or not |
 | MARSHOAI_STREAM                  | `bool`  | `false`| 是否通过流式方式请求 API **开启此项后暂无法使用函数调用，无法在 Bot 用户侧聊天界面呈现出流式效果** |
+| MARSHOAI_ENABLE_MCP              | `bool`  | `false`| Enable MCP feature or not |
+| MARSHOAI_ENABLE_MCP_RESULT_LOGGING | `bool`  | `false`| Whether to output MCP return results in the log |

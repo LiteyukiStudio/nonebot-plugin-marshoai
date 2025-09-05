@@ -24,9 +24,9 @@ async def process_chat_stream(
             delta = chunk.choices[0].delta
             if (
                 hasattr(delta, "reasoning_content")
-                and delta.reasoning_content is not None
+                and delta.reasoning_content is not None  # type:ignore
             ):
-                reasoning_contents += delta.reasoning_content
+                reasoning_contents += delta.reasoning_content  # type:ignore
             else:
                 if not is_answering:
                     logger.info(
@@ -72,6 +72,9 @@ async def process_chat_stream(
 
 
 async def process_completion_to_details(completion: ChatCompletion) -> str:
+    if not isinstance(completion, ChatCompletion):
+        return "暂不支持对流式调用用量的获取，或预期之外的输入"
+
     usage_text = ""
     usage = completion.usage
     if usage is None:

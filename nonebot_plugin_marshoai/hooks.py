@@ -8,7 +8,7 @@ from nonebot import logger
 from .config import config
 from .instances import context, driver, target_list, tools
 from .plugin import load_plugin, load_plugins
-from .util import get_backup_context, save_context_to_json
+from .util import save_context_to_json
 
 
 @driver.on_startup

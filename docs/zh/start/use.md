@@ -32,6 +32,27 @@ title: 使用
     MARSHOAI_ENABLE_SYSASUSER_PROMPT=true
     MARSHOAI_SYSASUSER_PROMPT="好的喵~" # 假装是模型收到消息后的回答
     ```
+
+### 使用 MCP
+MarshoAI 内置了 MCP（Model Context Protocol）功能，可使用兼容 Function Call 的 LLM 调用 MCP 兼容的工具。
+1. 启用 MCP 功能
+    ```dotenv
+    MARSHOAI_ENABLE_MCP=true
+    ```
+2. 配置 MCP 服务器
+    在 Bot 工作目录下的 `config/marshoai/mcp.json` 文件中写入标准 MCP 配置文件，例如：
+    ```json
+    {
+        "mcpServers": {
+            "my-mcp": {
+                "type": "sse",
+                "url": "https://example.com/sse"
+            }
+        }
+    }
+    ```
+    支持流式 HTTP(StreamableHttp)，SSE，以及 Stdio 三种类型的 MCP 服务器。
+
 ### 使用 DeepSeek-R1 模型
 MarshoAI 兼容 DeepSeek-R1 模型，你可通过以下步骤来使用：
 1. 获取 API Key  
@@ -39,13 +60,13 @@ MarshoAI 兼容 DeepSeek-R1 模型，你可通过以下步骤来使用：
 2. 配置插件
     ```dotenv
     MARSHOAI_TOKEN="<你的 API Key>"
-    MARSHOAI_AZURE_ENDPOINT="https://api.deepseek.com"
+    MARSHOAI_ENDPOINT="https://api.deepseek.com"
     MARSHOAI_DEFAULT_MODEL="deepseek-reasoner"
     MARSHOAI_ENABLE_PLUGINS=false
     ```
     你可修改 `MARSHOAI_DEFAULT_MODEL` 为 其它模型名来调用其它 DeepSeek 模型。
     :::tip
-    如果使用 one-api 作为中转，你可将 `MARSHOAI_AZURE_ENDPOINT` 设置为 one-api 的地址，将 `MARSHOAI_TOKEN` 设为 one-api 配置的令牌，在 one-api 中添加 DeepSeek 渠道。  
+    如果使用 one-api 作为中转，你可将 `MARSHOAI_ENDPOINT` 设置为 one-api 的地址，将 `MARSHOAI_TOKEN` 设为 one-api 配置的令牌，在 one-api 中添加 DeepSeek 渠道。  
     同样可使用其它提供商（例如 [SiliconFlow](https://siliconflow.cn/)）提供的 DeepSeek 等模型。
     :::
 
@@ -79,7 +100,7 @@ vLLM 仅支持 Linux 系统。
     此示例命令将在 `6006` 端口启动 vLLM，并加载 Muice-Chatbot 提供的 LoRA 微调模型，该模型位于 `/root/Muice-2.7.1-Qwen2.5-7B-Instruct-GPTQ-Int4-8e-4` 目录下。
 5. 配置插件
     ```dotenv
-    MARSHOAI_AZURE_ENDPOINT="http://127.0.0.1:6006/v1"
+    MARSHOAI_ENDPOINT="http://127.0.0.1:6006/v1"
     MARSHOAI_FIX_TOOLCALLS=false
     MARSHOAI_ENABLE_PLUGINS=false
     MARSHOAI_DEFAULT_MODEL="muice-lora"

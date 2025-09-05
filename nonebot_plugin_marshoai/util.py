@@ -9,7 +9,6 @@ from typing import Any, Dict, List, Optional, Union
 import aiofiles  # type: ignore
 import httpx
 import nonebot_plugin_localstore as store
-from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import AssistantMessage, SystemMessage, UserMessage
 from nonebot import get_driver
 from nonebot.log import logger
@@ -21,7 +20,7 @@ from openai.types.chat import ChatCompletion, ChatCompletionChunk, ChatCompletio
 from zhDateTime import DateTime  # type: ignore
 
 from ._types import DeveloperMessage
-from .cache.decos import *
+from .cache.decos import *  # noqa: F403
 from .config import config
 from .constants import CODE_BLOCK_PATTERN, IMG_LATEX_PATTERN, OPENAI_NEW_MODELS
 from .deal_latex import ConvertLatex
@@ -84,6 +83,8 @@ async def get_image_raw_and_type(
             content_type = response.headers.get("Content-Type")
             if not content_type:
                 content_type = mimetypes.guess_type(url)[0]
+            if content_type == "application/octet-stream":  # matcha 兼容
+                content_type = "image/jpeg"
             # image_format = content_type.split("/")[1] if content_type else "jpeg"
             return response.content, str(content_type)
         else:
@@ -126,6 +127,7 @@ async def make_chat_openai(
         model_name: 指定AI模型名
         tools: 工具列表
     """
+    # print(msg)
     return await client.chat.completions.create(  # type: ignore
         messages=msg,
         model=model_name,

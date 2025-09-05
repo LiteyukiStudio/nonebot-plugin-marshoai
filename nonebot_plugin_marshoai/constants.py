@@ -20,19 +20,34 @@ USAGE: str = f"""用法：
 
 SUPPORT_IMAGE_MODELS: list = [
     "gpt-4o",
-    "gpt-4o-mini",
+    "openai/gpt-4.1",
     "phi-3.5-vision-instruct",
     "llama-3.2-90b-vision-instruct",
     "llama-3.2-11b-vision-instruct",
     "gemini-2.0-flash-exp",
+    "meta/llama-4-maverick-17b-128e-instruct-fp8",
+    "meta/llama-3.2-90b-vision-instruct",
+    "openai/gpt-5-nano",
+    "openai/gpt-5-mini",
+    "openai/gpt-5-chat",
+    "openai/gpt-5",
+    "openai/o4-mini",
+    "openai/o3",
+    "openai/gpt-4.1-mini",
+    "openai/gpt-4.1-nano",
+    "openai/gpt-4.1",
+    "openai/gpt-4o",
+    "openai/gpt-4o-mini",
+    "mistral-ai/mistral-small-2503",
 ]
 OPENAI_NEW_MODELS: list = [
-    "o1",
-    "o1-preview",
-    "o1-mini",
-    "o3",
-    "o3-mini",
-    "o3-mini-large",
+    "openai/o4",
+    "openai/o4-mini",
+    "openai/o3",
+    "openai/o3-mini",
+    "openai/o1",
+    "openai/o1-mini",
+    "openai/o1-preview",
 ]
 INTRODUCTION: str = f"""MarshoAI-NoneBot by LiteyukiStudio
 你好喵~我是一只可爱的猫娘AI，名叫小棉~🐾！

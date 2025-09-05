@@ -27,12 +27,13 @@ from nonebot_plugin_argot.extension import ArgotExtension  # type: ignore
 
 from .config import config
 from .constants import INTRODUCTION, SUPPORT_IMAGE_MODELS
+from .extensions.mcp_extension.client import get_mcp_list
 from .handler import MarshoHandler
-from .hooks import *
+from .hooks import *  # noqa: F403
 from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
 from .plugin.func_call.caller import get_function_calls
-from .util import *
+from .util import *  # noqa: F403
 from .utils.processor import process_chat_stream
 
 
@@ -121,7 +122,7 @@ async def add_assistantmsg(target: MsgTarget, arg: Message = CommandArg()):
 @praises_cmd.handle()
 async def praises():
     # await UniMessage(await tools.call("marshoai-weather.get_weather", {"location":"杭州"})).send()
-    await praises_cmd.finish(build_praises())
+    await praises_cmd.finish(await build_praises())
 
 
 @contexts_cmd.handle()
@@ -263,8 +264,10 @@ async def marsho(
 
         usermsg = await handler.process_user_input(text, model_name)
 
-        tools_lists = tools.tools_list + list(
-            map(lambda v: v.data(), get_function_calls().values())
+        tools_lists = (
+            tools.tools_list
+            + list(map(lambda v: v.data(), get_function_calls().values()))
+            + await get_mcp_list()
         )
         logger.info(f"正在获取回答，模型：{model_name}")
         await message_reaction(Emoji("66"))
@@ -286,7 +289,7 @@ async def marsho(
 
 
 with contextlib.suppress(ImportError):  # 优化先不做（）
-    import nonebot.adapters.onebot.v11  # type: ignore
+    import nonebot.adapters.onebot.v11  # type: ignore  # noqa: F401
 
     from .marsho_onebot import poke_notify
 
