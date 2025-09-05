@@ -83,6 +83,8 @@ async def get_image_raw_and_type(
             content_type = response.headers.get("Content-Type")
             if not content_type:
                 content_type = mimetypes.guess_type(url)[0]
+            if content_type == "application/octet-stream":  # matcha 兼容
+                content_type = "image/jpeg"
             # image_format = content_type.split("/")[1] if content_type else "jpeg"
             return response.content, str(content_type)
         else:
@@ -125,7 +127,7 @@ async def make_chat_openai(
         model_name: 指定AI模型名
         tools: 工具列表
     """
-    print(msg)
+    # print(msg)
     return await client.chat.completions.create(  # type: ignore
         messages=msg,
         model=model_name,
