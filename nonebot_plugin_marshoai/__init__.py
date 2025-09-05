@@ -32,8 +32,8 @@ import nonebot_plugin_localstore as store  # type: ignore
 from nonebot import get_driver, logger  # type: ignore
 
 from .config import config
-from .dev import *
-from .marsho import *
+from .dev import *  # noqa: F403
+from .marsho import *  # noqa: F403
 from .metadata import metadata
 
 # from .hunyuan import *
