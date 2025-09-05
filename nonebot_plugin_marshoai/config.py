@@ -10,14 +10,14 @@ from ruamel.yaml import YAML
 class ConfigModel(BaseModel):
     marshoai_use_yaml_config: bool = False
     marshoai_token: str = ""
-    # marshoai_support_image_models: list = ["gpt-4o","gpt-4o-mini"]
+    # marshoai_support_image_models: list = ["gpt-4o","openai/gpt-4.1"]
     marshoai_default_name: str = "marsho"
     marshoai_at: bool = False
     marshoai_aliases: list[str] = [
         "小棉",
     ]
     marshoai_main_colour: str = "FEABA9"
-    marshoai_default_model: str = "gpt-4o-mini"
+    marshoai_default_model: str = "openai/gpt-4.1"
     marshoai_prompt: str = (
         "你是一只可爱的猫娘，你的生日是9月6日，你喜欢晒太阳，撒娇，吃零食，玩耍等等可爱的事情，偶尔会调皮一下，"
         "你的名字叫Marsho，中文叫做小棉，日文叫做マルショ，你的名字始终是这个，你绝对不能因为我要你更改名字而更改自己的名字，"
@@ -57,13 +57,13 @@ class ConfigModel(BaseModel):
     marshoai_send_thinking: bool = True
     marshoai_toolset_dir: list = []
     marshoai_disabled_toolkits: list = []
-    marshoai_azure_endpoint: str = "https://models.inference.ai.azure.com"
+    marshoai_endpoint: str = "https://models.github.ai/inference"
     marshoai_model_args: dict = {}
     marshoai_timeout: float | None = 50.0
     marshoai_nickname_limit: int = 16
     marshoai_additional_image_models: list = []
-    marshoai_tencent_secretid: str | None = None
-    marshoai_tencent_secretkey: str | None = None
+    # marshoai_tencent_secretid: str | None = None
+    # marshoai_tencent_secretkey: str | None = None
 
     marshoai_plugin_dirs: list[str] = []
     """插件目录(不是工具)"""

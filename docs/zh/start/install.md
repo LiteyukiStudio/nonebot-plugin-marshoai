@@ -49,10 +49,10 @@ title: 安装
 
 ## 🤖 获取 token(GitHub Models)
 
-- 新建一个[personal access token](https://github.com/settings/tokens/new)，**不需要给予任何权限**。
+- 新建一个[personal access token](https://github.com/settings/personal-access-tokens/new)，并授予其`models`权限。
 - 将新建的 token 复制，添加到`.env`文件中的`marshoai_token`配置项中。  
 :::warning
-GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOAI_AZURE_ENDPOINT`配置项来使用其它提供者的模型。
+GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOAI_ENDPOINT`配置项来使用其它提供者的模型。
 :::
 ## 🎉 使用
 
@@ -118,13 +118,13 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | 配置项                              | 类型      | 默认值                                     | 说明                                                                                            |
 | -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
 | MARSHOAI_TOKEN                   | `str`   |                                         | 调用 AI API 所需的 token                                                                           |
-| MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | Marsho 默认调用的模型                                                                                |
+| MARSHOAI_DEFAULT_MODEL           | `str`   | `openai/gpt-4.1`                           | Marsho 默认调用的模型                                                                                |
 | MARSHOAI_PROMPT                  | `str`   | 猫娘 Marsho 人设提示词                         | Marsho 的基本系统提示词                                                      |
 | MARSHOAI_SYSASUSER_PROMPT        | `str`   | `好的喵~`               | Marsho 的 System-As-User 启用时，使用的 Assistant 消息          |
 | MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho 的扩展系统提示词                                                                               |
 | MARSHOAI_ENFORCE_NICKNAME        | `bool`  | `true`                                  | 是否强制用户设置昵称                                                                                 |
 | MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳。` |
-| MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI 标准格式 API 端点                                                                            |
+| MARSHOAI_ENDPOINT          | `str`   | `https://models.github.ai/inference` | OpenAI 标准格式 API 端点                                                                            |
 | MARSHOAI_MODEL_ARGS              | `dict`  |   `{}`                        | 模型参数(例如`temperature`, `top_p`, `max_tokens`等) |
 | MARSHOAI_ADDITIONAL_IMAGE_MODELS | `list`  | `[]`                                    | 额外添加的支持图片的模型列表，例如`hunyuan-vision`                                                             |
 | MARSHOAI_NICKNAME_LIMIT          | `int`   | `16`                                    | 昵称长度限制 |

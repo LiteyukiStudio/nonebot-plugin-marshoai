@@ -28,11 +28,11 @@ from nonebot_plugin_argot.extension import ArgotExtension  # type: ignore
 from .config import config
 from .constants import INTRODUCTION, SUPPORT_IMAGE_MODELS
 from .handler import MarshoHandler
-from .hooks import *
+from .hooks import *  # noqa: F403
 from .instances import client, context, model_name, target_list, tools
 from .metadata import metadata
 from .plugin.func_call.caller import get_function_calls
-from .util import *
+from .util import *  # noqa: F403
 from .utils.processor import process_chat_stream
 
 
@@ -286,7 +286,7 @@ async def marsho(
 
 
 with contextlib.suppress(ImportError):  # 优化先不做（）
-    import nonebot.adapters.onebot.v11  # type: ignore
+    import nonebot.adapters.onebot.v11  # type: ignore  # noqa: F401
 
     from .marsho_onebot import poke_notify
 

@@ -110,11 +110,11 @@ title: 安装 (old)
 | 配置项                              | 类型      | 默认值                                     | 说明                                                                                            |
 | -------------------------------- | ------- | --------------------------------------- | --------------------------------------------------------------------------------------------- |
 | MARSHOAI_TOKEN                   | `str`   |                                         | 调用 AI API 所需的 token                                                                           |
-| MARSHOAI_DEFAULT_MODEL           | `str`   | `gpt-4o-mini`                           | Marsho 默认调用的模型                                                                                |
+| MARSHOAI_DEFAULT_MODEL           | `str`   | `openai/gpt-4.1`                           | Marsho 默认调用的模型                                                                                |
 | MARSHOAI_PROMPT                  | `str`   | 猫娘 Marsho 人设提示词                         | Marsho 的基本系统提示词 **※部分模型(o1等)不支持系统提示词。**                                                       |
 | MARSHOAI_ADDITIONAL_PROMPT       | `str`   |                                         | Marsho 的扩展系统提示词                                                                               |
 | MARSHOAI_POKE_SUFFIX             | `str`   | `揉了揉你的猫耳`                               | 对 Marsho 所连接的 OneBot 用户进行双击戳一戳时，构建的聊天内容。此配置项为空字符串时，戳一戳响应功能会被禁用。例如，默认值构建的聊天内容将为`*[昵称]揉了揉你的猫耳。` |
-| MARSHOAI_AZURE_ENDPOINT          | `str`   | `https://models.inference.ai.azure.com` | OpenAI 标准格式 API 端点                                                                            |
+| MARSHOAI_ENDPOINT          | `str`   | `https://models.github.ai/inference` | OpenAI 标准格式 API 端点                                                                            |
 | MARSHOAI_TEMPERATURE             | `float` | `null`                                  | 推理生成多样性（温度）参数                                                                                 |
 | MARSHOAI_TOP_P                   | `float` | `null`                                  | 推理核采样参数                                                                                       |
 | MARSHOAI_MAX_TOKENS              | `int`   | `null`                                  | 最大生成 token 数                                                                                  |
