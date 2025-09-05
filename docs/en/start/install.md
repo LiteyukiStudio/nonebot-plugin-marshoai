@@ -150,3 +150,4 @@ Add options in the `.env` file from the diagram below in nonebot2 project.
 | MARSHOAI_SEND_THINKING           | `bool`  | `true` | Send thinking chain or not |
 | MARSHOAI_STREAM                  | `bool`  | `false`| 是否通过流式方式请求 API **开启此项后暂无法使用函数调用，无法在 Bot 用户侧聊天界面呈现出流式效果** |
 | MARSHOAI_ENABLE_MCP              | `bool`  | `false`| Enable MCP feature or not |
+| MARSHOAI_ENABLE_MCP_RESULT_LOGGING | `bool`  | `false`| Whether to output MCP return results in the log |

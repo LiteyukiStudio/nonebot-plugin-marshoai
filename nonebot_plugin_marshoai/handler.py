@@ -195,6 +195,8 @@ class MarshoHandler:
                 )
             else:
                 func_return = await handle_mcp_tool(tool_name, function_args)
+                if config.marshoai_enable_mcp_result_logging:
+                    logger.info(f"MCP工具 {tool_clean_name} 返回结果: {func_return}")
                 tool_msg.append(
                     ToolMessage(tool_call_id=tool_call.id, content=func_return).as_dict()  # type: ignore
                 )

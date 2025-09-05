@@ -33,7 +33,7 @@ from nonebot import get_driver, logger  # type: ignore
 
 from .config import config
 from .dev import *  # noqa: F403
-from .extensions.mcp_extension.client import get_mcp_list, initialize_servers
+from .extensions.mcp_extension.client import initialize_servers
 from .marsho import *  # noqa: F403
 from .metadata import metadata
 
@@ -49,8 +49,8 @@ driver = get_driver()
 @driver.on_startup
 async def _():
     if config.marshoai_enable_mcp:
+        logger.info("MCP 初始化开始~🐾")
         await initialize_servers()
-        print(await get_mcp_list())
     logger.info("MarshoAI 已经加载~🐾")
     logger.info(f"Marsho 的插件数据存储于 : {str(store.get_plugin_data_dir())} 哦~🐾")
     if config.marshoai_token == "":

@@ -1,6 +1,7 @@
 import asyncio
 from typing import Any, Optional
 
+from mcp.types import TextContent
 from nonebot import logger
 
 from .config import get_mcp_server_config
@@ -29,7 +30,7 @@ async def initialize_servers() -> None:
 
 async def handle_mcp_tool(
     tool: str, arguments: Optional[dict[str, Any]] = None
-) -> Optional[str]:
+) -> Optional[str | list]:
     """
     处理 MCP Tool 调用
     """
@@ -50,7 +51,14 @@ async def handle_mcp_tool(
                 logger.info(
                     f"工具 {tool} 执行进度: {progress}/{total} ({percentage:.1f}%)"
                 )
-
+            if isinstance(result, list):
+                content_string: str = ""
+                # Assuming result is a dict with ContentBlock keys or values
+                # Adjust as needed based on actual structure
+                for content in result:
+                    if isinstance(content, TextContent):
+                        content_string += content.text
+                return content_string
             return f"Tool execution result: {result}"
         except Exception as e:
             error_msg = f"Error executing tool: {str(e)}"

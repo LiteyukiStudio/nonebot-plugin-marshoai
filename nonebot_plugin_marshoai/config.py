@@ -72,6 +72,7 @@ class ConfigModel(BaseModel):
     marshoai_plugins: list[str] = []
     """marsho插件的名称列表，从pip安装的使用包名，从本地导入的使用路径"""
     marshoai_enable_mcp: bool = False
+    marshoai_enable_mcp_result_logging: bool = False
 
 
 yaml = YAML()

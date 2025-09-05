@@ -151,4 +151,5 @@ GitHub Models API 的限制较多，不建议使用，建议通过修改`MARSHOA
 | MARSHOAI_SEND_THINKING           | `bool`  | `true` | 是否发送思维链（部分模型不支持） |
 | MARSHOAI_STREAM                  | `bool`  | `false`| 是否通过流式方式请求 API **开启此项后暂无法使用函数调用，无法在 Bot 用户侧聊天界面呈现出流式效果** |
 | MARSHOAI_ENABLE_MCP              | `bool`  | `false`| 是否启用 MCP 功能 |
+| MARSHOAI_ENABLE_MCP_RESULT_LOGGING | `bool`  | `false`| 是否在日志中输出 MCP 返回结果 |
 
