@@ -230,7 +230,7 @@ async def marsho(
 
     global target_list
     is_reaction_supported = False
-    if "onebot" in bot.adapter.get_name().lower():
+    if "onebot" or "milky" in bot.adapter.get_name().lower():
         is_reaction_supported = True
     if event.get_message().extract_plain_text() and (
         not text
