@@ -229,6 +229,9 @@ async def marsho(
 ):
 
     global target_list
+    is_reaction_supported = False
+    if "onebot" in bot.adapter.get_name().lower():
+        is_reaction_supported = True
     if event.get_message().extract_plain_text() and (
         not text
         and event.get_message().extract_plain_text() != config.marshoai_default_name
@@ -237,7 +240,8 @@ async def marsho(
     if not text:
         # 发送说明
         # await UniMessage(metadata.usage + "\n当前使用的模型：" + model_name).send()
-        await message_reaction(Emoji("38"))
+        if is_reaction_supported:
+            await message_reaction(Emoji("38"))
         await marsho_cmd.finish(INTRODUCTION)
         backup_context = await get_backup_context(target.id, target.private)
         if backup_context:
@@ -270,7 +274,8 @@ async def marsho(
             + await get_mcp_list()
         )
         logger.info(f"正在获取回答，模型：{model_name}")
-        await message_reaction(Emoji("66"))
+        if is_reaction_supported:
+            await message_reaction(Emoji("66"))
         # logger.info(f"上下文：{context_msg}")
         response = await handler.handle_common_chat(
             usermsg, model_name, tools_lists, config.marshoai_stream
