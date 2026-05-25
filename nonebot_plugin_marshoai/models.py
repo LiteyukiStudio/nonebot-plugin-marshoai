@@ -121,7 +121,7 @@ class MarshoTools:
                 package = importlib.util.module_from_spec(spec)
                 self.imported_packages[package_name] = package
                 sys.modules[package_name] = package
-                spec.loader.exec_module(package)  # type:ignore
+                spec.loader.exec_module(package)  # type: ignore
 
                 logger.success(f"成功加载工具包 {package_name}")
             except json.JSONDecodeError as e:
