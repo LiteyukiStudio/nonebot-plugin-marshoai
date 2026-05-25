@@ -265,7 +265,7 @@ class MarshoHandler:
                     Text(await process_completion_to_details(response)),
                     command="detail",
                     expired_at=timedelta(minutes=5),
-                )  # type:ignore
+                )  # type: ignore
             )
             # send_message.append(
             #     Argot(
